@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+{{ csrf_token }}
+<div id="app" class="col-md-10 row vertical-center row-centered">
+    <div id="editor"></div>
+    <div id="output" class="row"></div>
+</div>
+</body>
+</html>
+{% include "main_ui/connections.html" %}
+<script src="{{ url_for('static', filename='js/test_ui/test_raw.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+
+<script>
+
+
+$('#form').on('submit',function(e) {
+    e.preventDefault();
+    })
+</script>

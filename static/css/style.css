@@ -1,0 +1,24 @@
+.CodeMirror {
+    /*font-size: 1.5em !important;*/
+}
+#test_results{
+    /*margin: 5px !important;*/
+}
+.result{
+    padding: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.themeswitch{
+    margin-right: 0px !important;
+}
+
+#app{
+    float: none;
+    margin: 0 auto;
+}
+
+#ratio{
+    font-size: 5em;
+    text-align: center;
+}

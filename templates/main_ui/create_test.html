@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "main_ui/connections.html" %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/create_test.css') }}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="main_container" class="col-md-12"></div>
+</body>
+{% if isnew %}
+<script src="{{ url_for('static', filename='js/create_test_ui/create_test_raw.js') }}"></script>
+{% else %}
+<script src="{{ url_for('static', filename='js/create_test_ui/edit_test_raw.js') }}"></script>
+{% endif %}
+
+</html>
