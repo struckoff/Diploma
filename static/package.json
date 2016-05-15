@@ -8,7 +8,8 @@
     "watch-create_test": "watchify -t reactify js/create_test_ui/create_test.js -o js/create_test_ui/create_test_raw.js",
     "watch-edit_test": "watchify -t reactify js/create_test_ui/edit_test.js -o js/create_test_ui/edit_test_raw.js",
     "watch-modules": "watchify -t reactify js/create_test_ui/modules.js -o js/create_test_ui/modules_raw.js",
-    "watch-test": "watchify -t reactify js/test_ui/test.js -o js/test_ui/test_raw.js"
+    "watch-test": "watchify -t reactify js/test_ui/test.js -o js/test_ui/test_raw.js",
+    "watch-all": "nohup npm run watch-modules && nohup npm run watch-create_test && nohup npm run watch-edit_test" 
   },
   "dependencies": {
     "npm-run-all": "^1.5.1",

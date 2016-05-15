@@ -68,7 +68,6 @@ module.exports = (function (vars) {
                 </textarea>
             },
             save_case: function () {
-                console.log(67, this.state.temp);
                 this.setState({
                     tests: this.state.temp.tests,
                     expects: this.state.temp.expects,
@@ -170,7 +169,6 @@ module.exports = (function (vars) {
                 for (key in data) {
                     this.data[case_id.toString()][key] = data[key];
                 }
-                console.log(this.data);
             },
             description_handler: function (e) {
                 this.setState({

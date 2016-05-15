@@ -1,12 +1,11 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var React = require('react');
+// var React = require('react');
 var ReactDOM = require('react-dom');
 var CreateTest = require('./modules.js');
 
-
 ReactDOM.render(React.createElement(CreateTest.Cases, null), document.getElementById('main_container'));
 
-},{"./modules.js":2,"react":180,"react-dom":44}],2:[function(require,module,exports){
+},{"./modules.js":2,"react-dom":44}],2:[function(require,module,exports){
 module.exports = (function (vars) {
     var m = function() {
         React = require('react');
@@ -33,6 +32,7 @@ module.exports = (function (vars) {
                     },
                     tests: this.props.tests || '',
                     expects: this.props.expects || '',
+                    db_id: this.props.db_id || -1,
                     modalIsOpen: false,
                     isnew: typeof(this.props.isnew) == "boolean" ? this.props.isnew : true,
                     save_button: React.createElement("button", {onClick: this.save_case, className: "btn btn-success"}, "Save")
@@ -50,6 +50,10 @@ module.exports = (function (vars) {
                         handler: this.expects_handl,
                         value: this.state.expects
                     }),
+                    temp: {
+                        tests: this.state.tests,
+                        expects: this.state.expects
+                    }
                 });
                 this.setState({modalIsOpen: true});
             },
@@ -77,14 +81,20 @@ module.exports = (function (vars) {
                     expects: this.state.temp.expects,
                     isnew: false
                 });
+                data = {
+                    "tests" : this.state.temp.tests,
+                    "expects": this.state.temp.expects,
+                    "id": this.state.db_id
+                };
                 if (this.props.top_data_handler) {
-                    this.props.top_data_handler(this.props.case_id, this.state.temp);
+                    this.props.top_data_handler(this.props.case_id, data);
                 }
                 this.closeModal();
             },
             cancel: function () {
                 this.setState({
                     temp: {
+                        db_id: -1,
                         tests: '',
                         expects: ''
                     }
@@ -167,7 +177,6 @@ module.exports = (function (vars) {
                 for (key in data) {
                     this.data[case_id.toString()][key] = data[key];
                 }
-                console.log(this.data);
             },
             description_handler: function (e) {
                 this.setState({
@@ -210,9 +219,7 @@ module.exports = (function (vars) {
                     React.createElement("div", null, 
                         React.createElement("div", {id: "description", className: "left_col col-md-5 left"}, 
                             React.createElement("div", {className: "btn btn-lg btn-block"}), 
-                            React.createElement("textarea", {onChange: this.description_handler, rows: "10", placeholder: "Description", value: this.state.description}, 
-                                this.state.description
-                            )
+                            React.createElement("textarea", {onChange: this.description_handler, rows: "10", placeholder: "Description", value: this.state.description})
                         ), 
                         React.createElement("div", {className: "right_col col-md-7 right"}, 
                             React.createElement("div", {id: "buttons"}, 

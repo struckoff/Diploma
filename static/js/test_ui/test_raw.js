@@ -75,7 +75,7 @@ var Output = React.createClass({displayName: "Output",
                             React.createElement("h3", {className: "panel-title"}, "Quick review")
                         ), 
                         React.createElement("div", {className: "panel-body"}, 
-                            React.createElement("div", {id: "ratio"}, this.props.data.statistic.ratio + '%')
+                            React.createElement("div", {id: "ratio"}, this.props.data.statistic.ratio + '% ')
                         )
                     )
                 ), 

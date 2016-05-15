@@ -19,12 +19,10 @@ var get_cases = function(self){
                     db_id: item.id}
                 )
             });
-            console.log(self.state);
             self.setState({
                 cases: cases,
                 description: data["description"] || ''
             });
-            console.log(26, self.state);
         })
         .error(function (data) {
             console.log("err", data);

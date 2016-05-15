@@ -15,6 +15,7 @@ db = SQLAlchemy(app)
 class Room(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String)
+    test_cases = db.relationship('TestData')
 
     def __init__(self, description):
         self.description = description
@@ -54,19 +55,18 @@ def index(room_id):
         return render_template('main_ui/test.html')
     else:
         room = Room.query.filter_by(id=room_id).first()
-        cases = TestData.query.filter_by(room_id=room_id).all()
         code = request.args.get('text', '')
-        print([(case.test, case.expect) for case in cases])
         expects = [1, 2, 3, 4, 5]
         tests = [(1, 1), (1, 1), (1, 1), (3, 1), (2, 3)]
         expects=[2] * 5
+        tests = tuple(case.test for case in room.test_cases)
+        expects = tuple(case.expect for case in room.test_cases)
         results = test_runner(code, tests, expects)
         ratio = len([r for r in results if r["state"]])/len([*zip(expects, tests)]) * 100
         stats = {
             "ratio": ratio,
             "style": "success" if isclose(ratio, 100) else "warning" if ratio > 10 else "danger"
         }
-        print({"results": results, "statistic":stats})
         return json.dumps({"results": results, "statistic":stats})
 
 @app.route('/create')
@@ -94,17 +94,20 @@ def edit_test(room_id):
     if request.is_xhr:
         room = Room.query.filter_by(id=room_id).first()
         cases = TestData.query.filter_by(room_id=room_id).all()
-        print(request.args)
         if request.args.get("description") is not None \
                 and request.args.get("description", False) != room.description:
             room.description = request.args.get("description")
         if request.args.get("cases", False):
             for key, case in json.loads(request.args["cases"]).items():
                 case_original = TestData.query.filter_by(id=case['id']).first()
-                if case_original.test != case["tests"]:
-                    case_original.test = case["tests"]
-                if case_original.expect != case["expects"]:
-                    case_original.expect = case["expects"]
+                if case_original is None:
+                    testdata = TestData(key, room_id, case["tests"], case["expects"])
+                    db.session.add(testdata)
+                else:
+                    if case_original.test != case["tests"]:
+                        case_original.test = case["tests"]
+                    if case_original.expect != case["expects"]:
+                        case_original.expect = case["expects"]
         db.session.commit()
 
         return json.dumps({

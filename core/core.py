@@ -27,7 +27,7 @@ class Result_obj:
 
 def args_parse(arg_string):
     print(29, arg_string)
-    func_raw = "(function (){return arguments})(" + str(arg_string)[1:-1] + ")"
+    func_raw = "(function (){return arguments})(" + str(arg_string) + ")"
     print(32, func_raw)
     args = JS.eval(func_raw)
     return [args[key] for key in sorted(args.keys())]
@@ -36,7 +36,6 @@ def args_parse(arg_string):
 def code_compile(code):
     code_raw = "(typeof({code}) == 'function')?({code}).apply(this, arguments):({code})".format(code=code)
     func_raw = "function run(){return " + code_raw + "}"
-    print(func_raw)
     if JS.is_available():
         return JS.compile(func_raw)
 
@@ -56,8 +55,9 @@ def js_to_py(code):
 def test_runner(code, tests, expects):
     case = js_to_py(code)
     try:
-        print([(params, expect, args_parse(params), case(*args_parse(params))) for params, expect in zip(tests, expects)])
-        return [{"state": case(*args_parse(params)) == expect} for params, expect in zip(tests, expects)]
+        return [{
+                    "state": case(*args_parse(params)) == JS.eval(expect)
+                } for params, expect in zip(tests, expects)]
     except execjs.RuntimeError as err:
         return [{
             "state": False,
