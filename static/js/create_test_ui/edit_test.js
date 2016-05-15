@@ -6,17 +6,19 @@ var ReactDOM = require('react-dom');
 var get_cases = function(self){
     $.getJSON('')
         .success(function (data) {
-            var cases = (data["cases"] || []).map(function (item, index) {
-                return <CreateTest.Case
-                    key={index}
-                    case_id={index}
+            console.log(9, data);
+            var cases = [];
+            (data["cases"] || []).map(function (item) {
+                self.data_handler(item.id, item);
+                cases[item.id] =  <CreateTest.Case
+                    key={item.id}
                     top_data_handler={self.data_handler}
                     delete_case={self.delete_case}
                     isnew={false}
                     tests={item.tests}
                     expects={item.expects}
-                    db_id ={item.id}
-                />
+                    id ={item.id}
+                />;
             });
             self.setState({
                 cases: cases,

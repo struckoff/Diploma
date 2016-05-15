@@ -7,17 +7,19 @@ var ReactDOM = require('react-dom');
 var get_cases = function(self){
     $.getJSON('')
         .success(function (data) {
-            var cases = (data["cases"] || []).map(function (item, index) {
-                return React.createElement(CreateTest.Case, {
-                    key: index, 
-                    case_id: index, 
+            console.log(9, data);
+            var cases = [];
+            (data["cases"] || []).map(function (item) {
+                self.data_handler(item.id, item);
+                cases[item.id] =  React.createElement(CreateTest.Case, {
+                    key: item.id, 
                     top_data_handler: self.data_handler, 
                     delete_case: self.delete_case, 
                     isnew: false, 
                     tests: item.tests, 
                     expects: item.expects, 
-                    db_id: item.id}
-                )
+                    id: item.id}
+                );
             });
             self.setState({
                 cases: cases,
@@ -58,7 +60,7 @@ module.exports = (function (vars) {
                     },
                     tests: this.props.tests || '',
                     expects: this.props.expects || '',
-                    db_id: this.props.db_id || -1,
+                    id: this.props.id || -1,
                     modalIsOpen: false,
                     isnew: typeof(this.props.isnew) == "boolean" ? this.props.isnew : true,
                     save_button: React.createElement("button", {onClick: this.save_case, className: "btn btn-success"}, "Save")
@@ -102,7 +104,6 @@ module.exports = (function (vars) {
                 )
             },
             save_case: function () {
-                console.log(67, this.state.temp);
                 this.setState({
                     tests: this.state.temp.tests,
                     expects: this.state.temp.expects,
@@ -111,17 +112,17 @@ module.exports = (function (vars) {
                 data = {
                     "tests" : this.state.temp.tests,
                     "expects": this.state.temp.expects,
-                    "id": this.state.db_id
+                    "id": this.props.id
                 };
                 if (this.props.top_data_handler) {
-                    this.props.top_data_handler(this.props.case_id, data);
+                    this.props.top_data_handler(this.props.id, data);
                 }
                 this.closeModal();
             },
             cancel: function () {
                 this.setState({
                     temp: {
-                        db_id: -1,
+                        id: -1,
                         tests: '',
                         expects: ''
                     }
@@ -132,7 +133,7 @@ module.exports = (function (vars) {
                 }
             },
             delete_case: function (e) {
-                this.props.delete_case(this.props.case_id);
+                this.props.delete_case(this.state.id);
             },
             render: function () {
                 return (
@@ -184,7 +185,6 @@ module.exports = (function (vars) {
             getInitialState: function () {
                 return {
                     cases: [],
-                    case_id: 0,
                     description: ''
                 }
             },
@@ -198,13 +198,13 @@ module.exports = (function (vars) {
             state_check: function () {
                 return this.state;
             },
-            data_handler: function (case_id, data) {
+            data_handler: function (id, data) {
                 this.data = this.data || {};
-                this.data[case_id.toString()] = this.data[case_id.toString()] || {};
+                this.data[data.id.toString()] = this.data[data.id.toString()] || {};
                 for (key in data) {
-                    this.data[case_id.toString()][key] = data[key];
+                    this.data[data.id.toString()][key] = data[key];
                 }
-                console.log(this.data);
+                console.log(172, this.data);
             },
             description_handler: function (e) {
                 this.setState({
@@ -212,16 +212,17 @@ module.exports = (function (vars) {
                 })
             },
             new_case: function () {
-                this.setState({
-                    cases: this.state.cases.concat([
-                        React.createElement(Case, {
-                            key: this.state.cases.length, 
-                            case_id: this.state.cases.length, 
-                            top_data_handler: this.data_handler, 
-                            delete_case: this.delete_case}
-                        )
-                    ])
-                });
+                var id = Math.max.apply(null, Object.keys(this.data).map(function (n) {return parseInt(n);}));
+                id = isFinite(id) ? id + 1: 0;
+                console.log(181, id);
+                this.state.cases[id] = React.createElement(Case, {
+                    key: id, 
+                    id: id, 
+                    top_data_handler: this.data_handler, 
+                    delete_case: this.delete_case}
+                );
+                console.log(this.state.cases);
+                this.setState({cases: this.state.cases});
             },
             send_cases: function (e) {
                 $.getJSON('', {
@@ -237,9 +238,10 @@ module.exports = (function (vars) {
                         console.log('err', data);
                     })
             },
-            delete_case: function (case_id) {
-                delete this.state.cases[case_id];
-                delete this.data[case_id];
+            delete_case: function (id) {
+                console.log(id, this.state.cases, this.data);
+                delete this.state.cases[id];
+                delete this.data[id];
                 this.setState(this.state);
             },
             render: function () {

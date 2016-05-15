@@ -28,10 +28,10 @@ class TestData(db.Model):
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
     test = db.Column(db.String)
     expect = db.Column(db.String)
-    case_id_in_room = db.Column(db.Integer)
+    case_id = db.Column(db.Integer)
 
-    def __init__(self, case_id, room_id, test, expect):
-        self.case_id_in_room = case_id
+    def __init__(self, id, room_id, test, expect):
+        self.case_id = id
         self.room_id = room_id
         self.test = test
         self.expect = expect
@@ -104,17 +104,15 @@ def index(room_id):
 def create_test():
     if request.is_xhr:
         room = Room(request.args.get('description', ''))
-        print(request.args)
         db.session.add(room)
         db.session.commit()
-        for key, val in json.loads(request.args.get('cases', '{}')).items():
-            tests = val.get("tests", "")
-            expects = val.get("expects", "")
-
-            testdata = TestData(key, room.id, tests, expects)
+        for key, case in json.loads(request.args.get('cases', '{}')).items():
+            tests = case.get("tests", "")
+            expects = case.get("expects", "")
+            id = case.get("id", 0)
+            testdata = TestData(id, room.id, tests, expects)
             db.session.add(testdata)
         db.session.commit()
-        print(room.id)
         return json.dumps({"url": '/edit/{}'.format(room.id)})
     else:
         return render_template('main_ui/create_test.html', isnew=True)
@@ -125,30 +123,32 @@ def create_test():
 def edit_test(room_id):
     if request.is_xhr:
         room = Room.query.filter_by(id=room_id).first()
-        cases = TestData.query.filter_by(room_id=room_id).all()
         if request.args.get("description") is not None \
                 and request.args.get("description", False) != room.description:
             room.description = request.args.get("description")
-        if request.args.get("cases", False):
+        if request.args.get("cases") is not None:
+            room.test_cases[:] = []
+            print(133, request.args["cases"])
             for key, case in json.loads(request.args["cases"]).items():
-                case_original = TestData.query.filter_by(id=case['id']).first()
-                if case_original is None:
-                    testdata = TestData(key, room_id, case["tests"], case["expects"])
-                    db.session.add(testdata)
-                else:
-                    if case_original.test != case["tests"]:
-                        case_original.test = case["tests"]
-                    if case_original.expect != case["expects"]:
-                        case_original.expect = case["expects"]
+                # # case_original = TestData.query.filter_by(id=case['id']).first()
+                # if 0 <= int(key) < len(room.test_cases):
+                #     case_original = room.test_cases[int(key)]
+                #     case_original.test = case["tests"]
+                #     case_original.expect = case["expects"]
+                # else:
+                testdata = TestData(case["id"], room_id, case["tests"], case["expects"])
+                db.session.add(testdata)
+
         db.session.commit()
+        print(144, room.test_cases)
 
         return json.dumps({
                               "description": room.description,
                               "cases": [{
-                                  "id": c.id,
+                                  "id": c.case_id,
                                   "tests": c.test,
                                   "expects": c.expect
-                              } for c in cases]
+                              } for c in room.test_cases]
         })
 
     return render_template('main_ui/create_test.html', isnew=False)
