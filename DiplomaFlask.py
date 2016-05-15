@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, g
+from flask import Flask, render_template, request, g, Response, session
 from flask_sqlalchemy import SQLAlchemy
 from math import isclose
+from functools import wraps
 import json
 import sqlite3
 
@@ -9,6 +10,8 @@ from core.core import test_runner
 DATABASE = 'database.db'
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE
+app.secret_key = 'super secret key'
+app.config['SESSION_TYPE'] = 'filesystem'
 db = SQLAlchemy(app)
 
 
@@ -33,6 +36,38 @@ class TestData(db.Model):
         self.test = test
         self.expect = expect
 
+def check_auth(password):
+    """This function is called to check if a username /
+    password combination is valid.
+    """
+    return password == 'admin'
+
+def authenticate():
+    """Sends a 401 response that enables basic auth"""
+    return Response(
+    'Could not verify your access level for that URL.\n'
+    'You have to login with proper credentials', 401,
+    {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if session.get('password') is not None:
+            if check_auth(session['password']):
+                return f(*args, **kwargs)
+            else:
+                session.pop('password', None)
+        else:
+            if request.method == 'POST':
+                if check_auth(request.form.get('password')):
+                    session['password'] = request.form.get('password')
+                    return f(*args, **kwargs)
+                else:
+                    authenticate()
+            elif request.method == 'GET':
+                return render_template('main_ui/password.html')
+    return decorated
+
 
 @app.before_request
 def before_request():
@@ -43,10 +78,6 @@ def before_request():
 def after_request(response):
     g.db.close()
     return response
-
-@app.route('/hw')
-def hello_world():
-    return 'Hello World!'
 
 @app.route('/<room_id>')
 def index(room_id):
@@ -64,7 +95,7 @@ def index(room_id):
         results = test_runner(code, tests, expects)
         ratio = len([r for r in results if r["state"]])/len([*zip(expects, tests)]) * 100
         stats = {
-            "ratio": ratio,
+            "ratio": round(ratio),
             "style": "success" if isclose(ratio, 100) else "warning" if ratio > 10 else "danger"
         }
         return json.dumps({"results": results, "statistic":stats})
@@ -89,7 +120,8 @@ def create_test():
         return render_template('main_ui/create_test.html', isnew=True)
 
 
-@app.route('/edit/<room_id>')
+@app.route('/edit/<room_id>', methods=['GET', 'POST'])
+@requires_auth
 def edit_test(room_id):
     if request.is_xhr:
         room = Room.query.filter_by(id=room_id).first()
