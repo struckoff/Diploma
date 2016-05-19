@@ -1,5 +1,9 @@
 // var React = require('react');
 var ReactDOM = require('react-dom');
 var CreateTest = require('./modules.js');
+var Cases = CreateTest.Cases;
 
-ReactDOM.render(<CreateTest.Cases />, document.getElementById('main_container'));
+var $ = require('jquery');
+require("../bootstrap/js/bootstrap.min.js");
+
+ReactDOM.render(<Cases />, document.getElementById('main_container'));

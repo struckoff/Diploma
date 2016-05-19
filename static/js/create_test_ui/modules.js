@@ -1,3 +1,4 @@
+
 module.exports = (function (vars) {
     var m = function() {
         React = require('react');
@@ -172,7 +173,7 @@ module.exports = (function (vars) {
             },
             description_handler: function (e) {
                 this.setState({
-                    description: e.target.value || this.state.description
+                    description: e.target.value
                 })
             },
             new_case: function () {

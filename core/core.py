@@ -1,7 +1,15 @@
 import execjs
+import logging
+
+logger = logging.getLogger('main debug log')
+logger.setLevel(logging.DEBUG)
+log = logging.StreamHandler()
+log.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(lineno)d: %(module)s -> %(funcName)s: %(message)s')
+log.setFormatter(formatter)
+logger.addHandler(log)
 
 JS = execjs.get()
-
 
 class Result_obj:
     state = None
@@ -26,9 +34,9 @@ class Result_obj:
 
 
 def args_parse(arg_string):
-    print(29, arg_string)
+    logger.debug(arg_string)
     func_raw = "(function (){return arguments})(" + str(arg_string) + ")"
-    print(32, func_raw)
+    logger.debug(func_raw)
     args = JS.eval(func_raw)
     return [args[key] for key in sorted(args.keys())]
 
@@ -45,7 +53,9 @@ def js_to_py(code):
 
     def product(*args):
         try:
-            print(type(func.call('run', *args)), func.call('run', *args), args)
+            logger.debug(type(func.call('run', *args)))
+            logger.debug(func.call('run', *args))
+            logger.debug(args)
             return func.call('run', *args)
         except execjs.RuntimeError:
             raise execjs.RuntimeError("SYNTAX ERROR")

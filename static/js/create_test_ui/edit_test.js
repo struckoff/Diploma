@@ -2,6 +2,8 @@ var CreateTest = require('./modules.js');
 var Cases = CreateTest.Cases;
 var ReactDOM = require('react-dom');
 
+var $ = require('jquery');
+require("../bootstrap/js/bootstrap.min.js");
 
 var get_cases = function(self){
     $.getJSON('')

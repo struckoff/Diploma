@@ -1,8 +1,12 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var $ = require('jquery');
+require("../bootstrap/js/bootstrap.min.js");
 
 var Codemirror = require('react-codemirror');
 require('codemirror/mode/javascript/javascript');
+
+
 
 var App = React.createClass({
     getInitialState: function() {
@@ -109,3 +113,7 @@ var Output = React.createClass({
 
 ReactDOM.render(<App />, document.getElementById('editor'));
 
+
+$('#form').on('submit',function(e) {
+    e.preventDefault();
+    })
