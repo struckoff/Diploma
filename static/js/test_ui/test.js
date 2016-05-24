@@ -1,7 +1,8 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var $ = require('jquery');
-require("../bootstrap/js/bootstrap.min.js");
+var $ = jQuery = require('jquery');
+
+require("../../bootstrap/js/bootstrap.min.js");
 
 var Codemirror = require('react-codemirror');
 require('codemirror/mode/javascript/javascript');
@@ -69,16 +70,18 @@ var App = React.createClass({
 
 var Output = React.createClass({
     render: function(){
-        console.log(this.props);
+        var style = parseFloat(this.props.data.ratio);
+        var style = (style == 100.0) ? "success" : ((style > 10.0) ? "warning" : "danger");
+
         return (
             <div>
                 <div id="statistic" className="col-md-5 col-md-push-7">
-                    <div className={"panel panel-" + this.props.data.statistic.style}>
+                    <div className={"panel panel-" + style}>
                         <div className="panel-heading">
                             <h3 className="panel-title">Quick review</h3>
                         </div>
                         <div className="panel-body">
-                            <div id="ratio">{this.props.data.statistic.ratio + '% '}</div>
+                            <div id="ratio">{this.props.data.ratio + '% '}</div>
                         </div>
                     </div>
                 </div>

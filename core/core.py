@@ -11,27 +11,6 @@ logger.addHandler(log)
 
 JS = execjs.get()
 
-class Result_obj:
-    state = None
-    __message = None
-
-    def __init__(self, state, message=None):
-        self.__state = state
-        if message is not None:
-            self.__message = str(message)
-
-    def __str__(self):
-        return self.__message or ''
-
-    def __bool__(self):
-        return self.__state
-
-    def getstate(self):
-        return self.__state
-
-    def getmessage(self):
-        return self.__message
-
 
 def args_parse(arg_string):
     logger.debug(arg_string)

@@ -15,8 +15,8 @@
     <div class="global_control">
         <form action="", method="post">
             <button type="submit" name="logout">LOGOUT</button>
-            <button onClick="parent.location='/room/{{ room_id }}'">Go to test page</button>
         </form>
+        <button onClick="parent.location='/room/{{ room_id }}'">Go to test page</button>
     </div>
     <script src="{{ url_for('static', filename='js/create_test_ui/edit_test_raw.js') }}"></script>
 {% endif %}

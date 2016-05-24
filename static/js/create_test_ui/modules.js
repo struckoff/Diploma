@@ -1,3 +1,5 @@
+var sha256 = require('sha256');
+
 
 module.exports = (function (vars) {
     var m = function() {
@@ -46,7 +48,10 @@ module.exports = (function (vars) {
                     temp: {
                         tests: this.state.tests,
                         expects: this.state.expects
-                    }
+                    },
+                    password_temp: null,
+                    password: null
+
                 });
                 this.setState({modalIsOpen: true});
             },
@@ -169,24 +174,31 @@ module.exports = (function (vars) {
                 for (key in data) {
                     this.data[data.id.toString()][key] = data[key];
                 }
-                console.log(172, this.data);
             },
             description_handler: function (e) {
                 this.setState({
                     description: e.target.value
                 })
             },
+            password_handler: function (e) {
+                this.setState({
+                    password_temp: e.target.value
+                })
+            },
+            save_password: function (e) {
+                this.setState({
+                    password: this.state.password_temp ? sha256(this.state.password_temp) : null
+                })
+            },
             new_case: function () {
                 var id = Math.max.apply(null, Object.keys(this.data).map(function (n) {return parseInt(n);}));
                 id = isFinite(id) ? id + 1: 0;
-                console.log(181, id);
                 this.state.cases[id] = <Case
                     key={id}
                     id={id}
                     top_data_handler={this.data_handler}
                     delete_case={this.delete_case}
                 />;
-                console.log(this.state.cases);
                 this.setState({cases: this.state.cases});
             },
             send_cases: function (e) {
@@ -204,7 +216,6 @@ module.exports = (function (vars) {
                     })
             },
             delete_case: function (id) {
-                console.log(id, this.state.cases, this.data);
                 delete this.state.cases[id];
                 delete this.data[id];
                 this.setState(this.state);
@@ -214,7 +225,24 @@ module.exports = (function (vars) {
                     <div>
                         <div id="description" className="left_col col-md-5 left">
                             <div className="btn btn-lg btn-block"></div>
-                            <textarea onChange={this.description_handler} rows="10" placeholder="Description" value={this.state.description}></textarea>
+                            <textarea
+                                onChange={this.description_handler}
+                                rows="10"
+                                placeholder="Description (HTML syntax)"
+                                value={this.state.description}>
+                            </textarea>
+                            <div dangerouslySetInnerHTML={{__html: this.state.description}}  className="preview"></div>
+                        </div>
+                        <div className="password">
+                            <input
+                            type="password"
+                            className="password"
+                            id="password"
+                            onChange={this.password_handler}
+                            value={this.state.password_temp}
+                            placeholder="Room password"
+                            />
+                            <button onClick={this.save_password}>Save password</button>
                         </div>
                         <div className="right_col col-md-7 right">
                             <div id="buttons">
