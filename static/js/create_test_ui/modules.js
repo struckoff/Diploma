@@ -1,8 +1,9 @@
 var sha256 = require('sha256');
+var $ = jQuery = require('jquery');
 
 
 module.exports = (function (vars) {
-    var m = function() {
+    var m = function () {
         React = require('react');
         var Modal = require('react-modal');
         const ModalStyle = {
@@ -80,7 +81,7 @@ module.exports = (function (vars) {
                     isnew: false
                 });
                 data = {
-                    "tests" : this.state.temp.tests,
+                    "tests": this.state.temp.tests,
                     "expects": this.state.temp.expects,
                     "id": this.props.id
                 };
@@ -158,9 +159,9 @@ module.exports = (function (vars) {
                     description: ''
                 }
             },
-            componentDidMount: function(){
+            componentDidMount: function () {
                 var self = this;
-                (this.props.init_funcs || []).map(function(f){
+                (this.props.init_funcs || []).map(function (f) {
                     f(self);
                 })
             },
@@ -191,8 +192,10 @@ module.exports = (function (vars) {
                 })
             },
             new_case: function () {
-                var id = Math.max.apply(null, Object.keys(this.data).map(function (n) {return parseInt(n);}));
-                id = isFinite(id) ? id + 1: 0;
+                var id = Math.max.apply(null, Object.keys(this.data).map(function (n) {
+                    return parseInt(n);
+                }));
+                id = isFinite(id) ? id + 1 : 0;
                 this.state.cases[id] = <Case
                     key={id}
                     id={id}
@@ -202,12 +205,13 @@ module.exports = (function (vars) {
                 this.setState({cases: this.state.cases});
             },
             send_cases: function (e) {
-                $.getJSON('', {
-                        cases: JSON.stringify(this.data),
-                        description: this.state.description
-                    })
+                $.getJSON(window.location.href + '/get', {
+                    cases: JSON.stringify(this.data),
+                    description: this.state.description,
+                    password: this.state.password
+                })
                     .success(function (data) {
-                        if (window.location.pathname != data.url){
+                        if (window.location.pathname != data.url) {
                             window.open(data.url, '_self')
                         }
                     })
@@ -231,23 +235,36 @@ module.exports = (function (vars) {
                                 placeholder="Description (HTML syntax)"
                                 value={this.state.description}>
                             </textarea>
-                            <div dangerouslySetInnerHTML={{__html: this.state.description}}  className="preview"></div>
+                            <div className="panel panel-primary">
+                                <div className="panel-heading">
+                                    <h3 className="panel-title">Preview</h3>
+                                </div>
+                                <div
+                                    className="panel-body"
+                                    dangerouslySetInnerHTML={{__html: this.state.description}}
+                                >
+                                </div>
+                            </div>
                         </div>
                         <div className="password">
                             <input
-                            type="password"
-                            className="password"
-                            id="password"
-                            onChange={this.password_handler}
-                            value={this.state.password_temp}
-                            placeholder="Room password"
+                                type="password"
+                                className="password"
+                                id="password"
+                                onChange={this.password_handler}
+                                value={this.state.password_temp}
+                                placeholder="Room password"
                             />
                             <button onClick={this.save_password}>Save password</button>
                         </div>
                         <div className="right_col col-md-7 right">
                             <div id="buttons">
-                                <button id="new_case" className="btn btn-primary col-md-3" onClick={this.new_case}>New case</button>
-                                <button id="send_cases" className="btn btn-primary col-md-3" onClick={this.send_cases}>Save</button>
+                                <button id="new_case" className="btn btn-primary col-md-3" onClick={this.new_case}>New
+                                    case
+                                </button>
+                                <button id="send_cases" className="btn btn-primary col-md-3" onClick={this.send_cases}>
+                                    Save
+                                </button>
                             </div>
                             <div id="cases">
                                 {this.state.cases}

@@ -8,44 +8,43 @@ var Codemirror = require('react-codemirror');
 require('codemirror/mode/javascript/javascript');
 
 
-
 var App = React.createClass({
-    getInitialState: function() {
+    getInitialState: function () {
         return {
             code: 'function (a, b) {return a + b}',
-            theme: 'default'
+            theme: 'dracula'
         };
     },
-    updateCode: function(newCode) {
+    updateCode: function (newCode) {
         this.setState({
             code: newCode
         });
     },
-    submit: function(e){
+    submit: function (e) {
         var data_send = {
             text: this.state.code
         };
-        $.getJSON('', data_send)
-            .success(function(data){
-                ReactDOM.render(<Output data={data} />, document.getElementById('output'));
-            }).error(function(e, err){
+        $.getJSON(window.location.href + '/get', data_send)
+            .success(function (data) {
+                ReactDOM.render(<Output data={data}/>, document.getElementById('output'));
+            }).error(function (e, err) {
             console.log(e, err);
         });
     },
-    switchTheme: function(e){
+    switchTheme: function (e) {
         this.setState({
             theme: e.target.value,
         });
     },
-    render: function() {
+    render: function () {
         var options = {
             lineNumbers: true,
             theme: this.state.theme,
-            mode:  'javascript'
+            mode: 'javascript'
         };
         return (
-            <div>
-                <Codemirror ref='editor' value={this.state.code} onChange={this.updateCode} options={options} />
+            <div id="editor_container">
+                <Codemirror ref='editor' value={this.state.code} onChange={this.updateCode} options={options}/>
                 <nav className="navbar navbar-inverse navbar-default">
                     <div className="navbar-form navbar-left">
                         <button className="btn btn-primary" type='button' onClick={this.submit}>
@@ -56,6 +55,7 @@ var App = React.createClass({
                         <select onChange={this.switchTheme} value={this.state.theme} className="form-control cont">
                             <option value="default">default</option>
                             <option value="monokai">monokai</option>
+                            <option value="dracula">dracula</option>
                             <option value="zenburn">zenburn</option>
                             <option value="solarized dark">solarized dark</option>
                             <option value="solarized light">solarized light</option>
@@ -69,9 +69,9 @@ var App = React.createClass({
 });
 
 var Output = React.createClass({
-    render: function(){
+    render: function () {
         var style = parseFloat(this.props.data.ratio);
-        var style = (style == 100.0) ? "success" : ((style > 10.0) ? "warning" : "danger");
+        var style = (style >= 100.0) ? "success" : ((style > 10.0) ? "warning" : "danger");
 
         return (
             <div>
@@ -96,11 +96,12 @@ var Output = React.createClass({
                         </thead>
                         <tbody>
                         {
-                            this.props.data.results.map(function (result, result_index){
+                            this.props.data.results.map(function (result, result_index) {
                                 return (
-                                    <tr key={"result_" + result_index} className={"result" + result.state?"pass success":"not_pass danger"}>
+                                    <tr key={"result_" + result_index}
+                                        className={"result" + result.state?"pass success":"not_pass danger"}>
                                         <td>{result_index}</td>
-                                        <td className="state">{result.state?"Pass":"Fail"}</td>
+                                        <td className="state">{result.state ? "Pass" : "Fail"}</td>
                                         <td className="message">{result.message}</td>
                                     </tr>
                                 )
@@ -117,6 +118,6 @@ var Output = React.createClass({
 ReactDOM.render(<App />, document.getElementById('editor'));
 
 
-$('#form').on('submit',function(e) {
+$('#form').on('submit', function (e) {
     e.preventDefault();
-    })
+})

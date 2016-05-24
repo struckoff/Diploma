@@ -5,16 +5,28 @@
     <title></title>
 </head>
 <body>
-    {{ csrf_token }}
-    <div id="description">{{ description }}</div>
-    <div id="app" class="col-md-10 row vertical-center row-centered">
-        <div id="editor"></div>
-        <div id="output" class="row"></div>
+{{ csrf_token }}
+<div class="container col-md-10 row col-centered">
+    <div id="description" class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Description</h3>
+            <button class="btn btn-success" onClick="parent.location='/edit/{{ room_id }}'">
+                Edit this room
+            </button>
+        </div>
+        <div class="panel-body">
+            {{ description }}
+        </div>
     </div>
-    <button onClick="parent.location='/edit/{{ room_id }}'">Edit</button>
+    <div id="app_container">
+        <div id="app" class="">
+            <div id="editor"></div>
+            <div id="output" class="row"></div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 {% include "main_ui/connections.html" %}
 <script src="{{ url_for('static', filename='js/test_ui/test_raw.js') }}"></script>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 

@@ -6,7 +6,7 @@ $ = jQuery = require('jquery');
 require("../../bootstrap/js/bootstrap.min.js");
 
 var get_cases = function(self){
-    $.getJSON('')
+    $.getJSON(window.location.href + '/get')
         .success(function (data) {
             var cases = [];
             (data["cases"] || []).map(function (item) {

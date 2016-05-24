@@ -1,24 +1,47 @@
 .CodeMirror {
     /*font-size: 1.5em !important;*/
 }
-#test_results{
+
+#test_results {
     /*margin: 5px !important;*/
 }
-.result{
+
+.result {
     padding: 10px !important;
     margin-bottom: 10px !important;
 }
 
-.themeswitch{
+.themeswitch {
     margin-right: 0px !important;
 }
 
-#app{
+#app {
     float: none;
     margin: 0 auto;
 }
 
-#ratio{
+#ratio {
     font-size: 5em;
     text-align: center;
+}
+
+.panel-body {
+    word-break: break-all;
+}
+
+.col-centered {
+    float: none !important;
+    margin: 0 auto !important;
+}
+
+#description h3 {
+    display: inline;
+}
+
+#description button {
+    float: right;
+}
+
+#cases div {
+    overflow: hidden;
 }

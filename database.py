@@ -4,13 +4,16 @@ from main import app
 
 DB = SQLAlchemy(app)
 
+
 class Room(DB.Model):
     id = DB.Column(DB.Integer, primary_key=True)
     description = DB.Column(DB.String)
+    password = DB.Column(DB.String, default="")
     test_cases = DB.relationship('TestData')
 
-    def __init__(self, description):
+    def __init__(self, description, password):
         self.description = description
+        self.password = password
 
 
 class TestData(DB.Model):
