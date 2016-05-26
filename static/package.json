@@ -4,15 +4,15 @@
     "watchify": "latest"
   },
   "scripts": {
-    "build-js": "browserify -t reactify js/create_test_ui/create_test.js > js/create_test_ui/create_test_raw.js",
-    "watch-create_test": "watchify -t reactify js/create_test_ui/create_test.js -o js/create_test_ui/create_test_raw.js",
-    "watch-edit_test": "watchify -t reactify js/create_test_ui/edit_test.js -o js/create_test_ui/edit_test_raw.js",
-    "watch-modules": "watchify -t reactify js/create_test_ui/modules.js -o js/create_test_ui/modules_raw.js",
-    "watch-test": "watchify -t reactify js/test_ui/test.js -o js/test_ui/test_raw.js",
-    "refresh-create_test": "refreshify -t reactify js/create_test_ui/create_test.js -o js/create_test_ui/create_test_raw.js",
-    "refresh-edit_test": "refreshify -t reactify js/create_test_ui/edit_test.js -o js/create_test_ui/edit_test_raw.js",
-    "refresh-modules": "refreshify -t reactify js/create_test_ui/modules.js -o js/create_test_ui/modules_raw.js",
-    "refresh-test": "refreshify -t reactify js/test_ui/test.js -o js/test_ui/test_raw.js"
+    "build-js": "browserify -t reactify js/src/create_test.js > js/raw/create_test.js",
+    "watch-create_test": "watchify -t reactify js/src/create_test.js -o js/raw/create_test.js",
+    "watch-edit_test": "watchify -t reactify js/src/edit_test.js -o js/raw/edit_test.js",
+    "watch-modules": "watchify -t reactify js/src/modules.js -o js/raw/modules.js",
+    "watch-test": "watchify -t reactify js/src/test_room.js -o js/raw/test_room.js",
+    "refresh-create_test": "refreshify -t reactify js/src/create_test.js -o js/raw/create_test.js",
+    "refresh-edit_test": "refreshify -t reactify js/src/edit_test.js -o js/raw/edit_test.js",
+    "refresh-modules": "refreshify -t reactify js/src/modules.js -o js/raw/modules.js",
+    "refresh-test": "refreshify -t reactify js/src/test_room.js -o js/raw/test_room.js"
   },
   "dependencies": {
     "jquery": "^2.2.3",

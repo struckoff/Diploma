@@ -52,8 +52,8 @@ should be asked on the
   ([how to fork a repo](https://help.github.com/articles/fork-a-repo))
 - Make your changes
 - If your changes are easy to test or likely to regress, add tests.
-  Tests for the core go into `test/test.js`, some modes have their own
-  test suite under `mode/XXX/test.js`. Feel free to add new test
+  Tests for the core go into `test/test_room.js`, some modes have their own
+  test suite under `mode/XXX/test_room.js`. Feel free to add new test
   suites to modes that don't have one yet (be sure to link the new
   tests into `test/index.html`).
 - Follow the general code style of the rest of the project (see

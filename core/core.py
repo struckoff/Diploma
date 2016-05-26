@@ -1,5 +1,6 @@
-import execjs
 import logging
+
+import execjs
 
 logger = logging.getLogger('main debug log')
 logger.setLevel(logging.DEBUG)
@@ -13,9 +14,9 @@ JS = execjs.get()
 
 
 def args_parse(arg_string):
-    logger.debug(arg_string)
+    # logger.debug(arg_string)
     func_raw = "(function (){return arguments})(" + str(arg_string) + ")"
-    logger.debug(func_raw)
+    # logger.debug(func_raw)
     args = JS.eval(func_raw)
     return [args[key] for key in sorted(args.keys())]
 
@@ -32,9 +33,9 @@ def js_to_py(code):
 
     def product(*args):
         try:
-            logger.debug(type(func.call('run', *args)))
-            logger.debug(func.call('run', *args))
-            logger.debug(args)
+            # logger.debug(type(func.call('run', *args)))
+            # logger.debug(func.call('run', *args))
+            # logger.debug(args)
             return func.call('run', *args)
         except execjs.RuntimeError:
             raise execjs.RuntimeError("SYNTAX ERROR")

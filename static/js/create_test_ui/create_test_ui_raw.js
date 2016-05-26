@@ -1,1 +1,0 @@
-console.error("Error: Cannot find module '/home/struckoff/Projects/PycharmProjects/Diploma/main_ui/static/js/create_test_ui/create_test_ui.js' from '/home/struckoff/Projects/PycharmProjects/Diploma/main_ui/static'");
