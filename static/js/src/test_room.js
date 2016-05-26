@@ -12,7 +12,9 @@ var App = React.createClass({
     getInitialState: function () {
         return {
             code: 'function (a, b) {return a + b}',
-            theme: 'dracula'
+            theme: 'dracula',
+            report_panel_state: false,
+            report: {}
         };
     },
     updateCode: function (newCode) {
@@ -20,9 +22,10 @@ var App = React.createClass({
             code: newCode
         });
     },
-    submit: function (e) {
+    submit: function () {
         var data_send = {
-            text: this.state.code
+            text: this.state.code,
+            report: JSON.stringify(this.state.report)
         };
         $.getJSON(window.location.href + '/get', data_send)
             .success(function (data) {
@@ -33,8 +36,55 @@ var App = React.createClass({
     },
     switchTheme: function (e) {
         this.setState({
-            theme: e.target.value,
+            theme: e.target.value
         });
+    },
+    submit_checkbox_handler: function (e) {
+        this.setState({report_panel_state: e.target.checked})
+    },
+    report_panel: function () {
+        var contact_handler = function (e) {
+            this.state.report['contact'] = e.target.value;
+            this.setState({report: this.state.report});
+        };
+        var about_handler = function (e) {
+            this.state.report['about'] = e.target.value;
+            this.setState({report: this.state.report});
+        };
+        return (
+            <div className="navbar navbar-inverse form-horizontal" id="report_panel" role="form"
+                 data-toggle="validator">
+                <fieldset>
+                    <legend></legend>
+                    <div className="form-group">
+                        <label for="contact_field" className="col-sm-2 control-label">Name</label>
+                        <div className="col-sm-8">
+                            <input type="text"
+                                   className={"form-control "}
+                                   required="true"
+                                   id="contact_field"
+                                   placeholder="Name or Email (required)"
+                                   onChange={contact_handler.bind(this)}
+                                   value={this.state.report.contact}
+                            />
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <label for="about_field" className="col-sm-2 control-label">Comment</label>
+                        <div className="col-sm-8">
+                            <textarea
+                                className="form-control"
+                                id="about_field"
+                                placeholder=""
+                                onChange={about_handler.bind(this)}
+                                value={this.state.report.about}
+                            />
+                        </div>
+                    </div>
+
+                </fieldset>
+            </div>
+        )
     },
     render: function () {
         var options = {
@@ -50,6 +100,10 @@ var App = React.createClass({
                         <button className="btn btn-primary" type='button' onClick={this.submit}>
                             Submit
                         </button>
+            <span>
+              <input type="checkbox" onChange={this.submit_checkbox_handler}/>
+               Send report
+            </span>
                     </div>
                     <div className="themeswitch navbar-form navbar-right">
                         <select onChange={this.switchTheme} value={this.state.theme} className="form-control cont">
@@ -63,6 +117,7 @@ var App = React.createClass({
                         </select>
                     </div>
                 </nav>
+                {this.state.report_panel_state ? this.report_panel() : ''}
             </div>
         )
     }
@@ -115,9 +170,11 @@ var Output = React.createClass({
     }
 });
 
-ReactDOM.render(<App />, document.getElementById('editor'));
+ReactDOM.render(
+    <App />
+    , document.getElementById('editor'));
 
 
 $('#form').on('submit', function (e) {
     e.preventDefault();
-})
+});

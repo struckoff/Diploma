@@ -2,7 +2,7 @@ var sha256 = require('sha256');
 var $ = jQuery = require('jquery');
 
 
-module.exports = (function (vars) {
+module.exports = (function () {
     var m = function () {
         React = require('react');
         var Modal = require('react-modal');
@@ -50,8 +50,7 @@ module.exports = (function (vars) {
                         tests: this.state.tests,
                         expects: this.state.expects
                     },
-                    password_temp: null,
-                    password: null
+                    password_temp: null
 
                 });
                 this.setState({modalIsOpen: true});
@@ -103,7 +102,7 @@ module.exports = (function (vars) {
                     this.delete_case();
                 }
             },
-            delete_case: function (e) {
+            delete_case: function () {
                 this.props.delete_case(this.state.id);
             },
             render: function () {
@@ -186,10 +185,18 @@ module.exports = (function (vars) {
                     password_temp: e.target.value
                 })
             },
-            save_password: function (e) {
-                this.setState({
+            save_password: function () {
+                $.getJSON(window.location.href + '/get', {
                     password: this.state.password_temp ? sha256(this.state.password_temp) : null
                 })
+                    .success(function (data) {
+                        if (window.location.pathname != data.url) {
+                            window.open(data.url, '_self')
+                        }
+                    })
+                    .error(function (data) {
+                        console.log('err', data);
+                    })
             },
             new_case: function () {
                 var id = Math.max.apply(null, Object.keys(this.data).map(function (n) {
@@ -204,11 +211,10 @@ module.exports = (function (vars) {
                 />;
                 this.setState({cases: this.state.cases});
             },
-            send_cases: function (e) {
+            send_cases: function () {
                 $.getJSON(window.location.href + '/get', {
                     cases: JSON.stringify(this.data),
-                    description: this.state.description,
-                    password: this.state.password
+                    description: this.state.description
                 })
                     .success(function (data) {
                         if (window.location.pathname != data.url) {
@@ -230,6 +236,7 @@ module.exports = (function (vars) {
                         <div id="description" className="left_col col-md-5 left">
                             <div className="btn btn-lg btn-block"></div>
                             <textarea
+                                className="form-control"
                                 onChange={this.description_handler}
                                 rows="10"
                                 placeholder="Description (HTML syntax)"
