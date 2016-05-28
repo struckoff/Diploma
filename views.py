@@ -10,14 +10,16 @@ from database import Room, TestData, Report, DB
 from main import app, DATABASE
 
 
+def get_cases(cases):
+    return [{
+                "id": c.case_id,
+                "tests": c.test,
+                "expects": c.expect
+            } for c in cases]
+
+
 def check_auth(password, room_id):
-    """This function is called to check if a username /
-    password combination is valid.
-    """
     room = Room.query.filter_by(id=int(room_id)).first()
-    logger.debug(password)
-    logger.debug(room.password)
-    logger.debug(password == room.password)
     return password == room.password
 
 
@@ -25,7 +27,6 @@ def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         room_id = kwargs['room_id']
-        logger.debug(kwargs)
         if session.get(room_id) is not None:
             if request.form.get('logout') is not None or not check_auth(session[room_id], room_id):
                 session.pop(room_id, None)
@@ -105,7 +106,6 @@ def create_test():
 
 @app.route('/create/get')
 def create_test_api():
-    logger.debug(request.args)
     room = Room(request.args.get('description', ''), request.args.get('password', ''))
     DB.session.add(room)
     DB.session.commit()
@@ -139,7 +139,6 @@ def edit_test_api(room_id):
 
     if request.args.get('password') is not None:
         if check_auth(session[room_id], room_id):
-            logger.debug(request.args.get('password'))
             room.password = request.args.get('password')
 
     if request.args.get("description") is not None \
@@ -148,7 +147,6 @@ def edit_test_api(room_id):
 
     if request.args.get("cases") is not None:
         room.test_cases[:] = []
-        logger.debug(request.args["cases"])
         for key, case in json.loads(request.args["cases"]).items():
             testdata = TestData(case["id"], room_id, case["tests"], case["expects"])
             DB.session.add(testdata)
@@ -157,16 +155,39 @@ def edit_test_api(room_id):
 
     return json.dumps({
         "description": room.description,
-        "cases": [{
-                      "id": c.case_id,
-                      "tests": c.test,
-                      "expects": c.expect
-                  } for c in room.test_cases]
+        "cases": get_cases(room.test_cases)
     })
 
 
 @app.route('/edit/<room_id>/reports')
 @requires_auth
+def edit_test_reports(room_id):
+    return render_template('main_ui/reports.html')
+
+
+@app.route('/edit/<room_id>/reports/get')
+@requires_auth
 def edit_test_reports_api(room_id):
-    reports = Report.query.filter_by(room_id=room_id).all()
-    return str([r.name for r in reports])
+    if request.args.get('report_id') is not None:
+        report = Report.query \
+            .filter_by(id=int(request.args.get('report_id'))) \
+            .filter_by(room_id=room_id).first()
+        if report is None:
+            return abort(404)
+        return json.dumps({
+            'id': report.id,
+            'name': report.name,
+            'about': report.comment,
+            'code': report.code,
+            'passed': get_cases(report.passed),
+            'failed': get_cases(report.failed)
+        })
+
+    else:
+        reports = Report.query.filter_by(room_id=room_id).all()
+        if reports is None:
+            return abort(404)
+        return json.dumps([{
+                               'name': r.name,
+                               'id': r.id
+                           } for r in reports])

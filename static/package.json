@@ -9,6 +9,7 @@
     "watch-edit_test": "watchify -t reactify js/src/edit_test.js -o js/raw/edit_test.js",
     "watch-modules": "watchify -t reactify js/src/modules.js -o js/raw/modules.js",
     "watch-test": "watchify -t reactify js/src/test_room.js -o js/raw/test_room.js",
+    "watch-reports": "watchify -t reactify js/src/reports.js -o js/raw/reports.js",
     "refresh-create_test": "refreshify -t reactify js/src/create_test.js -o js/raw/create_test.js",
     "refresh-edit_test": "refreshify -t reactify js/src/edit_test.js -o js/raw/edit_test.js",
     "refresh-modules": "refreshify -t reactify js/src/modules.js -o js/raw/modules.js",

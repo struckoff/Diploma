@@ -108,17 +108,17 @@ module.exports = (function () {
             render: function () {
                 return (
                     <div className="col-sm-12">
-                        <div className="col-sm-5">
+                        <div className="col-xs-4">
                             <div id="tests" className='well well-sm form-control'>
                                 {this.state.tests}
                             </div>
                         </div>
-                        <div className="col-sm-5">
+                        <div className="col-xs-4">
                             <div id="expects" className='well well-sm form-control'>
                                 {this.state.expects}
                             </div>
                         </div>
-                        <div className="btn-group">
+                        <div className="btn-group col-xs-3">
                             <button onClick={this.openModal} className="btn btn-default">Edit</button>
                             <button onClick={this.delete_case} className="btn btn-danger">X</button>
                         </div>
@@ -273,7 +273,12 @@ module.exports = (function () {
                                     Save
                                 </button>
                             </div>
+                            <div className="cases_legend row alert bg-primary">
+                                <label className="col-xs-4">Test params</label>
+                                <label className="col-xs-4">Expects</label>
+                            </div>
                             <div id="cases">
+
                                 {this.state.cases}
                             </div>
                         </div>
