@@ -1,5 +1,5 @@
 FROM ubuntu:14.04
-MAINTAINER Alexey Struckov <as5423.ru@gmail.com>
+MAINTAINER Alexey Struckov <struckov@protonmail.com>
 RUN apt-get update
 RUN apt-get install -y nginx nodejs python python-pip build-essential
 COPY . /app

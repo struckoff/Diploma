@@ -27,6 +27,7 @@ def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         room_id = kwargs['room_id']
+        logger.debug(room_id)
         if session.get(room_id) is not None:
             if request.form.get('logout') is not None or not check_auth(session[room_id], room_id):
                 session.pop(room_id, None)
@@ -61,8 +62,10 @@ def index():
     return render_template('main_ui/index.html')
 
 
-@app.route('/room/<room_id>')
+@app.route('/room/<room_id>/')
 def test_room(room_id):
+    logger.debug(room_id)
+
     room = Room.query.filter_by(id=room_id).first()
     if room is None:
         return abort(404)
@@ -71,8 +74,9 @@ def test_room(room_id):
                            description=Markup(room.description))
 
 
-@app.route('/room/<room_id>/get')
+@app.route('/room/<room_id>//get', strict_slashes=False)
 def test_room_api(room_id):
+    logger.debug(room_id)
     room = Room.query.filter_by(id=room_id).first()
     code = request.args.get('text', '')
     logger.debug(request.args)
@@ -99,12 +103,12 @@ def test_room_api(room_id):
     return json.dumps({"results": results, "ratio": round(ratio)})
 
 
-@app.route('/create')
+@app.route('/create/')
 def create_test():
     return render_template('main_ui/create_test.html', isnew=True)
 
 
-@app.route('/create/get')
+@app.route('/create//get')
 def create_test_api():
     room = Room(request.args.get('description', ''), request.args.get('password', ''))
     DB.session.add(room)
@@ -120,7 +124,7 @@ def create_test_api():
     return json.dumps({"url": '/edit/{}'.format(room.id)})
 
 
-@app.route('/edit/<room_id>', methods=['GET', 'POST'])
+@app.route('/edit/<room_id>/', methods=['GET', 'POST'])
 @requires_auth
 def edit_test(room_id):
     room = Room.query.filter_by(id=room_id).first()
@@ -129,7 +133,7 @@ def edit_test(room_id):
     return render_template('main_ui/create_test.html', isnew=False, room_id=room_id)
 
 
-@app.route('/edit/<room_id>/get')
+@app.route('/edit/<room_id>//get')
 @requires_auth
 def edit_test_api(room_id):
     room = Room.query.filter_by(id=room_id).first()

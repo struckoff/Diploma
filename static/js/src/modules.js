@@ -189,10 +189,8 @@ module.exports = (function () {
                 $.getJSON(window.location.href + '/get', {
                     password: this.state.password_temp ? sha256(this.state.password_temp) : null
                 })
-                    .success(function (data) {
-                        if (window.location.pathname != data.url) {
-                            window.open(data.url, '_self')
-                        }
+                    .success(function () {
+                        console.log('saved');
                     })
                     .error(function (data) {
                         console.log('err', data);
