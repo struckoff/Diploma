@@ -15,7 +15,7 @@
         xhr.open("HEAD", '/room/' + room_number.value, true);
         xhr.onreadystatechange = function () {
             if (xhr.status == 404) {
-                room_input_group.classList.value = ["input-group text-success has-error"];
+                room_input_group.classList.add("has-error");
             }
             else {
                 parent.location = '/room/' + room_number.value;
@@ -35,8 +35,8 @@
         Create test room
     </button>
     <h3 class="text-primary">--- OR ---</h3>
-    <div class="input-group text-success" id="room_input">
-        <span class="text-success  input-group-addon ">/ROOM/</span>
+    <div class="input-group text-primary" id="room_input">
+        <span class="text-primary input-group-addon ">/ROOM/</span>
         <input type="text" id="room_number" class="form-control "/>
     <span class="input-group-btn">
       <button class="btn" type="button" onclick="go_to_room(this)">GO</button>

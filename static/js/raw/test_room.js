@@ -108,12 +108,12 @@ var App = React.createClass({displayName: "App",
                 React.createElement("nav", {className: "navbar navbar-inverse navbar-default"}, 
                     React.createElement("div", {className: "navbar-form navbar-left"}, 
                         React.createElement("button", {className: "btn btn-primary", type: "button", onClick: this.submit}, 
-                            "Submit"
+                            "Run tests"
                         ), 
-            React.createElement("span", null, 
-              React.createElement("input", {type: "checkbox", onChange: this.submit_checkbox_handler}), 
-               "Send report"
-            )
+                        React.createElement("span", {class: "alert-success"}, 
+                            React.createElement("input", {type: "checkbox", onChange: this.submit_checkbox_handler}), 
+                            "Send report"
+                        )
                     ), 
                     React.createElement("div", {className: "themeswitch navbar-form navbar-right"}, 
                         React.createElement("select", {onChange: this.switchTheme, value: this.state.theme, className: "form-control cont"}, 

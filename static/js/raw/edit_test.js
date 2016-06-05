@@ -15,7 +15,7 @@ var ReactDOM = require('react-dom');
 $ = jQuery = require('jquery');
 require("../../bootstrap/js/bootstrap.min.js");
 
-    var get_cases = function (self) {
+var get_cases = function (self) {
     $.getJSON(window.location.href + '/get')
         .success(function (data) {
             var cases = [];
@@ -116,7 +116,7 @@ module.exports = (function () {
                     tests: this.props.tests || '',
                     expects: this.props.expects || '',
                     id: this.props.id || -1,
-                    modalIsOpen: false,
+                    modalIsOpen: typeof(this.props.isnew) == "boolean" ? this.props.isnew : true,
                     isnew: typeof(this.props.isnew) == "boolean" ? this.props.isnew : true,
                     savepassword_button_class: 'btn-info',
                     save_button: React.createElement("button", {onClick: this.save_case, className: "btn btn-success"}, "Save")
@@ -158,7 +158,7 @@ module.exports = (function () {
                 return React.createElement("textarea", {
                     className: "form-control", 
                     type: "text", 
-                    id: data.id,
+                    id: data.id, 
                     placeholder: data.placeholder, 
                     defaultValue: data.value, 
                     onChange: handler}
@@ -190,6 +190,7 @@ module.exports = (function () {
                 });
                 this.closeModal();
                 if (this.state.isnew) {
+                    console.log('yo');
                     this.delete_case();
                 }
             },
@@ -215,16 +216,16 @@ module.exports = (function () {
                         ), 
                         React.createElement(Modal, {
                             className: "Modal__Bootstrap modal-dialog", 
-                            isOpen: this.state.modalIsOpen||this.state.isnew, 
+                            isOpen: this.state.modalIsOpen, 
                             onRequestClose: this.closeModal, 
                             style: ModalStyle
                         }, 
                             React.createElement("div", {className: "col-sm-12"}, 
-                                React.createElement("div", {className: "col-sm-6"},
+                                React.createElement("div", {className: "col-sm-6"}, 
                                     "Tests", 
                                     this.state.tests_field
                                 ), 
-                                React.createElement("div", {className: "col-sm-6"},
+                                React.createElement("div", {className: "col-sm-6"}, 
                                     "Expects", 
                                     this.state.expects_field
                                 )
@@ -311,7 +312,8 @@ module.exports = (function () {
                 var id = Math.max.apply(null, Object.keys(this.data).map(function (n) {
                     return parseInt(n);
                 }));
-                id = isFinite(id) ? id + 1 : 0;
+
+                var id = (isFinite(id) ? id  : 0) + 1;
                 this.state.cases[id] = React.createElement(Case, {
                     key: id, 
                     id: id, 
@@ -354,28 +356,27 @@ module.exports = (function () {
             },
             render: function () {
                 return (
-                    React.createElement("div", null,
+                    React.createElement("div", null, 
 
-                        React.createElement("div", null,
-                            React.createElement("div", {id: "description", className: "left_col col-md-5 left"},
-                                React.createElement("div", {className: "password input-group btn"},
+                        React.createElement("div", null, 
+                            React.createElement("div", {id: "description", className: "left_col col-md-5 left"}, 
+                                React.createElement("div", {className: "password input-group btn"}, 
                                     React.createElement("input", {
-                                            type: "password",
-                                            className: "password form-control",
-                                            id: "password",
-                                            onChange: this.password_handler,
-                                            value: this.state.password_temp,
-                                            placeholder: "Room password"
-                                        }
-                                    ),
-                                    React.createElement("span", {className: "input-group-btn"},
-                                        React.createElement("button", {
-                                                onClick: this.save_password,
-                                                className: "btn " + (this.state.savepassword_button_class || "btn-info")
-                                            },
-                                            "Save password"
-                                        )
+                                        type: "password", 
+                                        className: "password form-control", 
+                                        id: "password", 
+                                        onChange: this.password_handler, 
+                                        value: this.state.password_temp, 
+                                        placeholder: "Room password"}
+                                    ), 
+                                React.createElement("span", {className: "input-group-btn"}, 
+                                    React.createElement("button", {
+                                        onClick: this.save_password, 
+                                        className: "btn " + (this.state.savepassword_button_class || "btn-info") 
+                                    }, 
+                                    "Save password"
                                     )
+                                )
                                 ), 
                             React.createElement("textarea", {
                                 className: "form-control", 
@@ -383,42 +384,36 @@ module.exports = (function () {
                                 rows: "10", 
                                 placeholder: "Description (HTML syntax)", 
                                 value: this.state.description}
-                            ),
-                                React.createElement("div", {className: "panel panel-primary"},
-                                    React.createElement("div", {className: "panel-heading"},
+                            ), 
+                                React.createElement("div", {className: "panel panel-primary"}, 
+                                    React.createElement("div", {className: "panel-heading"}, 
                                         React.createElement("h3", {className: "panel-title"}, "Preview")
-                                    ),
+                                    ), 
                                     React.createElement("div", {
-                                            className: "panel-body",
-                                            dangerouslySetInnerHTML: {__html: this.state.description}
-                                        }
+                                        className: "panel-body", 
+                                        dangerouslySetInnerHTML: {__html: this.state.description}
+                                    }
                                     )
                                 )
-                            ),
+                            ), 
 
-                            React.createElement("div", {className: "right_col col-md-7 right"},
-                                React.createElement("div", {id: "buttons"},
-                                    React.createElement("button", {
-                                            id: "new_case",
-                                            className: "btn btn-primary col-md-3",
-                                            onClick: this.new_case
-                                        },
+                            React.createElement("div", {className: "right_col col-md-7 right"}, 
+                                React.createElement("div", {id: "buttons"}, 
+                                    React.createElement("button", {id: "new_case", className: "btn btn-primary col-md-3", onClick: this.new_case}, 
                                         "New" + ' ' +
                                         "case"
-                                    ),
-                                    React.createElement("button", {
-                                            id: "send_cases",
-                                            className: "btn col-md-3 " + (this.state_handler() ? "btn-info" : "btn-warning"),
-                                            onClick: this.send_cases
-                                        },
+                                    ), 
+                                    React.createElement("button", {id: "send_cases", 
+                                            className: "btn col-md-3 " + (this.state_handler() ? "btn-info" : "btn-warning"), 
+                                            onClick: this.send_cases}, 
                                         "Save"
                                     )
-                                ),
-                                React.createElement("div", {className: "cases_legend row alert bg-primary"},
-                                    React.createElement("label", {className: "col-xs-4"}, "Test params"),
+                                ), 
+                                React.createElement("div", {className: "cases_legend row alert bg-primary"}, 
+                                    React.createElement("label", {className: "col-xs-4"}, "Test params"), 
                                     React.createElement("label", {className: "col-xs-4"}, "Expects")
-                                ),
-                                React.createElement("div", {id: "cases"},
+                                ), 
+                                React.createElement("div", {id: "cases"}, 
                                     this.state.cases
                                 )
                             )

@@ -27,7 +27,8 @@ def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         room_id = kwargs['room_id']
-        logger.debug(room_id)
+        if Room.query.filter_by(id=int(room_id)).first() is None:
+            return abort(404)
         if session.get(room_id) is not None:
             if request.form.get('logout') is not None or not check_auth(session[room_id], room_id):
                 session.pop(room_id, None)

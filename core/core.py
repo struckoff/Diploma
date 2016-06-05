@@ -72,7 +72,7 @@ def test_runner(code, tests, expects):
     case = js_to_py(code)
     try:
         return [{
-                    "state": case(*args_parse(params)) is JS.eval(expect)
+                    "state": case(*args_parse(params)) == JS.eval(expect)
                 } for params, expect in zip(tests, expects)]
     except execjs.RuntimeError as err:
         return [{

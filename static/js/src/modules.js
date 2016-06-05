@@ -63,7 +63,7 @@ module.exports = (function () {
                     tests: this.props.tests || '',
                     expects: this.props.expects || '',
                     id: this.props.id || -1,
-                    modalIsOpen: false,
+                    modalIsOpen: typeof(this.props.isnew) == "boolean" ? this.props.isnew : true,
                     isnew: typeof(this.props.isnew) == "boolean" ? this.props.isnew : true,
                     savepassword_button_class: 'btn-info',
                     save_button: <button onClick={this.save_case} className="btn btn-success">Save</button>
@@ -137,6 +137,7 @@ module.exports = (function () {
                 });
                 this.closeModal();
                 if (this.state.isnew) {
+                    console.log('yo');
                     this.delete_case();
                 }
             },
@@ -162,7 +163,7 @@ module.exports = (function () {
                         </div>
                         <Modal
                             className="Modal__Bootstrap modal-dialog"
-                            isOpen={this.state.modalIsOpen||this.state.isnew}
+                            isOpen={this.state.modalIsOpen}
                             onRequestClose={this.closeModal}
                             style={ModalStyle}
                         >
@@ -258,7 +259,8 @@ module.exports = (function () {
                 var id = Math.max.apply(null, Object.keys(this.data).map(function (n) {
                     return parseInt(n);
                 }));
-                id = isFinite(id) ? id + 1 : 0;
+
+                var id = (isFinite(id) ? id  : 0) + 1;
                 this.state.cases[id] = <Case
                     key={id}
                     id={id}

@@ -98,12 +98,12 @@ var App = React.createClass({
                 <nav className="navbar navbar-inverse navbar-default">
                     <div className="navbar-form navbar-left">
                         <button className="btn btn-primary" type='button' onClick={this.submit}>
-                            Submit
+                            Run tests
                         </button>
-            <span>
-              <input type="checkbox" onChange={this.submit_checkbox_handler}/>
-               Send report
-            </span>
+                        <span class="alert-success">
+                            <input type="checkbox" onChange={this.submit_checkbox_handler}/>
+                            Send report
+                        </span>
                     </div>
                     <div className="themeswitch navbar-form navbar-right">
                         <select onChange={this.switchTheme} value={this.state.theme} className="form-control cont">
