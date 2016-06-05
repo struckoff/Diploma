@@ -34,8 +34,10 @@ def requires_auth(f):
             else:
                 return f(*args, **kwargs)
         else:
-            password = request.form.get('password', '')
-            password = hashlib.sha256(password.encode()).hexdigest()
+            password = request.form.get('password', False)
+            logger.debug(password)
+            password = hashlib.sha256(password.encode()).hexdigest() if password else ''
+            logger.debug(password)
             if request.method == 'POST' and check_auth(password, room_id):
                 session[room_id] = password
                 return f(*args, **kwargs)
@@ -105,7 +107,7 @@ def test_room_api(room_id):
 
 @app.route('/create/')
 def create_test():
-    return render_template('main_ui/create_test.html', isnew=True)
+    return render_template('main_ui/create_test.html')
 
 
 @app.route('/create//get')
@@ -130,7 +132,7 @@ def edit_test(room_id):
     room = Room.query.filter_by(id=room_id).first()
     if room is None:
         return abort(404)
-    return render_template('main_ui/create_test.html', isnew=False, room_id=room_id)
+    return render_template('main_ui/edit_test.html', room_id=room_id)
 
 
 @app.route('/edit/<room_id>//get')
@@ -163,7 +165,7 @@ def edit_test_api(room_id):
     })
 
 
-@app.route('/edit/<room_id>/reports')
+@app.route('/edit/<room_id>/reports', methods=['GET', 'POST'])
 @requires_auth
 def edit_test_reports(room_id):
     return render_template('main_ui/reports.html')

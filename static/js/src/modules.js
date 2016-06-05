@@ -7,21 +7,55 @@ module.exports = (function () {
         React = require('react');
         var Modal = require('react-modal');
         const ModalStyle = {
+            // content: {
+            //     top: '50%',
+            //     left: '50%',
+            //     right: 'auto',
+            //     bottom: 'auto',
+            //     marginRight: '-50%',
+            //     transform: 'translate(-50%, -50%)'
+            // }
+            overlay: {
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(255, 255, 255, 0.75)'
+            },
             content: {
-                top: '50%',
+                position: 'absolute',
+                top: '30%',
                 left: '50%',
                 right: 'auto',
                 bottom: 'auto',
+                transform: 'translate(-50%, -50%)',
+
                 marginRight: '-50%',
-                transform: 'translate(-50%, -50%)'
+                border: '1px solid #ccc',
+                background: '#fff',
+                overflow: 'auto',
+                WebkitOverflowScrolling: 'touch',
+                borderRadius: '4px',
+                outline: 'none',
+                padding: '20px'
+
             }
         };
 
         var Case = React.createClass({
             getInitialState: function () {
                 return {
-                    tests_field: this.field_build({id: 'tests', handler: this.tests_handl}),
-                    expects_field: this.field_build({id: 'expects', handler: this.expects_handl}),
+                    tests_field: this.field_build({
+                        id: 'tests',
+                        handler: this.tests_handl,
+                        placeholder: 'Arguments of tested function'
+                    }),
+                    expects_field: this.field_build({
+                        id: 'expects',
+                        handler: this.expects_handl,
+                        placeholder: 'Expected results'
+                    }),
                     temp: {
                         tests: '',
                         expects: ''
@@ -31,6 +65,7 @@ module.exports = (function () {
                     id: this.props.id || -1,
                     modalIsOpen: false,
                     isnew: typeof(this.props.isnew) == "boolean" ? this.props.isnew : true,
+                    savepassword_button_class: 'btn-info',
                     save_button: <button onClick={this.save_case} className="btn btn-success">Save</button>
                 }
             },
@@ -38,11 +73,13 @@ module.exports = (function () {
                 this.setState({
                     tests_field: this.field_build({
                         id: 'tests',
+                        placeholder: 'Arguments of tested function',
                         handler: this.tests_handl,
                         value: this.state.tests
                     }),
                     expects_field: this.field_build({
                         id: 'expects',
+                        placeholder: 'Expected results',
                         handler: this.expects_handl,
                         value: this.state.expects
                     }),
@@ -69,6 +106,7 @@ module.exports = (function () {
                     className="form-control"
                     type="text"
                     id={data.id}
+                    placeholder={data.placeholder}
                     defaultValue={data.value}
                     onChange={handler}>
                 </textarea>
@@ -130,9 +168,11 @@ module.exports = (function () {
                         >
                             <div className="col-sm-12">
                                 <div className="col-sm-6">
+                                    Tests
                                     {this.state.tests_field}
                                 </div>
                                 <div className="col-sm-6">
+                                    Expects
                                     {this.state.expects_field}
                                 </div>
                             </div>
@@ -155,16 +195,27 @@ module.exports = (function () {
             getInitialState: function () {
                 return {
                     cases: [],
-                    description: ''
+                    description: '',
+                    state_handler: true,
+                    prev_state: {
+                        data: JSON.stringify(this.data || ''),
+                        description: null
+                    }
                 }
             },
+            state_handler: function () {
+                var result = this.state.prev_state.data == JSON.stringify(this.data || '');
+                var result = result && this.state.prev_state.description == this.state.description;
+                return result;
+            },
+            data: {},
             componentDidMount: function () {
                 var self = this;
                 (this.props.init_funcs || []).map(function (f) {
                     f(self);
-                })
+                });
+
             },
-            data: {},
             state_check: function () {
                 return this.state;
             },
@@ -174,6 +225,9 @@ module.exports = (function () {
                 for (key in data) {
                     this.data[data.id.toString()][key] = data[key];
                 }
+                ;
+                this.forceUpdate();
+
             },
             description_handler: function (e) {
                 this.setState({
@@ -182,15 +236,19 @@ module.exports = (function () {
             },
             password_handler: function (e) {
                 this.setState({
-                    password_temp: e.target.value
+                    password_temp: e.target.value,
+                    savepassword_button_class: 'btn-warning'
+
                 })
             },
             save_password: function () {
+                var self = this;
                 $.getJSON(window.location.href + '/get', {
                     password: this.state.password_temp ? sha256(this.state.password_temp) : null
                 })
                     .success(function () {
                         console.log('saved');
+                        self.setState({savepassword_button_class: 'btn-info'})
                     })
                     .error(function (data) {
                         console.log('err', data);
@@ -208,16 +266,29 @@ module.exports = (function () {
                     delete_case={this.delete_case}
                 />;
                 this.setState({cases: this.state.cases});
+                this.forceUpdate();
+
             },
             send_cases: function () {
+                var self = this;
                 $.getJSON(window.location.href + '/get', {
                     cases: JSON.stringify(this.data),
                     description: this.state.description
                 })
                     .success(function (data) {
+                        self.setState({
+                            prev_state: {
+                                data: JSON.stringify(self.data || ''),
+                                description: self.state.description
+                            }
+                        });
+                        self.forceUpdate();
+
                         if (window.location.pathname != data.url) {
                             window.open(data.url, '_self')
                         }
+
+
                     })
                     .error(function (data) {
                         console.log('err', data);
@@ -231,8 +302,27 @@ module.exports = (function () {
             render: function () {
                 return (
                     <div>
-                        <div id="description" className="left_col col-md-5 left">
-                            <div className="btn btn-lg btn-block"></div>
+
+                        <div>
+                            <div id="description" className="left_col col-md-5 left">
+                                <div className="password input-group btn">
+                                    <input
+                                        type="password"
+                                        className="password form-control"
+                                        id="password"
+                                        onChange={this.password_handler}
+                                        value={this.state.password_temp}
+                                        placeholder="Room password"
+                                    />
+                                <span className="input-group-btn">
+                                    <button
+                                        onClick={this.save_password}
+                                        className={"btn " + (this.state.savepassword_button_class || "btn-info") }
+                                    >
+                                    Save password
+                                    </button>
+                                </span>
+                                </div>
                             <textarea
                                 className="form-control"
                                 onChange={this.description_handler}
@@ -240,44 +330,37 @@ module.exports = (function () {
                                 placeholder="Description (HTML syntax)"
                                 value={this.state.description}>
                             </textarea>
-                            <div className="panel panel-primary">
-                                <div className="panel-heading">
-                                    <h3 className="panel-title">Preview</h3>
+                                <div className="panel panel-primary">
+                                    <div className="panel-heading">
+                                        <h3 className="panel-title">Preview</h3>
+                                    </div>
+                                    <div
+                                        className="panel-body"
+                                        dangerouslySetInnerHTML={{__html: this.state.description}}
+                                    >
+                                    </div>
                                 </div>
-                                <div
-                                    className="panel-body"
-                                    dangerouslySetInnerHTML={{__html: this.state.description}}
-                                >
-                                </div>
                             </div>
-                        </div>
-                        <div className="password">
-                            <input
-                                type="password"
-                                className="password"
-                                id="password"
-                                onChange={this.password_handler}
-                                value={this.state.password_temp}
-                                placeholder="Room password"
-                            />
-                            <button onClick={this.save_password}>Save password</button>
-                        </div>
-                        <div className="right_col col-md-7 right">
-                            <div id="buttons">
-                                <button id="new_case" className="btn btn-primary col-md-3" onClick={this.new_case}>New
-                                    case
-                                </button>
-                                <button id="send_cases" className="btn btn-primary col-md-3" onClick={this.send_cases}>
-                                    Save
-                                </button>
-                            </div>
-                            <div className="cases_legend row alert bg-primary">
-                                <label className="col-xs-4">Test params</label>
-                                <label className="col-xs-4">Expects</label>
-                            </div>
-                            <div id="cases">
 
-                                {this.state.cases}
+                            <div className="right_col col-md-7 right">
+                                <div id="buttons">
+                                    <button id="new_case" className="btn btn-primary col-md-3" onClick={this.new_case}>
+                                        New
+                                        case
+                                    </button>
+                                    <button id="send_cases"
+                                            className={"btn col-md-3 " + (this.state_handler() ? "btn-info" : "btn-warning") }
+                                            onClick={this.send_cases}>
+                                        Save
+                                    </button>
+                                </div>
+                                <div className="cases_legend row alert bg-primary">
+                                    <label className="col-xs-4">Test params</label>
+                                    <label className="col-xs-4">Expects</label>
+                                </div>
+                                <div id="cases">
+                                    {this.state.cases}
+                                </div>
                             </div>
                         </div>
                     </div>

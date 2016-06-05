@@ -25,7 +25,7 @@
     text-align: center;
 }
 
-.panel-body {
+.panel-body, .modal-dialog {
     word-break: break-all;
 }
 
@@ -42,6 +42,11 @@
     float: right;
 }
 
+#description > textarea {
+    margin-bottom: 10px;
+}
+
+
 #cases div {
     overflow: hidden;
 }
@@ -53,4 +58,8 @@
 .list_item span {
     min-height: 45px;
     height: auto !important;
+}
+
+.menu {
+    width: 100%;
 }

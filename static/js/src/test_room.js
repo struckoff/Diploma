@@ -60,7 +60,7 @@ var App = React.createClass({
                         <label for="contact_field" className="col-sm-2 control-label">Name</label>
                         <div className="col-sm-8">
                             <input type="text"
-                                   className={"form-control "}
+                                   className="form-control "
                                    required="true"
                                    id="contact_field"
                                    placeholder="Name or Email (required)"

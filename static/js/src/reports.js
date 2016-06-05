@@ -5,6 +5,36 @@ var $ = jQuery = require('jquery');
 var Codemirror = require('react-codemirror');
 require('codemirror/mode/javascript/javascript');
 
+var Modal = require('react-modal');
+const ModalStyle = {
+    overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(255, 255, 255, 0.75)'
+    },
+    content: {
+        position: 'absolute',
+        top: '30%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        transform: 'translate(-50%, -50%)',
+
+        marginRight: '-50%',
+        border: '1px solid #ccc',
+        background: '#fff',
+        overflow: 'auto',
+        WebkitOverflowScrolling: 'touch',
+        borderRadius: '4px',
+        outline: 'none',
+        padding: '20px'
+
+    }
+};
+
 var App = React.createClass({
     getInitialState: function () {
         return {
@@ -32,7 +62,7 @@ var App = React.createClass({
         return (
             <div onClick={this.get_body.bind(null, item)}
                  className={"list_item list-group-item "  + state}>
-                <h3 className="list-group-item-heading">{item.name}</h3>
+                <h4 className="list-group-item-heading">{item.name}</h4>
             </div>
         )
     },
@@ -60,11 +90,32 @@ var App = React.createClass({
     render: function () {
         return (
             <div className="row">
-                <div className="items_list col-md-3 list-group">
+                <div className="items_list col-md-2 list-group">
                     {this.state.reports}
                 </div>
+                <div className="col-md-1"></div>
                 <div id="output" className="col-md-6">
                     {this.state.report_body}
+                </div>
+                <div className="col-md-1"></div>
+                <div className="col-md-2">
+                    <form action=" " method="post" className="menu btn-group-vertical">
+                        <button
+                            type="button"
+                            className="btn btn-success"
+                            onClick={function() {parent.location = parent.location.pathname.replace('edit', 'room') + '/..';}}
+                        >
+                            Test room
+                        </button>
+                        <button
+                            type="button"
+                            className="btn btn-success"
+                            onClick={function() { parent.location = parent.location.pathname + '/..';}}
+                        >
+                            Edit room
+                        </button>
+                        <button type="submit" name="logout" className="btn btn-primary">Logout</button>
+                    </form>
                 </div>
             </div>
         )
@@ -74,12 +125,31 @@ var App = React.createClass({
 
 var ReportBody = React.createClass({
     getInitialState: function () {
-        return {};
+        return {
+            modalIsOpen: false,
+            tests_modal: null,
+            expects_modal: null
+        };
+    },
+    closeModal: function () {
+        this.setState({modalIsOpen: false})
     },
     get_cases: function () {
         var cases = [];
+        var self = this;
+        var onClick = function (item, e) {
+            self.setState({
+                modalIsOpen: true,
+                tests_modal: item.tests,
+                expects_modal: item.expects
+            })
+        };
         (this.props.data.passed || []).map(function (item) {
-            cases[item.id] = (<div className="row alert alert-success" style={{"padding-bottom":0}}>
+            cases[item.id] = (<div
+                className="row alert alert-success"
+                style={{"padding-bottom":0}}
+                onClick={onClick.bind(null, item)}
+            >
                 <div className="col-xs-6">
                     <div className="well well-sm form-control">{item.tests}</div>
                 </div>
@@ -89,7 +159,11 @@ var ReportBody = React.createClass({
             </div>)
         });
         (this.props.data.failed || []).map(function (item) {
-            cases[item.id] = (<div className="row alert alert-danger" style={{"padding-bottom":0}}>
+            cases[item.id] = (<div
+                className="row alert alert-danger"
+                style={{"padding-bottom":0}}
+                onClick={onClick.bind(null, item)}
+            >
                 <div className="col-xs-6">
                     <div className="well well-sm form-control">{item.tests}</div>
                 </div>
@@ -109,19 +183,20 @@ var ReportBody = React.createClass({
             mode: 'javascript'
         };
         return (
+
             <div className="list_item well">
                 <Codemirror ref='output' value={data.code || ''} options={options}/>
                 <div className="form-horizontal well well-sm">
                     <div className="form-group">
                         <label for="name" className="col-lg-2 control-label">Name</label>
                         <div className="col-lg-10">
-                            <span id="name" className="form-control">{data.name || ""}</span>
+                            <span id="name" className="form-control panel panel-default">{data.name || ""}</span>
                         </div>
                     </div>
                     <div className="form-group">
                         <label for="name" className="col-lg-2 control-label">Comment</label>
                         <div className="col-lg-10">
-                            <span id="about" className="form-control">{data.about || ""}</span>
+                            <span id="about" className="form-control panel panel-default">{data.about || ""}</span>
                         </div>
                     </div>
                 </div>
@@ -129,7 +204,35 @@ var ReportBody = React.createClass({
                     <label className="col-xs-6">Test params</label>
                     <label className="col-xs-6">Expects</label>
                 </div>
-                {this.get_cases()}
+                <div id="cases">
+                    {this.get_cases()}
+                </div>
+                <Modal
+                    className="Modal__Bootstrap modal-dialog"
+                    isOpen={this.state.modalIsOpen}
+                    onRequestClose={this.closeModal}
+                    style={ModalStyle}
+                >
+                    <div className="col-sm-12">
+                        <div className="col-sm-6">
+                            Tests
+                            <div className="well">
+                                {this.state.tests_modal}
+                            </div>
+                        </div>
+                        <div className="col-sm-6">
+                            Expects
+                            <div className="well">
+                                {this.state.expects_modal}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-sm-12">
+                        <div className="col-sm-3 col-centered">
+                            <button className="btn col-sm-12" onClick={this.closeModal}>Close</button>
+                        </div>
+                    </div>
+                </Modal>
             </div>
         )
     }

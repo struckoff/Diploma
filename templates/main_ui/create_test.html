@@ -7,18 +7,16 @@
     <title>Title</title>
 </head>
 <body>
-    <div id="main_container" class="col-md-12"></div>
-</body>
-{% if isnew %}
-    <script src="{{ url_for('static', filename='js/raw/create_test.js') }}"></script>
-{% else %}
-    <div class="global_control">
-        <form action=" " method="post">
-            <button type="submit" name="logout">LOGOUT</button>
-        </form>
-        <button onClick="parent.location='/room/{{ room_id }}'">Go to test page</button>
+<div class=" row">
+    <div class="col-xs-12 col-lg-2 btn">
+        <button type="button" class="btn btn-info btn-block btn-"
+                onClick="parent.location='/create'">
+            Create new room
+        </button>
     </div>
-    <script src="{{ url_for('static', filename='js/raw/edit_test.js') }}"></script>
-{% endif %}
+</div>
+<div id="main_container" class="col-md-12"></div>
+</body>
+<script src="{{ url_for('static', filename='js/raw/create_test.js') }}"></script>
 
 </html>
