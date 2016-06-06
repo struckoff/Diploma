@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d4be3a34-347d-453d-9d7e-d1f93d4004f6" name="Default" comment="index and password page">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database.db" afterPath="$PROJECT_DIR$/database.db" />
+    <list default="true" id="d4be3a34-347d-453d-9d7e-d1f93d4004f6" name="Default" comment="Adaptive design fixes">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/style.css" afterPath="$PROJECT_DIR$/static/css/style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/raw/create_test.js" afterPath="$PROJECT_DIR$/static/js/raw/create_test.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/raw/edit_test.js" afterPath="$PROJECT_DIR$/static/js/raw/edit_test.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/raw/reports.js" afterPath="$PROJECT_DIR$/static/js/raw/reports.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/raw/test_room.js" afterPath="$PROJECT_DIR$/static/js/raw/test_room.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/src/modules.js" afterPath="$PROJECT_DIR$/static/js/src/modules.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/src/reports.js" afterPath="$PROJECT_DIR$/static/js/src/reports.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/main_ui/edit_test.html" afterPath="$PROJECT_DIR$/templates/main_ui/edit_test.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/src/test_room.js" afterPath="$PROJECT_DIR$/static/js/src/test_room.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/package.json" afterPath="$PROJECT_DIR$/static/package.json" />
     </list>
     <ignored path="DiplomaFlask.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -48,16 +49,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="create_test.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/main_ui/create_test.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="16" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="edit_test.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/main_ui/edit_test.html">
           <provider selected="true" editor-type-id="text-editor">
@@ -81,14 +72,25 @@
       <file leaf-file-name="modules.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/src/modules.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4244">
-              <caret line="149" column="57" selection-start-line="149" selection-start-column="57" selection-end-line="149" selection-end-column="57" />
+            <state relative-caret-position="21">
+              <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
               <folding>
-                <element signature="e#1495#1674#0" expanded="false" />
-                <element signature="e#1729#1900#0" expanded="false" />
-                <element signature="e#1929#2023#0" expanded="false" />
-                <marker date="1465244110377" expanded="true" signature="261:486" placeholder="..." />
+                <element signature="e#1571#1750#0" expanded="false" />
+                <element signature="e#1805#1976#0" expanded="false" />
+                <element signature="e#2005#2099#0" expanded="false" />
+                <marker date="1465246292570" expanded="true" signature="337:562" placeholder="..." />
+                <marker date="1465246292570" expanded="false" signature="1451:7798" placeholder="{...}" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="reports.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/main_ui/reports.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="168">
+              <caret line="8" column="19" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -96,18 +98,31 @@
       <file leaf-file-name="reports.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/src/reports.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4244">
-              <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
+            <state relative-caret-position="-1024">
+              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+              <folding>
+                <element signature="e#332#975#0" expanded="false" />
+                <element signature="e#4454#9109#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_room.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/static/js/src/test_room.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="384">
+              <caret line="184" column="65" selection-start-line="184" selection-start-column="65" selection-end-line="184" selection-end-column="65" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="style.css" pinned="false" current-in-tab="true">
+      <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="241">
-              <caret line="49" column="14" selection-start-line="49" selection-start-column="14" selection-end-line="49" selection-end-column="14" />
+            <state relative-caret-position="346">
+              <caret line="92" column="27" selection-start-line="92" selection-start-column="27" selection-end-line="92" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -116,18 +131,8 @@
       <file leaf-file-name="test_room.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/main_ui/test_room.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="21">
+            <state relative-caret-position="-221">
               <caret line="10" column="24" selection-start-line="10" selection-start-column="24" selection-end-line="10" selection-end-column="24" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_room.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/js/src/test_room.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1157">
-              <caret line="102" column="50" selection-start-line="102" selection-start-column="50" selection-end-line="102" selection-end-column="50" />
               <folding />
             </state>
           </provider>
@@ -189,14 +194,14 @@
         <option value="$PROJECT_DIR$/templates/main_ui/password.html" />
         <option value="$PROJECT_DIR$/templates/main_ui/create_test.html" />
         <option value="$PROJECT_DIR$/templates/main_ui/test_room.html" />
-        <option value="$PROJECT_DIR$/static/js/src/test_room.js" />
         <option value="$PROJECT_DIR$/core/core.py" />
         <option value="$PROJECT_DIR$/templates/main_ui/index.html" />
         <option value="$PROJECT_DIR$/views.py" />
-        <option value="$PROJECT_DIR$/static/js/src/reports.js" />
         <option value="$PROJECT_DIR$/templates/main_ui/edit_test.html" />
+        <option value="$PROJECT_DIR$/static/js/src/reports.js" />
         <option value="$PROJECT_DIR$/static/js/src/modules.js" />
         <option value="$PROJECT_DIR$/static/css/style.css" />
+        <option value="$PROJECT_DIR$/static/js/src/test_room.js" />
       </list>
     </option>
   </component>
@@ -258,7 +263,96 @@
     <panes>
       <pane id="Scratches" />
       <pane id="ProjectPane">
-        <subPane />
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DiplomaFlask" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DiplomaFlask" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DiplomaFlask" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DiplomaFlask" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DiplomaFlask" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main_ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DiplomaFlask" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DiplomaFlask" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DiplomaFlask" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DiplomaFlask" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DiplomaFlask" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DiplomaFlask" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
       </pane>
       <pane id="Scope" />
     </panes>
@@ -628,7 +722,14 @@
       <option name="project" value="LOCAL" />
       <updated>1465092771470</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Adaptive design fixes">
+      <created>1465244607891</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1465244607891</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -658,13 +759,13 @@
     <frame x="10" y="36" width="1346" height="722" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2473997" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2473997" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32866043" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32866043" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32866043" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="WINDOWED" visible="true" show_stripe_button="true" weight="1.0" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="10" y="36" width="695" height="722" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="WINDOWED" visible="true" show_stripe_button="true" weight="0.4470405" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="10" y="36" width="695" height="722" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24888559" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32986626" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
@@ -724,7 +825,8 @@
     <MESSAGE value="Reports system" />
     <MESSAGE value="Reports page" />
     <MESSAGE value="index and password page" />
-    <option name="LAST_COMMIT_MESSAGE" value="index and password page" />
+    <MESSAGE value="Adaptive design fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adaptive design fixes" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -772,10 +874,11 @@
         <state relative-caret-position="1034">
           <caret line="47" column="18" selection-start-line="47" selection-start-column="18" selection-end-line="47" selection-end-column="18" />
           <folding>
-            <element signature="e#1495#1674#0" expanded="false" />
-            <element signature="e#1729#1900#0" expanded="false" />
-            <element signature="e#1929#2023#0" expanded="false" />
-            <marker date="1465244110377" expanded="true" signature="261:486" placeholder="..." />
+            <element signature="e#1571#1750#0" expanded="false" />
+            <element signature="e#1805#1976#0" expanded="false" />
+            <element signature="e#2005#2099#0" expanded="false" />
+            <marker date="1465246292570" expanded="true" signature="337:562" placeholder="..." />
+            <marker date="1465246292570" expanded="false" signature="1451:7798" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -807,10 +910,11 @@
         <state relative-caret-position="4466">
           <caret line="203" column="0" selection-start-line="203" selection-start-column="0" selection-end-line="203" selection-end-column="0" />
           <folding>
-            <element signature="e#1495#1674#0" expanded="false" />
-            <element signature="e#1729#1900#0" expanded="false" />
-            <element signature="e#1929#2023#0" expanded="false" />
-            <marker date="1465244110377" expanded="true" signature="261:486" placeholder="..." />
+            <element signature="e#1571#1750#0" expanded="false" />
+            <element signature="e#1805#1976#0" expanded="false" />
+            <element signature="e#2005#2099#0" expanded="false" />
+            <marker date="1465246292570" expanded="true" signature="337:562" placeholder="..." />
+            <marker date="1465246292570" expanded="false" signature="1451:7798" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -921,13 +1025,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/main_ui/reports.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Dockerfile">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1014,35 +1111,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/src/modules.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4244">
-          <caret line="149" column="57" selection-start-line="149" selection-start-column="57" selection-end-line="149" selection-end-column="57" />
-          <folding>
-            <element signature="e#1495#1674#0" expanded="false" />
-            <element signature="e#1729#1900#0" expanded="false" />
-            <element signature="e#1929#2023#0" expanded="false" />
-            <marker date="1465244110377" expanded="true" signature="261:486" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/src/reports.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4244">
-          <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/src/test_room.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1157">
-          <caret line="102" column="50" selection-start-line="102" selection-start-column="50" selection-end-line="102" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/core.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="334">
@@ -1059,18 +1127,59 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/main_ui/test_room.html">
+    <entry file="file://$PROJECT_DIR$/templates/main_ui/reports.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="10" column="24" selection-start-line="10" selection-start-column="24" selection-end-line="10" selection-end-column="24" />
+        <state relative-caret-position="168">
+          <caret line="8" column="19" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/src/reports.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1024">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <element signature="e#332#975#0" expanded="false" />
+            <element signature="e#4454#9109#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="49" column="14" selection-start-line="49" selection-start-column="14" selection-end-line="49" selection-end-column="14" />
+        <state relative-caret-position="346">
+          <caret line="92" column="27" selection-start-line="92" selection-start-column="27" selection-end-line="92" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/src/modules.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding>
+            <element signature="e#1571#1750#0" expanded="false" />
+            <element signature="e#1805#1976#0" expanded="false" />
+            <element signature="e#2005#2099#0" expanded="false" />
+            <marker date="1465246292570" expanded="true" signature="337:562" placeholder="..." />
+            <marker date="1465246292570" expanded="false" signature="1451:7798" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/main_ui/test_room.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-221">
+          <caret line="10" column="24" selection-start-line="10" selection-start-column="24" selection-end-line="10" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/src/test_room.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="184" column="65" selection-start-line="184" selection-start-column="65" selection-end-line="184" selection-end-column="65" />
           <folding />
         </state>
       </provider>

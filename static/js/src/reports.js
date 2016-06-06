@@ -1,5 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 var $ = jQuery = require('jquery');
 
 var Codemirror = require('react-codemirror');
@@ -95,7 +96,10 @@ var App = React.createClass({
                 </div>
                 <div className="col-md-1"></div>
                 <div id="output" className="col-md-6">
-                    {this.state.report_body}
+                    <ReactCSSTransitionGroup transitionName="slider_up_to_down" transitionEnterTimeout={500}
+                                             transitionLeaveTimeout={300}>
+                        {this.state.report_body}
+                    </ReactCSSTransitionGroup>
                 </div>
                 <div className="col-md-1"></div>
                 <div className="col-md-2">

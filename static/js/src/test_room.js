@@ -1,5 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+
 var $ = jQuery = require('jquery');
 
 require("../../bootstrap/js/bootstrap.min.js");
@@ -117,18 +119,23 @@ var App = React.createClass({
                         </select>
                     </div>
                 </nav>
-                {this.state.report_panel_state ? this.report_panel() : ''}
+                <ReactCSSTransitionGroup transitionName="slider_right_to_left"
+                                         transitionEnterTimeout={500}
+                                         transitionLeaveTimeout={300}>
+                    {this.state.report_panel_state ? this.report_panel() : ''}
+                </ReactCSSTransitionGroup>
             </div>
         )
     }
 });
 
 var Output = React.createClass({
-    render: function () {
+    body: function () {
         var style = parseFloat(this.props.data.ratio);
         var style = (style >= 100.0) ? "success" : ((style > 10.0) ? "warning" : "danger");
 
         return (
+
             <div>
                 <div id="statistic" className="col-md-5 col-md-push-7">
                     <div className={"panel panel-" + style}>
@@ -140,6 +147,7 @@ var Output = React.createClass({
                         </div>
                     </div>
                 </div>
+
                 <div id="test_results_cont" className="col-md-7 col-md-pull-5">
                     <table id="test_results" className="table table-responsive">
                         <thead>
@@ -150,9 +158,11 @@ var Output = React.createClass({
                         </tr>
                         </thead>
                         <tbody>
+
                         {
                             this.props.data.results.map(function (result, result_index) {
                                 return (
+
                                     <tr key={"result_" + result_index}
                                         className={"result" + result.state?"pass success":"not_pass danger"}>
                                         <td>{result_index}</td>
@@ -166,6 +176,15 @@ var Output = React.createClass({
                     </table>
                 </div>
             </div>
+        )
+    },
+    render: function () {
+        return (
+            <ReactCSSTransitionGroup transitionName="slider_right_to_left"
+                                     transitionEnterTimeout={5000}
+                                     transitionLeaveTimeout={3000}>
+                {this.body()}
+            </ReactCSSTransitionGroup>
         )
     }
 });

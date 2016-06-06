@@ -1,4 +1,5 @@
 var sha256 = require('sha256');
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 var $ = jQuery = require('jquery');
 
 
@@ -360,7 +361,11 @@ module.exports = (function () {
                                     <label className="col-xs-3 col-sm-4">Expects</label>
                                 </div>
                                 <div id="cases">
-                                    {this.state.cases}
+                                    <ReactCSSTransitionGroup transitionName="slider_right_to_left"
+                                                             transitionEnterTimeout={500}
+                                                             transitionLeaveTimeout={300}>
+                                        {this.state.cases}
+                                    </ReactCSSTransitionGroup>
                                 </div>
                             </div>
                         </div>
