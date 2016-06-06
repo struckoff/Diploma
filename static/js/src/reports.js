@@ -16,19 +16,19 @@ const ModalStyle = {
         backgroundColor: 'rgba(255, 255, 255, 0.75)'
     },
     content: {
-        position: 'absolute',
-        top: '30%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        transform: 'translate(-50%, -50%)',
-
-        marginRight: '-50%',
-        border: '1px solid #ccc',
-        background: '#fff',
-        overflow: 'auto',
-        WebkitOverflowScrolling: 'touch',
-        borderRadius: '4px',
+        // position: 'absolute',
+        // top: '30%',
+        // left: '50%',
+        // right: 'auto',
+        // bottom: 'auto',
+        // transform: 'translate(-50%, -50%)',
+        //
+        // marginRight: '-50%',
+        // border: '1px solid #ccc',
+        // background: '#fff',
+        // overflow: 'auto',
+        // WebkitOverflowScrolling: 'touch',
+        // borderRadius: '4px',
         outline: 'none',
         padding: '20px'
 
@@ -213,23 +213,25 @@ var ReportBody = React.createClass({
                     onRequestClose={this.closeModal}
                     style={ModalStyle}
                 >
-                    <div className="col-sm-12">
-                        <div className="col-sm-6">
-                            Tests
-                            <div className="well">
-                                {this.state.tests_modal}
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-body row">
+                                <div className="col-sm-6">
+                                    Tests
+                                    <div className="well">
+                                        {this.state.tests_modal}
+                                    </div>
+                                </div>
+                                <div className="col-sm-6">
+                                    Expects
+                                    <div className="well">
+                                        {this.state.expects_modal}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-sm-6">
-                            Expects
-                            <div className="well">
-                                {this.state.expects_modal}
+                            <div className="modal-footer">
+                                <button className="btn col-sm-12" onClick={this.closeModal}>Close</button>
                             </div>
-                        </div>
-                    </div>
-                    <div className="col-sm-12">
-                        <div className="col-sm-3 col-centered">
-                            <button className="btn col-sm-12" onClick={this.closeModal}>Close</button>
                         </div>
                     </div>
                 </Modal>

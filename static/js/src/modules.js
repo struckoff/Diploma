@@ -24,19 +24,19 @@ module.exports = (function () {
                 backgroundColor: 'rgba(255, 255, 255, 0.75)'
             },
             content: {
-                position: 'absolute',
-                top: '30%',
-                left: '50%',
-                right: 'auto',
-                bottom: 'auto',
-                transform: 'translate(-50%, -50%)',
+                // position: 'absolute',
+                // top: '30%',
+                // left: '50%',
+                // right: 'auto',
+                // bottom: 'auto',
+                // transform: 'translate(-50%, -50%)',
 
-                marginRight: '-50%',
-                border: '1px solid #ccc',
-                background: '#fff',
-                overflow: 'auto',
-                WebkitOverflowScrolling: 'touch',
-                borderRadius: '4px',
+                // marginRight: '-50%',
+                // border: '1px solid #ccc',
+                // background: '#fff',
+                // overflow: 'auto',
+                // WebkitOverflowScrolling: 'touch',
+                // borderRadius: '4px',
                 outline: 'none',
                 padding: '20px'
 
@@ -147,49 +147,48 @@ module.exports = (function () {
             render: function () {
                 return (
                     <div className="col-sm-12">
-                        <div className="col-xs-4">
+                        <div className="col-xs-3 col-sm-4">
                             <div id="tests" className='well well-sm form-control'>
                                 {this.state.tests}
                             </div>
                         </div>
-                        <div className="col-xs-4">
+                        <div className="col-xs-3  col-sm-4">
                             <div id="expects" className='well well-sm form-control'>
                                 {this.state.expects}
                             </div>
                         </div>
-                        <div className="btn-group col-xs-3">
+                        <div className="btn-group col-xs-5 col-sm-4">
                             <button onClick={this.openModal} className="btn btn-default">Edit</button>
                             <button onClick={this.delete_case} className="btn btn-danger">X</button>
                         </div>
                         <Modal
-                            className="Modal__Bootstrap modal-dialog"
+                            className="Modal__Bootstrap"
                             isOpen={this.state.modalIsOpen}
                             onRequestClose={this.closeModal}
                             style={ModalStyle}
                         >
-                            <div className="col-sm-12">
-                                <div className="col-sm-6">
-                                    Tests
-                                    {this.state.tests_field}
-                                </div>
-                                <div className="col-sm-6">
-                                    Expects
-                                    {this.state.expects_field}
-                                </div>
-                            </div>
-                            <div className="col-sm-12">
-                                <div className="col-sm-6">
-                                    <button onClick={this.save_case} className="btn btn-success">Save</button>
-                                </div>
-                                <div className="col-sm-6">
-                                    <button className="btn" onClick={this.cancel}>Cancel</button>
+                            <div className="modal-dialog">
+                                <div className="modal-content">
+                                    <div className="modal-body row">
+                                        <div className="col-sm-6">
+                                            Tests
+                                            {this.state.tests_field}
+                                        </div>
+                                        <div className="col-sm-6">
+                                            Expects
+                                            {this.state.expects_field}
+                                        </div>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button onClick={this.save_case} className="btn btn-success">Save</button>
+                                        <button className="btn" onClick={this.cancel}>Cancel</button>
+                                    </div>
                                 </div>
                             </div>
                         </Modal>
                     </div>
                 );
             }
-
         });
 
         var Cases = React.createClass({
@@ -260,7 +259,7 @@ module.exports = (function () {
                     return parseInt(n);
                 }));
 
-                var id = (isFinite(id) ? id  : 0) + 1;
+                var id = (isFinite(id) ? id : 0) + 1;
                 this.state.cases[id] = <Case
                     key={id}
                     id={id}
@@ -357,8 +356,8 @@ module.exports = (function () {
                                     </button>
                                 </div>
                                 <div className="cases_legend row alert bg-primary">
-                                    <label className="col-xs-4">Test params</label>
-                                    <label className="col-xs-4">Expects</label>
+                                    <label className="col-xs-3 col-sm-4">Test params</label>
+                                    <label className="col-xs-3 col-sm-4">Expects</label>
                                 </div>
                                 <div id="cases">
                                     {this.state.cases}

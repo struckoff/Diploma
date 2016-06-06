@@ -17,19 +17,19 @@ require('codemirror/mode/javascript/javascript');
             backgroundColor: 'rgba(255, 255, 255, 0.75)'
         },
         content: {
-            position: 'absolute',
-            top: '30%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            transform: 'translate(-50%, -50%)',
-
-            marginRight: '-50%',
-            border: '1px solid #ccc',
-            background: '#fff',
-            overflow: 'auto',
-            WebkitOverflowScrolling: 'touch',
-            borderRadius: '4px',
+            // position: 'absolute',
+            // top: '30%',
+            // left: '50%',
+            // right: 'auto',
+            // bottom: 'auto',
+            // transform: 'translate(-50%, -50%)',
+            //
+            // marginRight: '-50%',
+            // border: '1px solid #ccc',
+            // background: '#fff',
+            // overflow: 'auto',
+            // WebkitOverflowScrolling: 'touch',
+            // borderRadius: '4px',
             outline: 'none',
             padding: '20px'
 
@@ -61,8 +61,9 @@ var App = React.createClass({displayName: "App",
     get_list_item: function (item) {
         var state = (item.id == this.state.active_item) ? "list-group-item-success" : "";
         return (
-            React.createElement("div", {onClick: this.get_body.bind(null, item), 
-                 className: "list_item list-group-item "  + state},
+            React.createElement("div", {onClick: this.get_body.bind(null, item),
+                    className: "list_item list-group-item " + state
+                }, 
                 React.createElement("h4", {className: "list-group-item-heading"}, item.name)
             )
         )
@@ -90,33 +91,33 @@ var App = React.createClass({displayName: "App",
     },
     render: function () {
         return (
-            React.createElement("div", {className: "row"},
+            React.createElement("div", {className: "row"}, 
                 React.createElement("div", {className: "items_list col-md-2 list-group"}, 
                     this.state.reports
-                ),
+                ), 
                 React.createElement("div", {className: "col-md-1"}), 
                 React.createElement("div", {id: "output", className: "col-md-6"}, 
                     this.state.report_body
                 ),
                 React.createElement("div", {className: "col-md-1"}),
                 React.createElement("div", {className: "col-md-2"},
-                    React.createElement("form", {action: " ", method: "post", className: "menu btn-group-vertical"},
+                    React.createElement("form", {action: " ", method: "post", className: "menu btn-group-vertical"}, 
                         React.createElement("button", {
                                 type: "button",
                                 className: "btn btn-success",
                                 onClick: function () {
                                     parent.location = parent.location.pathname.replace('edit', 'room') + '/..';
                                 }
-                            },
+                            }, 
                             "Test room"
-                        ),
+                        ), 
                         React.createElement("button", {
                                 type: "button",
                                 className: "btn btn-success",
                                 onClick: function () {
                                     parent.location = parent.location.pathname + '/..';
                                 }
-                            },
+                            }, 
                             "Edit room"
                         ),
                         React.createElement("button", {
@@ -197,7 +198,7 @@ var ReportBody = React.createClass({displayName: "ReportBody",
                 React.createElement(Codemirror, {ref: "output", value: data.code || '', options: options}), 
                 React.createElement("div", {className: "form-horizontal well well-sm"}, 
                     React.createElement("div", {className: "form-group"}, 
-                        React.createElement("label", {for: "name", className: "col-lg-2 control-label"}, "Name"), 
+                        React.createElement("label", {for: "name", className: "col-lg-2 control-label"}, "Name"),
                         React.createElement("div", {className: "col-lg-10"},
                             React.createElement("span", {
                                 id: "name",
@@ -206,7 +207,7 @@ var ReportBody = React.createClass({displayName: "ReportBody",
                         )
                     ), 
                     React.createElement("div", {className: "form-group"}, 
-                        React.createElement("label", {for: "name", className: "col-lg-2 control-label"}, "Comment"), 
+                        React.createElement("label", {for: "name", className: "col-lg-2 control-label"}, "Comment"),
                         React.createElement("div", {className: "col-lg-10"},
                             React.createElement("span", {
                                 id: "about",
@@ -219,35 +220,37 @@ var ReportBody = React.createClass({displayName: "ReportBody",
                     React.createElement("label", {className: "col-xs-6"}, "Test params"), 
                     React.createElement("label", {className: "col-xs-6"}, "Expects")
                 ),
-                React.createElement("div", {id: "cases"},
+                React.createElement("div", {id: "cases"}, 
                     this.get_cases()
-                ),
+                ), 
                 React.createElement(Modal, {
                         className: "Modal__Bootstrap modal-dialog",
                         isOpen: this.state.modalIsOpen,
                         onRequestClose: this.closeModal,
                         style: ModalStyle
                     },
-                    React.createElement("div", {className: "col-sm-12"},
-                        React.createElement("div", {className: "col-sm-6"},
-                            "Tests",
-                            React.createElement("div", {className: "well"},
-                                this.state.tests_modal
+                    React.createElement("div", {className: "modal-dialog"},
+                        React.createElement("div", {className: "modal-content"},
+                            React.createElement("div", {className: "modal-body row"},
+                                React.createElement("div", {className: "col-sm-6"},
+                                    "Tests",
+                                    React.createElement("div", {className: "well"},
+                                        this.state.tests_modal
+                                    )
+                                ),
+                                React.createElement("div", {className: "col-sm-6"},
+                                    "Expects",
+                                    React.createElement("div", {className: "well"},
+                                        this.state.expects_modal
+                                    )
+                                )
+                            ),
+                            React.createElement("div", {className: "modal-footer"},
+                                React.createElement("button", {
+                                    className: "btn col-sm-12",
+                                    onClick: this.closeModal
+                                }, "Close")
                             )
-                        ),
-                        React.createElement("div", {className: "col-sm-6"},
-                            "Expects",
-                            React.createElement("div", {className: "well"},
-                                this.state.expects_modal
-                            )
-                        )
-                    ),
-                    React.createElement("div", {className: "col-sm-12"},
-                        React.createElement("div", {className: "col-sm-3 col-centered"},
-                            React.createElement("button", {
-                                className: "btn col-sm-12",
-                                onClick: this.closeModal
-                            }, "Close")
                         )
                     )
                 )

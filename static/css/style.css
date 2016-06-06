@@ -46,6 +46,9 @@
     margin-bottom: 10px;
 }
 
+#description > .password {
+    z-index: 0;
+}
 
 #cases div {
     overflow: hidden;

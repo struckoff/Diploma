@@ -45,19 +45,19 @@ module.exports = (function () {
                 backgroundColor: 'rgba(255, 255, 255, 0.75)'
             },
             content: {
-                position: 'absolute',
-                top: '30%',
-                left: '50%',
-                right: 'auto',
-                bottom: 'auto',
-                transform: 'translate(-50%, -50%)',
+                // position: 'absolute',
+                // top: '30%',
+                // left: '50%',
+                // right: 'auto',
+                // bottom: 'auto',
+                // transform: 'translate(-50%, -50%)',
 
-                marginRight: '-50%',
-                border: '1px solid #ccc',
-                background: '#fff',
-                overflow: 'auto',
-                WebkitOverflowScrolling: 'touch',
-                borderRadius: '4px',
+                // marginRight: '-50%',
+                // border: '1px solid #ccc',
+                // background: '#fff',
+                // overflow: 'auto',
+                // WebkitOverflowScrolling: 'touch',
+                // borderRadius: '4px',
                 outline: 'none',
                 padding: '20px'
 
@@ -167,50 +167,55 @@ module.exports = (function () {
             },
             render: function () {
                 return (
-                    React.createElement("div", {className: "col-sm-12"}, 
-                        React.createElement("div", {className: "col-xs-4"}, 
+                    React.createElement("div", {className: "col-sm-12"},
+                        React.createElement("div", {className: "col-xs-3 col-sm-4"}, 
                             React.createElement("div", {id: "tests", className: "well well-sm form-control"}, 
                                 this.state.tests
                             )
-                        ), 
-                        React.createElement("div", {className: "col-xs-4"}, 
+                        ),
+                        React.createElement("div", {className: "col-xs-3  col-sm-4"}, 
                             React.createElement("div", {id: "expects", className: "well well-sm form-control"}, 
                                 this.state.expects
                             )
-                        ), 
-                        React.createElement("div", {className: "btn-group col-xs-3"}, 
+                        ),
+                        React.createElement("div", {className: "btn-group col-xs-5 col-sm-4"}, 
                             React.createElement("button", {onClick: this.openModal, className: "btn btn-default"}, "Edit"), 
                             React.createElement("button", {onClick: this.delete_case, className: "btn btn-danger"}, "X")
                         ), 
                         React.createElement(Modal, {
-                            className: "Modal__Bootstrap modal-dialog", 
+                                className: "Modal__Bootstrap", 
                             isOpen: this.state.modalIsOpen, 
                             onRequestClose: this.closeModal, 
                             style: ModalStyle
-                        }, 
-                            React.createElement("div", {className: "col-sm-12"}, 
-                                React.createElement("div", {className: "col-sm-6"}, 
-                                    "Tests", 
-                                    this.state.tests_field
-                                ), 
-                                React.createElement("div", {className: "col-sm-6"}, 
-                                    "Expects", 
-                                    this.state.expects_field
-                                )
-                            ), 
-                            React.createElement("div", {className: "col-sm-12"}, 
-                                React.createElement("div", {className: "col-sm-6"}, 
-                                    React.createElement("button", {onClick: this.save_case, className: "btn btn-success"}, "Save")
-                                ), 
-                                React.createElement("div", {className: "col-sm-6"}, 
-                                    React.createElement("button", {className: "btn", onClick: this.cancel}, "Cancel")
+                        },
+                            React.createElement("div", {className: "modal-dialog"},
+                                React.createElement("div", {className: "modal-content"},
+                                    React.createElement("div", {className: "modal-body row"},
+                                        React.createElement("div", {className: "col-sm-6"},
+                                            "Tests",
+                                            this.state.tests_field
+                                        ),
+                                        React.createElement("div", {className: "col-sm-6"},
+                                            "Expects",
+                                            this.state.expects_field
+                                        )
+                                    ),
+                                    React.createElement("div", {className: "modal-footer"},
+                                        React.createElement("button", {
+                                            onClick: this.save_case,
+                                            className: "btn btn-success"
+                                        }, "Save"),
+                                        React.createElement("button", {
+                                            className: "btn",
+                                            onClick: this.cancel
+                                        }, "Cancel")
+                                    )
                                 )
                             )
                         )
                     )
                 );
             }
-
         });
 
         var Cases = React.createClass({displayName: "Cases",
@@ -281,7 +286,7 @@ module.exports = (function () {
                     return parseInt(n);
                 }));
 
-                var id = (isFinite(id) ? id  : 0) + 1;
+                var id = (isFinite(id) ? id : 0) + 1;
                 this.state.cases[id] = React.createElement(Case, {
                     key: id, 
                     id: id, 
@@ -377,9 +382,9 @@ module.exports = (function () {
                                         "Save"
                                     )
                                 ), 
-                                React.createElement("div", {className: "cases_legend row alert bg-primary"}, 
-                                    React.createElement("label", {className: "col-xs-4"}, "Test params"), 
-                                    React.createElement("label", {className: "col-xs-4"}, "Expects")
+                                React.createElement("div", {className: "cases_legend row alert bg-primary"},
+                                    React.createElement("label", {className: "col-xs-3 col-sm-4"}, "Test params"),
+                                    React.createElement("label", {className: "col-xs-3 col-sm-4"}, "Expects")
                                 ), 
                                 React.createElement("div", {id: "cases"}, 
                                     this.state.cases
