@@ -97,16 +97,16 @@ var App = React.createClass({displayName: "App",
                 React.createElement("div", {className: "items_list col-md-2 list-group"}, 
                     this.state.reports
                 ), 
-                React.createElement("div", {className: "col-md-1"}), 
+                React.createElement("div", {className: "col-md-1"}),
                 React.createElement("div", {id: "output", className: "col-md-6"},
                     React.createElement(ReactCSSTransitionGroup, {
                             transitionName: "slider_up_to_down", transitionEnterTimeout: 500,
                             transitionLeaveTimeout: 300
-                        },
+                        }, 
                         this.state.report_body
                     )
                 ),
-                React.createElement("div", {className: "col-md-1"}),
+                React.createElement("div", {className: "col-md-1"}), 
                 React.createElement("div", {className: "col-md-2"}, 
                     React.createElement("form", {action: " ", method: "post", className: "menu btn-group-vertical"}, 
                         React.createElement("button", {
@@ -203,7 +203,7 @@ var ReportBody = React.createClass({displayName: "ReportBody",
 
             React.createElement("div", {className: "list_item well"}, 
                 React.createElement(Codemirror, {ref: "output", value: data.code || '', options: options}), 
-                React.createElement("div", {className: "form-horizontal well well-sm"}, 
+                React.createElement("div", {className: "form-horizontal well well-sm"},
                     React.createElement("div", {className: "form-group"},
                         React.createElement("label", {for: "name", className: "col-lg-2 control-label"}, "Name"),
                         React.createElement("div", {className: "col-lg-10"},
@@ -212,7 +212,7 @@ var ReportBody = React.createClass({displayName: "ReportBody",
                                 className: "form-control panel panel-default"
                             }, data.name || "")
                         )
-                    ), 
+                    ),
                     React.createElement("div", {className: "form-group"},
                         React.createElement("label", {for: "name", className: "col-lg-2 control-label"}, "Comment"),
                         React.createElement("div", {className: "col-lg-10"},
@@ -240,13 +240,13 @@ var ReportBody = React.createClass({displayName: "ReportBody",
                         React.createElement("div", {className: "modal-content"},
                             React.createElement("div", {className: "modal-body row"},
                                 React.createElement("div", {className: "col-sm-6"},
-                                    "Tests",
+                                    "Tests", 
                                     React.createElement("div", {className: "well"}, 
                                         this.state.tests_modal
                                     )
                                 ),
                                 React.createElement("div", {className: "col-sm-6"},
-                                    "Expects",
+                                    "Expects", 
                                     React.createElement("div", {className: "well"}, 
                                         this.state.expects_modal
                                     )
@@ -10192,7 +10192,7 @@ var invariant = require('./invariant');
         matchesSelector: function matchesSelector(element, selector) {
             var matchesImpl = element.matches || element.webkitMatchesSelector || element.mozMatchesSelector || element.msMatchesSelector || function (s) {
                     return matchesSelector_SLOW(element, s);
-                };
+    };
             return matchesImpl.call(element, selector);
         }
 
@@ -28223,7 +28223,7 @@ module.exports = ReactBrowserEventEmitter;
                         // If the duration isn't a number
                     } else if (typeof props[timeoutPropName] !== 'number') {
                         return new Error(timeoutPropName + ' must be a number (in milliseconds)');
-                    }
+        }
                 }
             };
         }

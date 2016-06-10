@@ -193,11 +193,11 @@ module.exports = (function () {
                             React.createElement("div", {className: "modal-dialog"},
                                 React.createElement("div", {className: "modal-content"},
                                     React.createElement("div", {className: "modal-body row"},
-                                        React.createElement("div", {className: "col-sm-6"},
+                                        React.createElement("div", {className: "col-sm-6"}, 
                                             "Tests", 
                                             this.state.tests_field
                                         ),
-                                        React.createElement("div", {className: "col-sm-6"},
+                                        React.createElement("div", {className: "col-sm-6"}, 
                                             "Expects", 
                                             this.state.expects_field
                                         )
@@ -384,16 +384,16 @@ module.exports = (function () {
                                         "Save"
                                     )
                                 ),
-                                React.createElement("div", {className: "cases_legend row alert bg-primary"},
+                                React.createElement("div", {className: "cases_legend row alert bg-primary"}, 
                                     React.createElement("label", {className: "col-xs-3 col-sm-4"}, "Test params"), 
                                     React.createElement("label", {className: "col-xs-3 col-sm-4"}, "Expects")
-                                ), 
+                                ),
                                 React.createElement("div", {id: "cases"},
                                     React.createElement(ReactCSSTransitionGroup, {
                                             transitionName: "slider_right_to_left",
                                             transitionEnterTimeout: 500,
                                             transitionLeaveTimeout: 300
-                                        },
+                                        }, 
                                         this.state.cases
                                     )
                                 )
@@ -706,7 +706,7 @@ var invariant = require('./invariant');
         matchesSelector: function matchesSelector(element, selector) {
             var matchesImpl = element.matches || element.webkitMatchesSelector || element.mozMatchesSelector || element.msMatchesSelector || function (s) {
                     return matchesSelector_SLOW(element, s);
-                };
+    };
             return matchesImpl.call(element, selector);
         }
 
@@ -18246,7 +18246,7 @@ module.exports = ReactBrowserEventEmitter;
                         // If the duration isn't a number
                     } else if (typeof props[timeoutPropName] !== 'number') {
                         return new Error(timeoutPropName + ' must be a number (in milliseconds)');
-                    }
+        }
                 }
             };
         }

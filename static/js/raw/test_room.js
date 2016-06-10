@@ -111,8 +111,8 @@ var App = React.createClass({displayName: "App",
                     React.createElement("div", {className: "navbar-form navbar-left"}, 
                         React.createElement("button", {className: "btn btn-primary", type: "button", onClick: this.submit}, 
                             "Run tests"
-                        ), 
-                        React.createElement("span", {class: "alert-success"}, 
+                        ),
+                        React.createElement("span", {className: "alert-success"}, 
                             React.createElement("input", {type: "checkbox", onChange: this.submit_checkbox_handler}), 
                             "Send report"
                         )
@@ -133,7 +133,7 @@ var App = React.createClass({displayName: "App",
                         transitionName: "slider_right_to_left",
                         transitionEnterTimeout: 500,
                         transitionLeaveTimeout: 300
-                    },
+                    }, 
                     this.state.report_panel_state ? this.report_panel() : ''
                 )
             )
@@ -196,7 +196,7 @@ var Output = React.createClass({displayName: "Output",
                     transitionName: "slider_right_to_left",
                     transitionEnterTimeout: 5000,
                     transitionLeaveTimeout: 3000
-                },
+                }, 
                 this.body()
             )
         )
@@ -10031,7 +10031,7 @@ var invariant = require('./invariant');
         matchesSelector: function matchesSelector(element, selector) {
             var matchesImpl = element.matches || element.webkitMatchesSelector || element.mozMatchesSelector || element.msMatchesSelector || function (s) {
                     return matchesSelector_SLOW(element, s);
-                };
+    };
             return matchesImpl.call(element, selector);
         }
 
@@ -26260,7 +26260,7 @@ module.exports = ReactBrowserEventEmitter;
                         // If the duration isn't a number
                     } else if (typeof props[timeoutPropName] !== 'number') {
                         return new Error(timeoutPropName + ' must be a number (in milliseconds)');
-                    }
+        }
                 }
             };
         }

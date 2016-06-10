@@ -102,7 +102,7 @@ var App = React.createClass({
                         <button className="btn btn-primary" type='button' onClick={this.submit}>
                             Run tests
                         </button>
-                        <span class="alert-success">
+                        <span className="alert-success">
                             <input type="checkbox" onChange={this.submit_checkbox_handler}/>
                             Send report
                         </span>
