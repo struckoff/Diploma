@@ -198,6 +198,7 @@ module.exports = (function () {
                     cases: [],
                     description: '',
                     state_handler: true,
+                    room_id: -1,
                     prev_state: {
                         data: JSON.stringify(this.data || ''),
                         description: null
@@ -245,11 +246,15 @@ module.exports = (function () {
             save_password: function () {
                 var self = this;
                 $.getJSON(window.location.href + '/get', {
-                    password: this.state.password_temp ? sha256(this.state.password_temp) : null
+                    password: this.state.password_temp ? sha256(this.state.password_temp) : null,
+                    room_id: self.state.room_id
                 })
-                    .success(function () {
+                    .success(function (data) {
                         console.log('saved');
-                        self.setState({savepassword_button_class: 'btn-info'})
+                        self.setState({
+                            savepassword_button_class: 'btn-info',
+                            room_id: data.room_id
+                        })
                     })
                     .error(function (data) {
                         console.log('err', data);
@@ -275,14 +280,16 @@ module.exports = (function () {
                 var self = this;
                 $.getJSON(window.location.href + '/get', {
                     cases: JSON.stringify(this.data),
-                    description: this.state.description
+                    description: this.state.description,
+                    room_id: self.state.room_id
                 })
                     .success(function (data) {
                         self.setState({
                             prev_state: {
                                 data: JSON.stringify(self.data || ''),
-                                description: self.state.description
-                            }
+                                description: self.state.description,
+                            },
+                            room_id: data.room_id
                         });
                         self.forceUpdate();
 

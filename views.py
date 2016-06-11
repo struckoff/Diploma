@@ -36,9 +36,7 @@ def requires_auth(f):
                 return f(*args, **kwargs)
         else:
             password = request.form.get('password', False)
-            logger.debug(password)
             password = hashlib.sha256(password.encode()).hexdigest() if password else ''
-            logger.debug(password)
             if request.method == 'POST' and check_auth(password, room_id):
                 session[room_id] = password
                 return f(*args, **kwargs)
@@ -67,8 +65,6 @@ def index():
 
 @app.route('/room/<room_id>/')
 def test_room(room_id):
-    logger.debug(room_id)
-
     room = Room.query.filter_by(id=room_id).first()
     if room is None:
         return abort(404)
@@ -79,13 +75,10 @@ def test_room(room_id):
 
 @app.route('/room/<room_id>//get', strict_slashes=False)
 def test_room_api(room_id):
-    logger.debug(room_id)
     room = Room.query.filter_by(id=room_id).first()
     code = request.args.get('text', '')
-    logger.debug(request.args)
     tests = tuple(case.test for case in room.test_cases)
     expects = tuple(case.expect for case in room.test_cases)
-    logger.debug(test_runner(code, tests, expects))
     results = test_runner(code, tests, expects)
     ratio = len([r for r in results if r["state"]]) / len(results) * 100
 
@@ -113,10 +106,14 @@ def create_test():
 
 @app.route('/create//get')
 def create_test_api():
-    room = Room(request.args.get('description', ''), request.args.get('password', ''))
-    DB.session.add(room)
-    DB.session.commit()
-    session[str(room.id)] = request.args.get('password', '')
+    room = Room.query.filter_by(id=request.args.get('room_id', -1)).first()
+    if room is None:
+        room = Room('', request.args.get('password', ''))
+        DB.session.add(room)
+        DB.session.commit()
+    room.description = request.args.get('description', '')
+    if request.args.get('password') is not None:
+        session[str(room.id)] = request.args.get('password')
     for key, case in json.loads(request.args.get('cases', '{}')).items():
         tests = case.get("tests", "")
         expects = case.get("expects", "")
@@ -124,7 +121,10 @@ def create_test_api():
         testdata = TestData(id, room.id, tests, expects)
         DB.session.add(testdata)
     DB.session.commit()
-    return json.dumps({"url": '/edit/{}'.format(room.id)})
+    return json.dumps({
+        "url": '/edit/{}'.format(room.id),
+        "room_id": room.id
+    })
 
 
 @app.route('/edit/<room_id>/', methods=['GET', 'POST'])
