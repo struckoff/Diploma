@@ -96,7 +96,7 @@ var App = React.createClass({
         };
         return (
             <div id="editor_container">
-                <Codemirror ref='editor' value={this.state.code} onChange={this.updateCode} options={options}/>
+                <Codemirror ref='editor' onChange={this.updateCode} options={options}/>
                 <nav className="navbar navbar-inverse navbar-default">
                     <div className="navbar-form navbar-left">
                         <button className="btn btn-primary" type='button' onClick={this.submit}>
@@ -164,7 +164,7 @@ var Output = React.createClass({
                                 return (
 
                                     <tr key={"result_" + result_index}
-                                        className={"result" + result.state?"pass success":"not_pass danger"}>
+                                        className={"result" + (result.state ? "pass success" : "not_pass danger")}>
                                         <td>{result_index}</td>
                                         <td className="state">{result.state ? "Pass" : "Fail"}</td>
                                         <td className="message">{result.message}</td>
