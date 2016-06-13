@@ -5,7 +5,7 @@ from functools import wraps
 
 from flask import render_template, request, g, session, abort, Markup
 
-from core.core import test_runner, logger
+from core import test_runner
 from database import Room, TestData, Report, DB
 from main import app, DATABASE
 

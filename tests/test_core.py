@@ -1,6 +1,6 @@
 import unittest
-from core import core
 import execjs
+import core
 
 
 class Test_code_compile(unittest.TestCase):
