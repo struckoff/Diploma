@@ -1,3 +1,4 @@
+import sys
 from flask import Flask
 
 DATABASE = 'database.db'
@@ -9,4 +10,8 @@ app.config['SESSION_TYPE'] = 'filesystem'
 from views import *
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    if len(sys.argv) > 1:
+        port = int(sys.argv[1])
+    else:
+        port = 8000
+    app.run(host='0.0.0.0', port=port, debug=True)
