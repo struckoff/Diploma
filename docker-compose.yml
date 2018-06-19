@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+    application:
+        build: .
+        environment:
+            - STUDENTTESTER_MAXTABS=20
+            - STUDENTTESTER_CHROMECON=chrome:9222
+        volumes:
+            - .:/usr/src/app
+        ports:
+            - 8000:80
+        depends_on:
+            - chrome
+        restart: always
+    chrome:
+        image: justinribeiro/chrome-headless
+        cap_add:
+            - SYS_ADMIN
+        security_opt:
+            - seccomp:$HOME/chrome.json 

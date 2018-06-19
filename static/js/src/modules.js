@@ -1,21 +1,13 @@
 var sha256 = require('sha256');
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 var $ = jQuery = require('jquery');
-
+var CreateReactClass = require('create-react-class');
 
 module.exports = (function () {
     var m = function () {
         React = require('react');
         var Modal = require('react-modal');
         const ModalStyle = {
-            // content: {
-            //     top: '50%',
-            //     left: '50%',
-            //     right: 'auto',
-            //     bottom: 'auto',
-            //     marginRight: '-50%',
-            //     transform: 'translate(-50%, -50%)'
-            // }
             overlay: {
                 position: 'fixed',
                 top: 0,
@@ -25,26 +17,13 @@ module.exports = (function () {
                 backgroundColor: 'rgba(255, 255, 255, 0.75)'
             },
             content: {
-                // position: 'absolute',
-                // top: '30%',
-                // left: '50%',
-                // right: 'auto',
-                // bottom: 'auto',
-                // transform: 'translate(-50%, -50%)',
-
-                // marginRight: '-50%',
-                // border: '1px solid #ccc',
-                // background: '#fff',
-                // overflow: 'auto',
-                // WebkitOverflowScrolling: 'touch',
-                // borderRadius: '4px',
                 outline: 'none',
                 padding: '20px'
 
             }
         };
 
-        var Case = React.createClass({
+        var Case = CreateReactClass({
             getInitialState: function () {
                 return {
                     tests_field: this.field_build({
@@ -64,8 +43,8 @@ module.exports = (function () {
                     tests: this.props.tests || '',
                     expects: this.props.expects || '',
                     id: this.props.id || -1,
-                    modalIsOpen: typeof(this.props.isnew) == "boolean" ? this.props.isnew : true,
-                    isnew: typeof(this.props.isnew) == "boolean" ? this.props.isnew : true,
+                    modalIsOpen: typeof (this.props.isnew) == "boolean" ? this.props.isnew : true,
+                    isnew: typeof (this.props.isnew) == "boolean" ? this.props.isnew : true,
                     savepassword_button_class: 'btn-info',
                     save_button: <button onClick={this.save_case} className="btn btn-success">Save</button>
                 }
@@ -91,10 +70,10 @@ module.exports = (function () {
                     password_temp: null
 
                 });
-                this.setState({modalIsOpen: true});
+                this.setState({ modalIsOpen: true });
             },
             closeModal: function () {
-                this.setState({modalIsOpen: false});
+                this.setState({ modalIsOpen: false });
             },
             field_build: function (data) {
                 var self = this;
@@ -192,7 +171,7 @@ module.exports = (function () {
             }
         });
 
-        var Cases = React.createClass({
+        var Cases = CreateReactClass({
             getInitialState: function () {
                 return {
                     cases: [],
@@ -217,6 +196,15 @@ module.exports = (function () {
                     f(self);
                 });
 
+            },
+            is_network_enabled_handler: function (e) {
+                this.setState({ is_network_enabled: e.target.checked })
+            },
+            is_always_send_report: function(e) {
+                this.setState({is_always_send_report: e.target.checked})
+            },
+            set_timeout_handler: function (e) {
+                this.setState({ timeout: e.target.value })
             },
             state_check: function () {
                 return this.state;
@@ -253,7 +241,10 @@ module.exports = (function () {
                         console.log('saved');
                         self.setState({
                             savepassword_button_class: 'btn-info',
-                            room_id: data.room_id
+                            room_id: data.room_id,
+                            is_network_enabled: data.is_network,
+                            timeout: data.timeout,
+                            is_always_send_report: data.is_always_send_report
                         })
                     })
                     .error(function (data) {
@@ -272,15 +263,18 @@ module.exports = (function () {
                     top_data_handler={this.data_handler}
                     delete_case={this.delete_case}
                 />;
-                this.setState({cases: this.state.cases});
+                this.setState({ cases: this.state.cases });
                 this.forceUpdate();
 
             },
             send_cases: function () {
                 var self = this;
+                console.log(this.state);
                 $.getJSON(window.location.href + '/get', {
                     cases: JSON.stringify(this.data),
                     description: this.state.description,
+                    is_network_enabled: this.state.is_network_enabled,
+                    timeout: this.state.timeout,
                     room_id: self.state.room_id
                 })
                     .success(function (data) {
@@ -311,7 +305,6 @@ module.exports = (function () {
             render: function () {
                 return (
                     <div>
-
                         <div>
                             <div id="description" className="left_col col-md-5 left">
                                 <div className="password input-group btn">
@@ -323,60 +316,76 @@ module.exports = (function () {
                                         value={this.state.password_temp}
                                         placeholder="Room password"
                                     />
-                                <span className="input-group-btn">
-                                    <button
-                                        onClick={this.save_password}
-                                        className={"btn " + (this.state.savepassword_button_class || "btn-info") }
-                                    >
-                                    Save password
+                                    <span className="input-group-btn">
+                                        <button
+                                            onClick={this.save_password}
+                                            className={"btn " + (this.state.savepassword_button_class || "btn-info")}
+                                        >
+                                            Save password
                                     </button>
-                                </span>
+                                    </span>
                                 </div>
-                            <textarea
-                                className="form-control"
-                                onChange={this.description_handler}
-                                rows="10"
-                                placeholder="Description (HTML syntax)"
-                                value={this.state.description}>
-                            </textarea>
+                                <textarea
+                                    className="form-control"
+                                    onChange={this.description_handler}
+                                    rows="10"
+                                    placeholder="Description (HTML syntax)"
+                                    value={this.state.description}>
+                                </textarea>
                                 <div className="panel panel-primary">
                                     <div className="panel-heading">
                                         <h3 className="panel-title">Preview</h3>
                                     </div>
                                     <div
                                         className="panel-body"
-                                        dangerouslySetInnerHTML={{__html: this.state.description}}
+                                        dangerouslySetInnerHTML={{ __html: this.state.description }}
                                     >
                                     </div>
                                 </div>
+                                <div className="panel panel-primary settings_panel">
+                                    <div className="panel-heading">
+                                        <h3 className="panel-title">Settings</h3>
+                                    </div>
+                                    <div className="panel-body">
+                                        <div className="row"><label> <span className="col-md-5 left">Always send report</span> <input className="col-md-5 righs" type="checkbox" onChange={this.is_always_send_report} defaultChecked={this.state.is_always_send_report}/> </label></div>
+                                        <div className="row"><label> <span className="col-md-5 left">Enable network</span> <input className="col-md-5 righs" type="checkbox" onChange={this.is_network_enabled_handler} defaultChecked={this.state.is_network_enabled}/> </label></div>
+                                        <div className="row"><label> <span className="col-md-5 left">Timeout (seconds)</span> <input className="col-md-5 righs form-control" type="input" onChange={this.set_timeout_handler} value={this.state.timeout}/> </label></div>
+                                    </div>
+
+                                </div>
+                                <div id="save_button_div">
+                                    <button id="send_cases"
+                                        className={"btn col-md-12 " + (this.state_handler() ? "btn-info" : "btn-warning")}
+                                        onClick={this.send_cases}>
+                                        Save
+                                    </button>
+                                    </div>
                             </div>
 
                             <div className="right_col col-md-7 right">
-                                <div id="buttons">
-                                    <button id="new_case" className="btn btn-primary col-md-3" onClick={this.new_case}>
-                                        New
-                                        case
-                                    </button>
-                                    <button id="send_cases"
-                                            className={"btn col-md-3 " + (this.state_handler() ? "btn-info" : "btn-warning") }
-                                            onClick={this.send_cases}>
-                                        Save
-                                    </button>
-                                </div>
+                            <div id = "cases_cont">
                                 <div className="cases_legend row alert bg-primary">
                                     <label className="col-xs-3 col-sm-4">Test params</label>
                                     <label className="col-xs-3 col-sm-4">Expects</label>
                                 </div>
                                 <div id="cases">
                                     <ReactCSSTransitionGroup transitionName="slider_right_to_left"
-                                                             transitionEnterTimeout={500}
-                                                             transitionLeaveTimeout={300}>
+                                        transitionEnterTimeout={500}
+                                        transitionLeaveTimeout={300}>
                                         {this.state.cases}
                                     </ReactCSSTransitionGroup>
+                                </div>
+                                </div>
+                                <div id="buttons">
+                                    <button id="new_case" className="btn btn-success col-md-3" onClick={this.new_case}>
+                                        New
+                                        case
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 )
             }
         });

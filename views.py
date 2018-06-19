@@ -1,21 +1,64 @@
 import hashlib
+import collections
 import json
 import sqlite3
+import pychrome
 from functools import wraps
 
 from flask import render_template, request, g, session, abort, Markup
 
-from core import test_runner
-from database import Room, TestData, Report, DB
+from core import JSExecutor, logger
+from database import Room, TestData, Report, DB, ReportTestData
 from main import app, DATABASE
 
+def prepare_tabs_pool(*args, **kwargs):
+    browser = pychrome.Browser(*args, **kwargs)
+    pool = collections.deque()
+    if len(browser.list_tab()) > 0:
+        for tab in browser.list_tab(60):
+            browser.close_tab(tab)
 
-def get_cases(cases):
-    return [{
+    for _ in range(app.config['STUDENTTESTER_MAXTABS']):
+        tab = browser.new_tab()
+        pool.append(tab)
+
+    return browser, pool
+
+def prepare_timeout(timeout):
+    if not timeout.isnumeric() or int(timeout) < 0:
+        logger.info('Not a valid timeout: REJECTED')
+
+    timeout = int(timeout)
+
+    if timeout > app.config['STUDENTTESTER_MAXTIMEOUT']:
+        logger.info(
+            'Trying to set timeout grater then maximum ({0} > {1}): SETTING MAXIMUM ALLOWED TIMEOUT: {1}'.format(
+                timeout, app.config['STUDENTTESTER_MAXTIMEOUT']))
+        return app.config['STUDENTTESTER_MAXTIMEOUT']
+
+    return timeout
+
+
+
+BROWSER, tabs_pool = prepare_tabs_pool(url='http://' + app.config['STUDENTTESTER_CHROMECON'])
+logger.debug(BROWSER.version())
+logger.debug('Opened tabs: ' + str(len(BROWSER.list_tab(60))))
+
+def get_cases(cases, state = None):
+    if state is None:
+        return [{
                 "id": c.case_id,
                 "tests": c.test,
-                "expects": c.expect
+                "expects": c.expect,
+                "got": c.got
             } for c in cases]
+    else:
+        return [{
+            "id": c.case_id,
+            "tests": c.test,
+            "expects": c.expect,
+            "got": c.got
+        } for c in cases if c.state == state]
 
 
 def check_auth(password, room_id):
@@ -43,7 +86,6 @@ def requires_auth(f):
         return render_template('main_ui/password.html')
 
     return decorated
-
 
 @app.before_request
 def before_request():
@@ -76,10 +118,12 @@ def test_room(room_id):
 @app.route('/room/<room_id>//get', strict_slashes=False)
 def test_room_api(room_id):
     room = Room.query.filter_by(id=room_id).first()
-    code = request.args.get('text', '')
+    ex = JSExecutor(BROWSER, tabs_pool, script_timeout=room.timeout, is_network_enable=room.is_network)
+    code = request.args.get('text', '""')[1::][:-1].replace(r'\n', '')
     tests = tuple(case.test for case in room.test_cases)
     expects = tuple(case.expect for case in room.test_cases)
-    results = test_runner(code, tests, expects)
+    results = ex.run(code, tests, expects)
+
     ratio = len([r for r in results if r["state"]]) / len(results) * 100
 
     report = json.loads(request.args.get('report', '{}'))
@@ -89,10 +133,14 @@ def test_room_api(room_id):
         DB.session.commit()
 
         for result, case in zip(results, room.test_cases):
-            if result['state']:
-                report.passed.append(case)
-            else:
-                report.failed.append(case)
+            # case.set_got(result['got'])
+            logger.debug(report.id)
+            report_case = ReportTestData(case.id, report.id, case.test, case.expect, result['got'], result['state'])
+            DB.session.add(report_case)
+            # if result['state']:
+            #     report.passed.append(report_case)
+            # else:
+            #     report.failed.append(report_case)
 
         DB.session.commit()
 
@@ -112,6 +160,12 @@ def create_test_api():
         DB.session.add(room)
         DB.session.commit()
     room.description = request.args.get('description', '')
+    if request.args.get('timeout', '60').isnumeric():
+        t = prepare_timeout(request.args.get('timeout', '60'))
+        if t is not None:
+            room.timeout = t
+    if request.args.get('is_network_enabled', 'False') in ('True', 'true'):
+        room.is_network = True
     if request.args.get('password') is not None:
         session[str(room.id)] = request.args.get('password')
     for key, case in json.loads(request.args.get('cases', '{}')).items():
@@ -123,7 +177,9 @@ def create_test_api():
     DB.session.commit()
     return json.dumps({
         "url": '/edit/{}'.format(room.id),
-        "room_id": room.id
+        "room_id": room.id,
+        "is_network_enabled": room.is_network,
+        "timeout": room.timeout or 60
     })
 
 
@@ -140,18 +196,18 @@ def edit_test(room_id):
 @requires_auth
 def edit_test_api(room_id):
     room = Room.query.filter_by(id=room_id).first()
-
     if room is None:
         return abort(404)
-
     if request.args.get('password') is not None:
         if check_auth(session[room_id], room_id):
             room.password = request.args.get('password')
-
     if request.args.get("description") is not None \
             and request.args.get("description", False) != room.description:
         room.description = request.args.get("description")
-
+    if request.args.get('is_network_enabled', 'False') in ('True', 'true'):
+        room.is_network = True
+    if request.args.get('timeout', '').isnumeric():
+        room.timeout = int(request.args['timeout'])
     if request.args.get("cases") is not None:
         room.test_cases[:] = []
         for key, case in json.loads(request.args["cases"]).items():
@@ -160,9 +216,12 @@ def edit_test_api(room_id):
 
     DB.session.commit()
 
+    print(205, room.is_network)
     return json.dumps({
         "description": room.description,
-        "cases": get_cases(room.test_cases)
+        "cases": get_cases(room.test_cases),
+        "is_network_enabled": room.is_network,
+        "timeout": room.timeout
     })
 
 
@@ -181,13 +240,14 @@ def edit_test_reports_api(room_id):
             .filter_by(room_id=room_id).first()
         if report is None:
             return abort(404)
+        logger.debug(report.cases)
         return json.dumps({
             'id': report.id,
             'name': report.name,
             'about': report.comment,
             'code': report.code,
-            'passed': get_cases(report.passed),
-            'failed': get_cases(report.failed)
+            'passed': get_cases(report.cases, True),
+            'failed': get_cases(report.cases, False)
         })
 
     else:

@@ -23,7 +23,9 @@ var get_cases = function (self) {
             });
             self.setState({
                 cases: cases,
-                description: data["description"] || ''
+                description: data["description"] || '',
+                is_network_enabled: data['is_network_enabled'],
+                timeout: data['timeout']
             });
             self.setState({
                 prev_state: {
@@ -31,7 +33,7 @@ var get_cases = function (self) {
                     description: self.state.description
                 }
             });
-
+            console.log(self.state)
         })
         .error(function (data) {
             console.log("err", data);
