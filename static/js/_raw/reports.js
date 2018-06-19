@@ -1,203 +1,245 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-/*!
- * Bootstrap v3.3.6 (http://getbootstrap.com)
- * Copyright 2011-2015 Twitter, Inc.
- * Licensed under the MIT license
- */
-if("undefined"==typeof jQuery)throw new Error("Bootstrap's JavaScript requires jQuery");+function(a){"use strict";var b=a.fn.jquery.split(" ")[0].split(".");if(b[0]<2&&b[1]<9||1==b[0]&&9==b[1]&&b[2]<1||b[0]>2)throw new Error("Bootstrap's JavaScript requires jQuery version 1.9.1 or higher, but lower than version 3")}(jQuery),+function(a){"use strict";function b(){var a=document.createElement("bootstrap"),b={WebkitTransition:"webkitTransitionEnd",MozTransition:"transitionend",OTransition:"oTransitionEnd otransitionend",transition:"transitionend"};for(var c in b)if(void 0!==a.style[c])return{end:b[c]};return!1}a.fn.emulateTransitionEnd=function(b){var c=!1,d=this;a(this).one("bsTransitionEnd",function(){c=!0});var e=function(){c||a(d).trigger(a.support.transition.end)};return setTimeout(e,b),this},a(function(){a.support.transition=b(),a.support.transition&&(a.event.special.bsTransitionEnd={bindType:a.support.transition.end,delegateType:a.support.transition.end,handle:function(b){return a(b.target).is(this)?b.handleObj.handler.apply(this,arguments):void 0}})})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var c=a(this),e=c.data("bs.alert");e||c.data("bs.alert",e=new d(this)),"string"==typeof b&&e[b].call(c)})}var c='[data-dismiss="alert"]',d=function(b){a(b).on("click",c,this.close)};d.VERSION="3.3.6",d.TRANSITION_DURATION=150,d.prototype.close=function(b){function c(){g.detach().trigger("closed.bs.alert").remove()}var e=a(this),f=e.attr("data-target");f||(f=e.attr("href"),f=f&&f.replace(/.*(?=#[^\s]*$)/,""));var g=a(f);b&&b.preventDefault(),g.length||(g=e.closest(".alert")),g.trigger(b=a.Event("close.bs.alert")),b.isDefaultPrevented()||(g.removeClass("in"),a.support.transition&&g.hasClass("fade")?g.one("bsTransitionEnd",c).emulateTransitionEnd(d.TRANSITION_DURATION):c())};var e=a.fn.alert;a.fn.alert=b,a.fn.alert.Constructor=d,a.fn.alert.noConflict=function(){return a.fn.alert=e,this},a(document).on("click.bs.alert.data-api",c,d.prototype.close)}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.button"),f="object"==typeof b&&b;e||d.data("bs.button",e=new c(this,f)),"toggle"==b?e.toggle():b&&e.setState(b)})}var c=function(b,d){this.$element=a(b),this.options=a.extend({},c.DEFAULTS,d),this.isLoading=!1};c.VERSION="3.3.6",c.DEFAULTS={loadingText:"loading..."},c.prototype.setState=function(b){var c="disabled",d=this.$element,e=d.is("input")?"val":"html",f=d.data();b+="Text",null==f.resetText&&d.data("resetText",d[e]()),setTimeout(a.proxy(function(){d[e](null==f[b]?this.options[b]:f[b]),"loadingText"==b?(this.isLoading=!0,d.addClass(c).attr(c,c)):this.isLoading&&(this.isLoading=!1,d.removeClass(c).removeAttr(c))},this),0)},c.prototype.toggle=function(){var a=!0,b=this.$element.closest('[data-toggle="buttons"]');if(b.length){var c=this.$element.find("input");"radio"==c.prop("type")?(c.prop("checked")&&(a=!1),b.find(".active").removeClass("active"),this.$element.addClass("active")):"checkbox"==c.prop("type")&&(c.prop("checked")!==this.$element.hasClass("active")&&(a=!1),this.$element.toggleClass("active")),c.prop("checked",this.$element.hasClass("active")),a&&c.trigger("change")}else this.$element.attr("aria-pressed",!this.$element.hasClass("active")),this.$element.toggleClass("active")};var d=a.fn.button;a.fn.button=b,a.fn.button.Constructor=c,a.fn.button.noConflict=function(){return a.fn.button=d,this},a(document).on("click.bs.button.data-api",'[data-toggle^="button"]',function(c){var d=a(c.target);d.hasClass("btn")||(d=d.closest(".btn")),b.call(d,"toggle"),a(c.target).is('input[type="radio"]')||a(c.target).is('input[type="checkbox"]')||c.preventDefault()}).on("focus.bs.button.data-api blur.bs.button.data-api",'[data-toggle^="button"]',function(b){a(b.target).closest(".btn").toggleClass("focus",/^focus(in)?$/.test(b.type))})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.carousel"),f=a.extend({},c.DEFAULTS,d.data(),"object"==typeof b&&b),g="string"==typeof b?b:f.slide;e||d.data("bs.carousel",e=new c(this,f)),"number"==typeof b?e.to(b):g?e[g]():f.interval&&e.pause().cycle()})}var c=function(b,c){this.$element=a(b),this.$indicators=this.$element.find(".carousel-indicators"),this.options=c,this.paused=null,this.sliding=null,this.interval=null,this.$active=null,this.$items=null,this.options.keyboard&&this.$element.on("keydown.bs.carousel",a.proxy(this.keydown,this)),"hover"==this.options.pause&&!("ontouchstart"in document.documentElement)&&this.$element.on("mouseenter.bs.carousel",a.proxy(this.pause,this)).on("mouseleave.bs.carousel",a.proxy(this.cycle,this))};c.VERSION="3.3.6",c.TRANSITION_DURATION=600,c.DEFAULTS={interval:5e3,pause:"hover",wrap:!0,keyboard:!0},c.prototype.keydown=function(a){if(!/input|textarea/i.test(a.target.tagName)){switch(a.which){case 37:this.prev();break;case 39:this.next();break;default:return}a.preventDefault()}},c.prototype.cycle=function(b){return b||(this.paused=!1),this.interval&&clearInterval(this.interval),this.options.interval&&!this.paused&&(this.interval=setInterval(a.proxy(this.next,this),this.options.interval)),this},c.prototype.getItemIndex=function(a){return this.$items=a.parent().children(".item"),this.$items.index(a||this.$active)},c.prototype.getItemForDirection=function(a,b){var c=this.getItemIndex(b),d="prev"==a&&0===c||"next"==a&&c==this.$items.length-1;if(d&&!this.options.wrap)return b;var e="prev"==a?-1:1,f=(c+e)%this.$items.length;return this.$items.eq(f)},c.prototype.to=function(a){var b=this,c=this.getItemIndex(this.$active=this.$element.find(".item.active"));return a>this.$items.length-1||0>a?void 0:this.sliding?this.$element.one("slid.bs.carousel",function(){b.to(a)}):c==a?this.pause().cycle():this.slide(a>c?"next":"prev",this.$items.eq(a))},c.prototype.pause=function(b){return b||(this.paused=!0),this.$element.find(".next, .prev").length&&a.support.transition&&(this.$element.trigger(a.support.transition.end),this.cycle(!0)),this.interval=clearInterval(this.interval),this},c.prototype.next=function(){return this.sliding?void 0:this.slide("next")},c.prototype.prev=function(){return this.sliding?void 0:this.slide("prev")},c.prototype.slide=function(b,d){var e=this.$element.find(".item.active"),f=d||this.getItemForDirection(b,e),g=this.interval,h="next"==b?"left":"right",i=this;if(f.hasClass("active"))return this.sliding=!1;var j=f[0],k=a.Event("slide.bs.carousel",{relatedTarget:j,direction:h});if(this.$element.trigger(k),!k.isDefaultPrevented()){if(this.sliding=!0,g&&this.pause(),this.$indicators.length){this.$indicators.find(".active").removeClass("active");var l=a(this.$indicators.children()[this.getItemIndex(f)]);l&&l.addClass("active")}var m=a.Event("slid.bs.carousel",{relatedTarget:j,direction:h});return a.support.transition&&this.$element.hasClass("slide")?(f.addClass(b),f[0].offsetWidth,e.addClass(h),f.addClass(h),e.one("bsTransitionEnd",function(){f.removeClass([b,h].join(" ")).addClass("active"),e.removeClass(["active",h].join(" ")),i.sliding=!1,setTimeout(function(){i.$element.trigger(m)},0)}).emulateTransitionEnd(c.TRANSITION_DURATION)):(e.removeClass("active"),f.addClass("active"),this.sliding=!1,this.$element.trigger(m)),g&&this.cycle(),this}};var d=a.fn.carousel;a.fn.carousel=b,a.fn.carousel.Constructor=c,a.fn.carousel.noConflict=function(){return a.fn.carousel=d,this};var e=function(c){var d,e=a(this),f=a(e.attr("data-target")||(d=e.attr("href"))&&d.replace(/.*(?=#[^\s]+$)/,""));if(f.hasClass("carousel")){var g=a.extend({},f.data(),e.data()),h=e.attr("data-slide-to");h&&(g.interval=!1),b.call(f,g),h&&f.data("bs.carousel").to(h),c.preventDefault()}};a(document).on("click.bs.carousel.data-api","[data-slide]",e).on("click.bs.carousel.data-api","[data-slide-to]",e),a(window).on("load",function(){a('[data-ride="carousel"]').each(function(){var c=a(this);b.call(c,c.data())})})}(jQuery),+function(a){"use strict";function b(b){var c,d=b.attr("data-target")||(c=b.attr("href"))&&c.replace(/.*(?=#[^\s]+$)/,"");return a(d)}function c(b){return this.each(function(){var c=a(this),e=c.data("bs.collapse"),f=a.extend({},d.DEFAULTS,c.data(),"object"==typeof b&&b);!e&&f.toggle&&/show|hide/.test(b)&&(f.toggle=!1),e||c.data("bs.collapse",e=new d(this,f)),"string"==typeof b&&e[b]()})}var d=function(b,c){this.$element=a(b),this.options=a.extend({},d.DEFAULTS,c),this.$trigger=a('[data-toggle="collapse"][href="#'+b.id+'"],[data-toggle="collapse"][data-target="#'+b.id+'"]'),this.transitioning=null,this.options.parent?this.$parent=this.getParent():this.addAriaAndCollapsedClass(this.$element,this.$trigger),this.options.toggle&&this.toggle()};d.VERSION="3.3.6",d.TRANSITION_DURATION=350,d.DEFAULTS={toggle:!0},d.prototype.dimension=function(){var a=this.$element.hasClass("width");return a?"width":"height"},d.prototype.show=function(){if(!this.transitioning&&!this.$element.hasClass("in")){var b,e=this.$parent&&this.$parent.children(".panel").children(".in, .collapsing");if(!(e&&e.length&&(b=e.data("bs.collapse"),b&&b.transitioning))){var f=a.Event("show.bs.collapse");if(this.$element.trigger(f),!f.isDefaultPrevented()){e&&e.length&&(c.call(e,"hide"),b||e.data("bs.collapse",null));var g=this.dimension();this.$element.removeClass("collapse").addClass("collapsing")[g](0).attr("aria-expanded",!0),this.$trigger.removeClass("collapsed").attr("aria-expanded",!0),this.transitioning=1;var h=function(){this.$element.removeClass("collapsing").addClass("collapse in")[g](""),this.transitioning=0,this.$element.trigger("shown.bs.collapse")};if(!a.support.transition)return h.call(this);var i=a.camelCase(["scroll",g].join("-"));this.$element.one("bsTransitionEnd",a.proxy(h,this)).emulateTransitionEnd(d.TRANSITION_DURATION)[g](this.$element[0][i])}}}},d.prototype.hide=function(){if(!this.transitioning&&this.$element.hasClass("in")){var b=a.Event("hide.bs.collapse");if(this.$element.trigger(b),!b.isDefaultPrevented()){var c=this.dimension();this.$element[c](this.$element[c]())[0].offsetHeight,this.$element.addClass("collapsing").removeClass("collapse in").attr("aria-expanded",!1),this.$trigger.addClass("collapsed").attr("aria-expanded",!1),this.transitioning=1;var e=function(){this.transitioning=0,this.$element.removeClass("collapsing").addClass("collapse").trigger("hidden.bs.collapse")};return a.support.transition?void this.$element[c](0).one("bsTransitionEnd",a.proxy(e,this)).emulateTransitionEnd(d.TRANSITION_DURATION):e.call(this)}}},d.prototype.toggle=function(){this[this.$element.hasClass("in")?"hide":"show"]()},d.prototype.getParent=function(){return a(this.options.parent).find('[data-toggle="collapse"][data-parent="'+this.options.parent+'"]').each(a.proxy(function(c,d){var e=a(d);this.addAriaAndCollapsedClass(b(e),e)},this)).end()},d.prototype.addAriaAndCollapsedClass=function(a,b){var c=a.hasClass("in");a.attr("aria-expanded",c),b.toggleClass("collapsed",!c).attr("aria-expanded",c)};var e=a.fn.collapse;a.fn.collapse=c,a.fn.collapse.Constructor=d,a.fn.collapse.noConflict=function(){return a.fn.collapse=e,this},a(document).on("click.bs.collapse.data-api",'[data-toggle="collapse"]',function(d){var e=a(this);e.attr("data-target")||d.preventDefault();var f=b(e),g=f.data("bs.collapse"),h=g?"toggle":e.data();c.call(f,h)})}(jQuery),+function(a){"use strict";function b(b){var c=b.attr("data-target");c||(c=b.attr("href"),c=c&&/#[A-Za-z]/.test(c)&&c.replace(/.*(?=#[^\s]*$)/,""));var d=c&&a(c);return d&&d.length?d:b.parent()}function c(c){c&&3===c.which||(a(e).remove(),a(f).each(function(){var d=a(this),e=b(d),f={relatedTarget:this};e.hasClass("open")&&(c&&"click"==c.type&&/input|textarea/i.test(c.target.tagName)&&a.contains(e[0],c.target)||(e.trigger(c=a.Event("hide.bs.dropdown",f)),c.isDefaultPrevented()||(d.attr("aria-expanded","false"),e.removeClass("open").trigger(a.Event("hidden.bs.dropdown",f)))))}))}function d(b){return this.each(function(){var c=a(this),d=c.data("bs.dropdown");d||c.data("bs.dropdown",d=new g(this)),"string"==typeof b&&d[b].call(c)})}var e=".dropdown-backdrop",f='[data-toggle="dropdown"]',g=function(b){a(b).on("click.bs.dropdown",this.toggle)};g.VERSION="3.3.6",g.prototype.toggle=function(d){var e=a(this);if(!e.is(".disabled, :disabled")){var f=b(e),g=f.hasClass("open");if(c(),!g){"ontouchstart"in document.documentElement&&!f.closest(".navbar-nav").length&&a(document.createElement("div")).addClass("dropdown-backdrop").insertAfter(a(this)).on("click",c);var h={relatedTarget:this};if(f.trigger(d=a.Event("show.bs.dropdown",h)),d.isDefaultPrevented())return;e.trigger("focus").attr("aria-expanded","true"),f.toggleClass("open").trigger(a.Event("shown.bs.dropdown",h))}return!1}},g.prototype.keydown=function(c){if(/(38|40|27|32)/.test(c.which)&&!/input|textarea/i.test(c.target.tagName)){var d=a(this);if(c.preventDefault(),c.stopPropagation(),!d.is(".disabled, :disabled")){var e=b(d),g=e.hasClass("open");if(!g&&27!=c.which||g&&27==c.which)return 27==c.which&&e.find(f).trigger("focus"),d.trigger("click");var h=" li:not(.disabled):visible a",i=e.find(".dropdown-menu"+h);if(i.length){var j=i.index(c.target);38==c.which&&j>0&&j--,40==c.which&&j<i.length-1&&j++,~j||(j=0),i.eq(j).trigger("focus")}}}};var h=a.fn.dropdown;a.fn.dropdown=d,a.fn.dropdown.Constructor=g,a.fn.dropdown.noConflict=function(){return a.fn.dropdown=h,this},a(document).on("click.bs.dropdown.data-api",c).on("click.bs.dropdown.data-api",".dropdown form",function(a){a.stopPropagation()}).on("click.bs.dropdown.data-api",f,g.prototype.toggle).on("keydown.bs.dropdown.data-api",f,g.prototype.keydown).on("keydown.bs.dropdown.data-api",".dropdown-menu",g.prototype.keydown)}(jQuery),+function(a){"use strict";function b(b,d){return this.each(function(){var e=a(this),f=e.data("bs.modal"),g=a.extend({},c.DEFAULTS,e.data(),"object"==typeof b&&b);f||e.data("bs.modal",f=new c(this,g)),"string"==typeof b?f[b](d):g.show&&f.show(d)})}var c=function(b,c){this.options=c,this.$body=a(document.body),this.$element=a(b),this.$dialog=this.$element.find(".modal-dialog"),this.$backdrop=null,this.isShown=null,this.originalBodyPad=null,this.scrollbarWidth=0,this.ignoreBackdropClick=!1,this.options.remote&&this.$element.find(".modal-content").load(this.options.remote,a.proxy(function(){this.$element.trigger("loaded.bs.modal")},this))};c.VERSION="3.3.6",c.TRANSITION_DURATION=300,c.BACKDROP_TRANSITION_DURATION=150,c.DEFAULTS={backdrop:!0,keyboard:!0,show:!0},c.prototype.toggle=function(a){return this.isShown?this.hide():this.show(a)},c.prototype.show=function(b){var d=this,e=a.Event("show.bs.modal",{relatedTarget:b});this.$element.trigger(e),this.isShown||e.isDefaultPrevented()||(this.isShown=!0,this.checkScrollbar(),this.setScrollbar(),this.$body.addClass("modal-open"),this.escape(),this.resize(),this.$element.on("click.dismiss.bs.modal",'[data-dismiss="modal"]',a.proxy(this.hide,this)),this.$dialog.on("mousedown.dismiss.bs.modal",function(){d.$element.one("mouseup.dismiss.bs.modal",function(b){a(b.target).is(d.$element)&&(d.ignoreBackdropClick=!0)})}),this.backdrop(function(){var e=a.support.transition&&d.$element.hasClass("fade");d.$element.parent().length||d.$element.appendTo(d.$body),d.$element.show().scrollTop(0),d.adjustDialog(),e&&d.$element[0].offsetWidth,d.$element.addClass("in"),d.enforceFocus();var f=a.Event("shown.bs.modal",{relatedTarget:b});e?d.$dialog.one("bsTransitionEnd",function(){d.$element.trigger("focus").trigger(f)}).emulateTransitionEnd(c.TRANSITION_DURATION):d.$element.trigger("focus").trigger(f)}))},c.prototype.hide=function(b){b&&b.preventDefault(),b=a.Event("hide.bs.modal"),this.$element.trigger(b),this.isShown&&!b.isDefaultPrevented()&&(this.isShown=!1,this.escape(),this.resize(),a(document).off("focusin.bs.modal"),this.$element.removeClass("in").off("click.dismiss.bs.modal").off("mouseup.dismiss.bs.modal"),this.$dialog.off("mousedown.dismiss.bs.modal"),a.support.transition&&this.$element.hasClass("fade")?this.$element.one("bsTransitionEnd",a.proxy(this.hideModal,this)).emulateTransitionEnd(c.TRANSITION_DURATION):this.hideModal())},c.prototype.enforceFocus=function(){a(document).off("focusin.bs.modal").on("focusin.bs.modal",a.proxy(function(a){this.$element[0]===a.target||this.$element.has(a.target).length||this.$element.trigger("focus")},this))},c.prototype.escape=function(){this.isShown&&this.options.keyboard?this.$element.on("keydown.dismiss.bs.modal",a.proxy(function(a){27==a.which&&this.hide()},this)):this.isShown||this.$element.off("keydown.dismiss.bs.modal")},c.prototype.resize=function(){this.isShown?a(window).on("resize.bs.modal",a.proxy(this.handleUpdate,this)):a(window).off("resize.bs.modal")},c.prototype.hideModal=function(){var a=this;this.$element.hide(),this.backdrop(function(){a.$body.removeClass("modal-open"),a.resetAdjustments(),a.resetScrollbar(),a.$element.trigger("hidden.bs.modal")})},c.prototype.removeBackdrop=function(){this.$backdrop&&this.$backdrop.remove(),this.$backdrop=null},c.prototype.backdrop=function(b){var d=this,e=this.$element.hasClass("fade")?"fade":"";if(this.isShown&&this.options.backdrop){var f=a.support.transition&&e;if(this.$backdrop=a(document.createElement("div")).addClass("modal-backdrop "+e).appendTo(this.$body),this.$element.on("click.dismiss.bs.modal",a.proxy(function(a){return this.ignoreBackdropClick?void(this.ignoreBackdropClick=!1):void(a.target===a.currentTarget&&("static"==this.options.backdrop?this.$element[0].focus():this.hide()))},this)),f&&this.$backdrop[0].offsetWidth,this.$backdrop.addClass("in"),!b)return;f?this.$backdrop.one("bsTransitionEnd",b).emulateTransitionEnd(c.BACKDROP_TRANSITION_DURATION):b()}else if(!this.isShown&&this.$backdrop){this.$backdrop.removeClass("in");var g=function(){d.removeBackdrop(),b&&b()};a.support.transition&&this.$element.hasClass("fade")?this.$backdrop.one("bsTransitionEnd",g).emulateTransitionEnd(c.BACKDROP_TRANSITION_DURATION):g()}else b&&b()},c.prototype.handleUpdate=function(){this.adjustDialog()},c.prototype.adjustDialog=function(){var a=this.$element[0].scrollHeight>document.documentElement.clientHeight;this.$element.css({paddingLeft:!this.bodyIsOverflowing&&a?this.scrollbarWidth:"",paddingRight:this.bodyIsOverflowing&&!a?this.scrollbarWidth:""})},c.prototype.resetAdjustments=function(){this.$element.css({paddingLeft:"",paddingRight:""})},c.prototype.checkScrollbar=function(){var a=window.innerWidth;if(!a){var b=document.documentElement.getBoundingClientRect();a=b.right-Math.abs(b.left)}this.bodyIsOverflowing=document.body.clientWidth<a,this.scrollbarWidth=this.measureScrollbar()},c.prototype.setScrollbar=function(){var a=parseInt(this.$body.css("padding-right")||0,10);this.originalBodyPad=document.body.style.paddingRight||"",this.bodyIsOverflowing&&this.$body.css("padding-right",a+this.scrollbarWidth)},c.prototype.resetScrollbar=function(){this.$body.css("padding-right",this.originalBodyPad)},c.prototype.measureScrollbar=function(){var a=document.createElement("div");a.className="modal-scrollbar-measure",this.$body.append(a);var b=a.offsetWidth-a.clientWidth;return this.$body[0].removeChild(a),b};var d=a.fn.modal;a.fn.modal=b,a.fn.modal.Constructor=c,a.fn.modal.noConflict=function(){return a.fn.modal=d,this},a(document).on("click.bs.modal.data-api",'[data-toggle="modal"]',function(c){var d=a(this),e=d.attr("href"),f=a(d.attr("data-target")||e&&e.replace(/.*(?=#[^\s]+$)/,"")),g=f.data("bs.modal")?"toggle":a.extend({remote:!/#/.test(e)&&e},f.data(),d.data());d.is("a")&&c.preventDefault(),f.one("show.bs.modal",function(a){a.isDefaultPrevented()||f.one("hidden.bs.modal",function(){d.is(":visible")&&d.trigger("focus")})}),b.call(f,g,this)})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.tooltip"),f="object"==typeof b&&b;(e||!/destroy|hide/.test(b))&&(e||d.data("bs.tooltip",e=new c(this,f)),"string"==typeof b&&e[b]())})}var c=function(a,b){this.type=null,this.options=null,this.enabled=null,this.timeout=null,this.hoverState=null,this.$element=null,this.inState=null,this.init("tooltip",a,b)};c.VERSION="3.3.6",c.TRANSITION_DURATION=150,c.DEFAULTS={animation:!0,placement:"top",selector:!1,template:'<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',trigger:"hover focus",title:"",delay:0,html:!1,container:!1,viewport:{selector:"body",padding:0}},c.prototype.init=function(b,c,d){if(this.enabled=!0,this.type=b,this.$element=a(c),this.options=this.getOptions(d),this.$viewport=this.options.viewport&&a(a.isFunction(this.options.viewport)?this.options.viewport.call(this,this.$element):this.options.viewport.selector||this.options.viewport),this.inState={click:!1,hover:!1,focus:!1},this.$element[0]instanceof document.constructor&&!this.options.selector)throw new Error("`selector` option must be specified when initializing "+this.type+" on the window.document object!");for(var e=this.options.trigger.split(" "),f=e.length;f--;){var g=e[f];if("click"==g)this.$element.on("click."+this.type,this.options.selector,a.proxy(this.toggle,this));else if("manual"!=g){var h="hover"==g?"mouseenter":"focusin",i="hover"==g?"mouseleave":"focusout";this.$element.on(h+"."+this.type,this.options.selector,a.proxy(this.enter,this)),this.$element.on(i+"."+this.type,this.options.selector,a.proxy(this.leave,this))}}this.options.selector?this._options=a.extend({},this.options,{trigger:"manual",selector:""}):this.fixTitle()},c.prototype.getDefaults=function(){return c.DEFAULTS},c.prototype.getOptions=function(b){return b=a.extend({},this.getDefaults(),this.$element.data(),b),b.delay&&"number"==typeof b.delay&&(b.delay={show:b.delay,hide:b.delay}),b},c.prototype.getDelegateOptions=function(){var b={},c=this.getDefaults();return this._options&&a.each(this._options,function(a,d){c[a]!=d&&(b[a]=d)}),b},c.prototype.enter=function(b){var c=b instanceof this.constructor?b:a(b.currentTarget).data("bs."+this.type);return c||(c=new this.constructor(b.currentTarget,this.getDelegateOptions()),a(b.currentTarget).data("bs."+this.type,c)),b instanceof a.Event&&(c.inState["focusin"==b.type?"focus":"hover"]=!0),c.tip().hasClass("in")||"in"==c.hoverState?void(c.hoverState="in"):(clearTimeout(c.timeout),c.hoverState="in",c.options.delay&&c.options.delay.show?void(c.timeout=setTimeout(function(){"in"==c.hoverState&&c.show()},c.options.delay.show)):c.show())},c.prototype.isInStateTrue=function(){for(var a in this.inState)if(this.inState[a])return!0;return!1},c.prototype.leave=function(b){var c=b instanceof this.constructor?b:a(b.currentTarget).data("bs."+this.type);return c||(c=new this.constructor(b.currentTarget,this.getDelegateOptions()),a(b.currentTarget).data("bs."+this.type,c)),b instanceof a.Event&&(c.inState["focusout"==b.type?"focus":"hover"]=!1),c.isInStateTrue()?void 0:(clearTimeout(c.timeout),c.hoverState="out",c.options.delay&&c.options.delay.hide?void(c.timeout=setTimeout(function(){"out"==c.hoverState&&c.hide()},c.options.delay.hide)):c.hide())},c.prototype.show=function(){var b=a.Event("show.bs."+this.type);if(this.hasContent()&&this.enabled){this.$element.trigger(b);var d=a.contains(this.$element[0].ownerDocument.documentElement,this.$element[0]);if(b.isDefaultPrevented()||!d)return;var e=this,f=this.tip(),g=this.getUID(this.type);this.setContent(),f.attr("id",g),this.$element.attr("aria-describedby",g),this.options.animation&&f.addClass("fade");var h="function"==typeof this.options.placement?this.options.placement.call(this,f[0],this.$element[0]):this.options.placement,i=/\s?auto?\s?/i,j=i.test(h);j&&(h=h.replace(i,"")||"top"),f.detach().css({top:0,left:0,display:"block"}).addClass(h).data("bs."+this.type,this),this.options.container?f.appendTo(this.options.container):f.insertAfter(this.$element),this.$element.trigger("inserted.bs."+this.type);var k=this.getPosition(),l=f[0].offsetWidth,m=f[0].offsetHeight;if(j){var n=h,o=this.getPosition(this.$viewport);h="bottom"==h&&k.bottom+m>o.bottom?"top":"top"==h&&k.top-m<o.top?"bottom":"right"==h&&k.right+l>o.width?"left":"left"==h&&k.left-l<o.left?"right":h,f.removeClass(n).addClass(h)}var p=this.getCalculatedOffset(h,k,l,m);this.applyPlacement(p,h);var q=function(){var a=e.hoverState;e.$element.trigger("shown.bs."+e.type),e.hoverState=null,"out"==a&&e.leave(e)};a.support.transition&&this.$tip.hasClass("fade")?f.one("bsTransitionEnd",q).emulateTransitionEnd(c.TRANSITION_DURATION):q()}},c.prototype.applyPlacement=function(b,c){var d=this.tip(),e=d[0].offsetWidth,f=d[0].offsetHeight,g=parseInt(d.css("margin-top"),10),h=parseInt(d.css("margin-left"),10);isNaN(g)&&(g=0),isNaN(h)&&(h=0),b.top+=g,b.left+=h,a.offset.setOffset(d[0],a.extend({using:function(a){d.css({top:Math.round(a.top),left:Math.round(a.left)})}},b),0),d.addClass("in");var i=d[0].offsetWidth,j=d[0].offsetHeight;"top"==c&&j!=f&&(b.top=b.top+f-j);var k=this.getViewportAdjustedDelta(c,b,i,j);k.left?b.left+=k.left:b.top+=k.top;var l=/top|bottom/.test(c),m=l?2*k.left-e+i:2*k.top-f+j,n=l?"offsetWidth":"offsetHeight";d.offset(b),this.replaceArrow(m,d[0][n],l)},c.prototype.replaceArrow=function(a,b,c){this.arrow().css(c?"left":"top",50*(1-a/b)+"%").css(c?"top":"left","")},c.prototype.setContent=function(){var a=this.tip(),b=this.getTitle();a.find(".tooltip-inner")[this.options.html?"html":"text"](b),a.removeClass("fade in top bottom left right")},c.prototype.hide=function(b){function d(){"in"!=e.hoverState&&f.detach(),e.$element.removeAttr("aria-describedby").trigger("hidden.bs."+e.type),b&&b()}var e=this,f=a(this.$tip),g=a.Event("hide.bs."+this.type);return this.$element.trigger(g),g.isDefaultPrevented()?void 0:(f.removeClass("in"),a.support.transition&&f.hasClass("fade")?f.one("bsTransitionEnd",d).emulateTransitionEnd(c.TRANSITION_DURATION):d(),this.hoverState=null,this)},c.prototype.fixTitle=function(){var a=this.$element;(a.attr("title")||"string"!=typeof a.attr("data-original-title"))&&a.attr("data-original-title",a.attr("title")||"").attr("title","")},c.prototype.hasContent=function(){return this.getTitle()},c.prototype.getPosition=function(b){b=b||this.$element;var c=b[0],d="BODY"==c.tagName,e=c.getBoundingClientRect();null==e.width&&(e=a.extend({},e,{width:e.right-e.left,height:e.bottom-e.top}));var f=d?{top:0,left:0}:b.offset(),g={scroll:d?document.documentElement.scrollTop||document.body.scrollTop:b.scrollTop()},h=d?{width:a(window).width(),height:a(window).height()}:null;return a.extend({},e,g,h,f)},c.prototype.getCalculatedOffset=function(a,b,c,d){return"bottom"==a?{top:b.top+b.height,left:b.left+b.width/2-c/2}:"top"==a?{top:b.top-d,left:b.left+b.width/2-c/2}:"left"==a?{top:b.top+b.height/2-d/2,left:b.left-c}:{top:b.top+b.height/2-d/2,left:b.left+b.width}},c.prototype.getViewportAdjustedDelta=function(a,b,c,d){var e={top:0,left:0};if(!this.$viewport)return e;var f=this.options.viewport&&this.options.viewport.padding||0,g=this.getPosition(this.$viewport);if(/right|left/.test(a)){var h=b.top-f-g.scroll,i=b.top+f-g.scroll+d;h<g.top?e.top=g.top-h:i>g.top+g.height&&(e.top=g.top+g.height-i)}else{var j=b.left-f,k=b.left+f+c;j<g.left?e.left=g.left-j:k>g.right&&(e.left=g.left+g.width-k)}return e},c.prototype.getTitle=function(){var a,b=this.$element,c=this.options;return a=b.attr("data-original-title")||("function"==typeof c.title?c.title.call(b[0]):c.title)},c.prototype.getUID=function(a){do a+=~~(1e6*Math.random());while(document.getElementById(a));return a},c.prototype.tip=function(){if(!this.$tip&&(this.$tip=a(this.options.template),1!=this.$tip.length))throw new Error(this.type+" `template` option must consist of exactly 1 top-level element!");return this.$tip},c.prototype.arrow=function(){return this.$arrow=this.$arrow||this.tip().find(".tooltip-arrow")},c.prototype.enable=function(){this.enabled=!0},c.prototype.disable=function(){this.enabled=!1},c.prototype.toggleEnabled=function(){this.enabled=!this.enabled},c.prototype.toggle=function(b){var c=this;b&&(c=a(b.currentTarget).data("bs."+this.type),c||(c=new this.constructor(b.currentTarget,this.getDelegateOptions()),a(b.currentTarget).data("bs."+this.type,c))),b?(c.inState.click=!c.inState.click,c.isInStateTrue()?c.enter(c):c.leave(c)):c.tip().hasClass("in")?c.leave(c):c.enter(c)},c.prototype.destroy=function(){var a=this;clearTimeout(this.timeout),this.hide(function(){a.$element.off("."+a.type).removeData("bs."+a.type),a.$tip&&a.$tip.detach(),a.$tip=null,a.$arrow=null,a.$viewport=null})};var d=a.fn.tooltip;a.fn.tooltip=b,a.fn.tooltip.Constructor=c,a.fn.tooltip.noConflict=function(){return a.fn.tooltip=d,this}}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.popover"),f="object"==typeof b&&b;(e||!/destroy|hide/.test(b))&&(e||d.data("bs.popover",e=new c(this,f)),"string"==typeof b&&e[b]())})}var c=function(a,b){this.init("popover",a,b)};if(!a.fn.tooltip)throw new Error("Popover requires tooltip.js");c.VERSION="3.3.6",c.DEFAULTS=a.extend({},a.fn.tooltip.Constructor.DEFAULTS,{placement:"right",trigger:"click",content:"",template:'<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'}),c.prototype=a.extend({},a.fn.tooltip.Constructor.prototype),c.prototype.constructor=c,c.prototype.getDefaults=function(){return c.DEFAULTS},c.prototype.setContent=function(){var a=this.tip(),b=this.getTitle(),c=this.getContent();a.find(".popover-title")[this.options.html?"html":"text"](b),a.find(".popover-content").children().detach().end()[this.options.html?"string"==typeof c?"html":"append":"text"](c),a.removeClass("fade top bottom left right in"),a.find(".popover-title").html()||a.find(".popover-title").hide()},c.prototype.hasContent=function(){return this.getTitle()||this.getContent()},c.prototype.getContent=function(){var a=this.$element,b=this.options;return a.attr("data-content")||("function"==typeof b.content?b.content.call(a[0]):b.content)},c.prototype.arrow=function(){return this.$arrow=this.$arrow||this.tip().find(".arrow")};var d=a.fn.popover;a.fn.popover=b,a.fn.popover.Constructor=c,a.fn.popover.noConflict=function(){return a.fn.popover=d,this}}(jQuery),+function(a){"use strict";function b(c,d){this.$body=a(document.body),this.$scrollElement=a(a(c).is(document.body)?window:c),this.options=a.extend({},b.DEFAULTS,d),this.selector=(this.options.target||"")+" .nav li > a",this.offsets=[],this.targets=[],this.activeTarget=null,this.scrollHeight=0,this.$scrollElement.on("scroll.bs.scrollspy",a.proxy(this.process,this)),this.refresh(),this.process()}function c(c){return this.each(function(){var d=a(this),e=d.data("bs.scrollspy"),f="object"==typeof c&&c;e||d.data("bs.scrollspy",e=new b(this,f)),"string"==typeof c&&e[c]()})}b.VERSION="3.3.6",b.DEFAULTS={offset:10},b.prototype.getScrollHeight=function(){return this.$scrollElement[0].scrollHeight||Math.max(this.$body[0].scrollHeight,document.documentElement.scrollHeight)},b.prototype.refresh=function(){var b=this,c="offset",d=0;this.offsets=[],this.targets=[],this.scrollHeight=this.getScrollHeight(),a.isWindow(this.$scrollElement[0])||(c="position",d=this.$scrollElement.scrollTop()),this.$body.find(this.selector).map(function(){var b=a(this),e=b.data("target")||b.attr("href"),f=/^#./.test(e)&&a(e);return f&&f.length&&f.is(":visible")&&[[f[c]().top+d,e]]||null}).sort(function(a,b){return a[0]-b[0]}).each(function(){b.offsets.push(this[0]),b.targets.push(this[1])})},b.prototype.process=function(){var a,b=this.$scrollElement.scrollTop()+this.options.offset,c=this.getScrollHeight(),d=this.options.offset+c-this.$scrollElement.height(),e=this.offsets,f=this.targets,g=this.activeTarget;if(this.scrollHeight!=c&&this.refresh(),b>=d)return g!=(a=f[f.length-1])&&this.activate(a);if(g&&b<e[0])return this.activeTarget=null,this.clear();for(a=e.length;a--;)g!=f[a]&&b>=e[a]&&(void 0===e[a+1]||b<e[a+1])&&this.activate(f[a])},b.prototype.activate=function(b){this.activeTarget=b,this.clear();var c=this.selector+'[data-target="'+b+'"],'+this.selector+'[href="'+b+'"]',d=a(c).parents("li").addClass("active");
-d.parent(".dropdown-menu").length&&(d=d.closest("li.dropdown").addClass("active")),d.trigger("activate.bs.scrollspy")},b.prototype.clear=function(){a(this.selector).parentsUntil(this.options.target,".active").removeClass("active")};var d=a.fn.scrollspy;a.fn.scrollspy=c,a.fn.scrollspy.Constructor=b,a.fn.scrollspy.noConflict=function(){return a.fn.scrollspy=d,this},a(window).on("load.bs.scrollspy.data-api",function(){a('[data-spy="scroll"]').each(function(){var b=a(this);c.call(b,b.data())})})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.tab");e||d.data("bs.tab",e=new c(this)),"string"==typeof b&&e[b]()})}var c=function(b){this.element=a(b)};c.VERSION="3.3.6",c.TRANSITION_DURATION=150,c.prototype.show=function(){var b=this.element,c=b.closest("ul:not(.dropdown-menu)"),d=b.data("target");if(d||(d=b.attr("href"),d=d&&d.replace(/.*(?=#[^\s]*$)/,"")),!b.parent("li").hasClass("active")){var e=c.find(".active:last a"),f=a.Event("hide.bs.tab",{relatedTarget:b[0]}),g=a.Event("show.bs.tab",{relatedTarget:e[0]});if(e.trigger(f),b.trigger(g),!g.isDefaultPrevented()&&!f.isDefaultPrevented()){var h=a(d);this.activate(b.closest("li"),c),this.activate(h,h.parent(),function(){e.trigger({type:"hidden.bs.tab",relatedTarget:b[0]}),b.trigger({type:"shown.bs.tab",relatedTarget:e[0]})})}}},c.prototype.activate=function(b,d,e){function f(){g.removeClass("active").find("> .dropdown-menu > .active").removeClass("active").end().find('[data-toggle="tab"]').attr("aria-expanded",!1),b.addClass("active").find('[data-toggle="tab"]').attr("aria-expanded",!0),h?(b[0].offsetWidth,b.addClass("in")):b.removeClass("fade"),b.parent(".dropdown-menu").length&&b.closest("li.dropdown").addClass("active").end().find('[data-toggle="tab"]').attr("aria-expanded",!0),e&&e()}var g=d.find("> .active"),h=e&&a.support.transition&&(g.length&&g.hasClass("fade")||!!d.find("> .fade").length);g.length&&h?g.one("bsTransitionEnd",f).emulateTransitionEnd(c.TRANSITION_DURATION):f(),g.removeClass("in")};var d=a.fn.tab;a.fn.tab=b,a.fn.tab.Constructor=c,a.fn.tab.noConflict=function(){return a.fn.tab=d,this};var e=function(c){c.preventDefault(),b.call(a(this),"show")};a(document).on("click.bs.tab.data-api",'[data-toggle="tab"]',e).on("click.bs.tab.data-api",'[data-toggle="pill"]',e)}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.affix"),f="object"==typeof b&&b;e||d.data("bs.affix",e=new c(this,f)),"string"==typeof b&&e[b]()})}var c=function(b,d){this.options=a.extend({},c.DEFAULTS,d),this.$target=a(this.options.target).on("scroll.bs.affix.data-api",a.proxy(this.checkPosition,this)).on("click.bs.affix.data-api",a.proxy(this.checkPositionWithEventLoop,this)),this.$element=a(b),this.affixed=null,this.unpin=null,this.pinnedOffset=null,this.checkPosition()};c.VERSION="3.3.6",c.RESET="affix affix-top affix-bottom",c.DEFAULTS={offset:0,target:window},c.prototype.getState=function(a,b,c,d){var e=this.$target.scrollTop(),f=this.$element.offset(),g=this.$target.height();if(null!=c&&"top"==this.affixed)return c>e?"top":!1;if("bottom"==this.affixed)return null!=c?e+this.unpin<=f.top?!1:"bottom":a-d>=e+g?!1:"bottom";var h=null==this.affixed,i=h?e:f.top,j=h?g:b;return null!=c&&c>=e?"top":null!=d&&i+j>=a-d?"bottom":!1},c.prototype.getPinnedOffset=function(){if(this.pinnedOffset)return this.pinnedOffset;this.$element.removeClass(c.RESET).addClass("affix");var a=this.$target.scrollTop(),b=this.$element.offset();return this.pinnedOffset=b.top-a},c.prototype.checkPositionWithEventLoop=function(){setTimeout(a.proxy(this.checkPosition,this),1)},c.prototype.checkPosition=function(){if(this.$element.is(":visible")){var b=this.$element.height(),d=this.options.offset,e=d.top,f=d.bottom,g=Math.max(a(document).height(),a(document.body).height());"object"!=typeof d&&(f=e=d),"function"==typeof e&&(e=d.top(this.$element)),"function"==typeof f&&(f=d.bottom(this.$element));var h=this.getState(g,b,e,f);if(this.affixed!=h){null!=this.unpin&&this.$element.css("top","");var i="affix"+(h?"-"+h:""),j=a.Event(i+".bs.affix");if(this.$element.trigger(j),j.isDefaultPrevented())return;this.affixed=h,this.unpin="bottom"==h?this.getPinnedOffset():null,this.$element.removeClass(c.RESET).addClass(i).trigger(i.replace("affix","affixed")+".bs.affix")}"bottom"==h&&this.$element.offset({top:g-b-f})}};var d=a.fn.affix;a.fn.affix=b,a.fn.affix.Constructor=c,a.fn.affix.noConflict=function(){return a.fn.affix=d,this},a(window).on("load",function(){a('[data-spy="affix"]').each(function(){var c=a(this),d=c.data();d.offset=d.offset||{},null!=d.offsetBottom&&(d.offset.bottom=d.offsetBottom),null!=d.offsetTop&&(d.offset.top=d.offsetTop),b.call(c,d)})})}(jQuery);
-
-},{}],2:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 var $ = jQuery = require('jquery');
-var CreateReactClass = require('create-react-class');
 
-require("../../bootstrap/js/bootstrap.min.js");
-
-var Codemirror = require('react-codemirror2').UnControlled;
+var Codemirror = require('react-codemirror');
 require('codemirror/mode/javascript/javascript');
-//
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-// import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-// import CreateReactClass from 'create-react-class';
 
-var App = CreateReactClass({
+var Modal = require('react-modal');
+const ModalStyle = {
+    overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(255, 255, 255, 0.75)'
+    },
+    content: {
+        // position: 'absolute',
+        // top: '30%',
+        // left: '50%',
+        // right: 'auto',
+        // bottom: 'auto',
+        // transform: 'translate(-50%, -50%)',
+        //
+        // marginRight: '-50%',
+        // border: '1px solid #ccc',
+        // background: '#fff',
+        // overflow: 'auto',
+        // WebkitOverflowScrolling: 'touch',
+        // borderRadius: '4px',
+        outline: 'none',
+        padding: '20px'
+
+    }
+};
+
+var App = React.createClass({displayName: "App",
     getInitialState: function () {
         return {
-            code: 'function (a, b) {return a + b}',
-            theme: 'dracula',
-            report_panel_state: false,
-            report: {}
+            reports: [],
+            report_body: null,
+            items_raw: [],
+            active_item: -1
         };
     },
-    updateCode: function (editor, data, code) {
-        this.setState({
-            code: code
-        });
-    },
-    submit: function () {
-        var data_send_as = {
-            text: JSON.stringify(this.state.code),
-            report: JSON.stringify(this.state.report)
-        };
-        $.getJSON(window.location.href + '/get', data_send_as)
+    get_body: function (item) {
+        var self = this;
+
+        $.getJSON(window.location.href + '/get', {report_id: item.id})
             .success(function (data) {
-                ReactDOM.render(React.createElement(Output, {data: data}), document.getElementById('output'));
+                self.setState({report_body: React.createElement(ReportBody, {data: data, key: data.id})});
             }).error(function (e, err) {
             console.log(e, err);
         });
-    },
-    switchTheme: function (e) {
-        this.setState({
-            theme: e.target.value
-        });
-    },
-    submit_checkbox_handler: function (e) {
-        this.setState({report_panel_state: e.target.checked})
-    },
-    report_panel: function () {
-        var contact_handler = function (e) {
-            this.state.report['contact'] = e.target.value;
-            this.setState({report: this.state.report});
-        };
-        var about_handler = function (e) {
-            this.state.report['about'] = e.target.value;
-            this.setState({report: this.state.report});
-        };
-        return (
-            React.createElement("div", {className: "navbar navbar-inverse form-horizontal", id: "report_panel", role: "form", 
-                 "data-toggle": "validator"}, 
-                React.createElement("fieldset", null, 
-                    React.createElement("legend", null), 
-                    React.createElement("div", {className: "form-group"}, 
-                        React.createElement("label", {for: "contact_field", className: "col-sm-2 control-label"}, "Name"), 
-                        React.createElement("div", {className: "col-sm-8"}, 
-                            React.createElement("input", {type: "text", 
-                                   className: "form-control ", 
-                                   required: "true", 
-                                   id: "contact_field", 
-                                   placeholder: "Name or Email (required)", 
-                                   onChange: contact_handler.bind(this), 
-                                   value: this.state.report.contact}
-                            )
-                        )
-                    ), 
-                    React.createElement("div", {className: "form-group"}, 
-                        React.createElement("label", {for: "about_field", className: "col-sm-2 control-label"}, "Comment"), 
-                        React.createElement("div", {className: "col-sm-8"}, 
-                            React.createElement("textarea", {
-                                className: "form-control", 
-                                id: "about_field", 
-                                placeholder: "", 
-                                onChange: about_handler.bind(this), 
-                                value: this.state.report.about}
-                            )
-                        )
-                    )
+        this.setState({active_item: item.id});
+        this.componentDidMount();
 
-                )
+    },
+    get_list_item: function (item) {
+        var state = (item.id == this.state.active_item) ? "list-group-item-success" : "";
+        return (
+            React.createElement("div", {onClick: this.get_body.bind(null, item), 
+                 className: "list_item list-group-item "  + state}, 
+                React.createElement("h4", {className: "list-group-item-heading"}, item.name)
             )
         )
     },
+    componentDidMount: function () {
+        var reports = [];
+        var self = this;
+        $.getJSON(window.location.href + '/get')
+            .success(function (data) {
+                (data || []).map(function (item) {
+                    reports[item.id] = self.get_list_item(item)
+                });
+                self.setState({
+                    reports: reports,
+                    items_raw: data
+                });
+            })
+            .error(function (e, err) {
+                this.state.items_raw.map(function (item) {
+                    reports[item.id] = self.get_list_item(item)
+                });
+                self.setState({reports: reports});
+                console.log(e, err);
+            });
+    },
     render: function () {
-        var options = {
-            lineNumbers: true,
-            theme: this.state.theme,
-            mode: 'javascript'
-        };
         return (
-            React.createElement("div", {id: "editor_container"}, 
-                React.createElement(Codemirror, {ref: "editor", onChange: this.updateCode, options: options}), 
-                React.createElement("nav", {className: "navbar navbar-inverse navbar-default"}, 
-                    React.createElement("div", {className: "navbar-form navbar-left"}, 
-                        React.createElement("button", {className: "btn btn-primary", type: "button", onClick: this.submit}, 
-                            "Run tests"
-                        ), 
-                        React.createElement("span", {className: "alert-success"}, 
-                            React.createElement("input", {type: "checkbox", onChange: this.submit_checkbox_handler}), 
-                            "Send report"
-                        )
-                    ), 
-                    React.createElement("div", {className: "themeswitch navbar-form navbar-right"}, 
-                        React.createElement("select", {onChange: this.switchTheme, value: this.state.theme, className: "form-control cont"}, 
-                            React.createElement("option", {value: "default"}, "default"), 
-                            React.createElement("option", {value: "monokai"}, "monokai"), 
-                            React.createElement("option", {value: "dracula"}, "dracula"), 
-                            React.createElement("option", {value: "zenburn"}, "zenburn"), 
-                            React.createElement("option", {value: "solarized dark"}, "solarized dark"), 
-                            React.createElement("option", {value: "solarized light"}, "solarized light"), 
-                            React.createElement("option", {value: "twilight"}, "twilight")
-                        )
+            React.createElement("div", {className: "row"}, 
+                React.createElement("div", {className: "items_list col-md-2 list-group"}, 
+                    this.state.reports
+                ), 
+                React.createElement("div", {className: "col-md-1"}), 
+                React.createElement("div", {id: "output", className: "col-md-6"}, 
+                    React.createElement(ReactCSSTransitionGroup, {transitionName: "slider_up_to_down", transitionEnterTimeout: 500, 
+                                             transitionLeaveTimeout: 300}, 
+                        this.state.report_body
                     )
                 ), 
-                React.createElement(ReactCSSTransitionGroup, {transitionName: "slider_right_to_left", 
-                                         transitionEnterTimeout: 500, 
-                                         transitionLeaveTimeout: 300}, 
-                    this.state.report_panel_state ? this.report_panel() : ''
+                React.createElement("div", {className: "col-md-1"}), 
+                React.createElement("div", {className: "col-md-2"}, 
+                    React.createElement("form", {action: " ", method: "post", className: "menu btn-group-vertical"}, 
+                        React.createElement("button", {
+                            type: "button", 
+                            className: "btn btn-success", 
+                            onClick: function() {parent.location = parent.location.pathname.replace('edit', 'room') + '/..';}
+                        }, 
+                            "Test room"
+                        ), 
+                        React.createElement("button", {
+                            type: "button", 
+                            className: "btn btn-success", 
+                            onClick: function() { parent.location = parent.location.pathname + '/..';}
+                        }, 
+                            "Edit room"
+                        ), 
+                        React.createElement("button", {type: "submit", name: "logout", className: "btn btn-primary"}, "Logout")
+                    )
                 )
             )
         )
     }
 });
 
-var Output = CreateReactClass({
-    body: function () {
-        var style = parseFloat(this.props.data.ratio);
-        var style = (style >= 100.0) ? "success" : ((style > 10.0) ? "warning" : "danger");
 
+var ReportBody = React.createClass({displayName: "ReportBody",
+    getInitialState: function () {
+        return {
+            modalIsOpen: false,
+            tests_modal: null,
+            expects_modal: null
+        };
+    },
+    closeModal: function () {
+        this.setState({modalIsOpen: false})
+    },
+    get_cases: function () {
+        var cases = [];
+        var self = this;
+        var onClick = function (item, e) {
+            self.setState({
+                modalIsOpen: true,
+                tests_modal: item.tests,
+                expects_modal: item.expects
+            })
+        };
+        (this.props.data.passed || []).map(function (item) {
+            cases[item.id] = (React.createElement("div", {
+                className: "row alert alert-success", 
+                style: {"padding-bottom":0}, 
+                onClick: onClick.bind(null, item)
+            }, 
+                React.createElement("div", {className: "col-xs-6"}, 
+                    React.createElement("div", {className: "well well-sm form-control"}, item.tests)
+                ), 
+                React.createElement("div", {className: "col-xs-6"}, 
+                    React.createElement("div", {className: "well well-sm form-control"}, item.expects)
+                )
+            ))
+        });
+        (this.props.data.failed || []).map(function (item) {
+            cases[item.id] = (React.createElement("div", {
+                className: "row alert alert-danger", 
+                style: {"padding-bottom":0}, 
+                onClick: onClick.bind(null, item)
+            }, 
+                React.createElement("div", {className: "col-xs-6"}, 
+                    React.createElement("div", {className: "well well-sm form-control"}, item.tests)
+                ), 
+                React.createElement("div", {className: "col-xs-6"}, 
+                    React.createElement("div", {className: "well well-sm form-control"}, item.expects)
+                )
+            ))
+        });
+        return cases;
+    },
+    render: function () {
+        var data = this.props.data;
+        var options = {
+            lineNumbers: true,
+            theme: this.state.theme || 'dracula',
+            readOnly: true,
+            mode: 'javascript'
+        };
         return (
 
-            React.createElement("div", null, 
-                React.createElement("div", {id: "statistic", className: "col-md-5 col-md-push-7"}, 
-                    React.createElement("div", {className: "panel panel-" + style}, 
-                        React.createElement("div", {className: "panel-heading"}, 
-                            React.createElement("h3", {className: "panel-title"}, "Quick review")
-                        ), 
-                        React.createElement("div", {className: "panel-body"}, 
-                            React.createElement("div", {id: "ratio"}, this.props.data.ratio + '% ')
+            React.createElement("div", {className: "list_item well"}, 
+                React.createElement(Codemirror, {ref: "output", value: data.code || '', options: options}), 
+                React.createElement("div", {className: "form-horizontal well well-sm"}, 
+                    React.createElement("div", {className: "form-group"}, 
+                        React.createElement("label", {for: "name", className: "col-lg-2 control-label"}, "Name"), 
+                        React.createElement("div", {className: "col-lg-10"}, 
+                            React.createElement("span", {id: "name", className: "form-control panel panel-default"}, data.name || "")
+                        )
+                    ), 
+                    React.createElement("div", {className: "form-group"}, 
+                        React.createElement("label", {for: "name", className: "col-lg-2 control-label"}, "Comment"), 
+                        React.createElement("div", {className: "col-lg-10"}, 
+                            React.createElement("span", {id: "about", className: "form-control panel panel-default"}, data.about || "")
                         )
                     )
                 ), 
-
-                React.createElement("div", {id: "test_results_cont", className: "col-md-7 col-md-pull-5"}, 
-                    React.createElement("table", {id: "test_results", className: "table table-responsive"}, 
-                        React.createElement("thead", null, 
-                        React.createElement("tr", null, 
-                            React.createElement("th", null, "#"), 
-                            React.createElement("th", null, "State"), 
-                            React.createElement("th", null, "Message")
-                        )
-                        ), 
-                        React.createElement("tbody", null, 
-
-                        
-                            this.props.data.results.map(function (result, result_index) {
-                                return (
-
-                                    React.createElement("tr", {key: "result_" + result_index, 
-                                        className: "result" + (result.state ? "pass success" : "not_pass danger")}, 
-                                        React.createElement("td", null, result_index), 
-                                        React.createElement("td", {className: "state"}, result.state ? "Pass" : "Fail"), 
-                                        React.createElement("td", {className: "message"}, result.message)
+                React.createElement("div", {className: "cases_legend row alert bg-primary"}, 
+                    React.createElement("label", {className: "col-xs-6"}, "Test params"), 
+                    React.createElement("label", {className: "col-xs-6"}, "Expects")
+                ), 
+                React.createElement("div", {id: "cases"}, 
+                    this.get_cases()
+                ), 
+                React.createElement(Modal, {
+                    className: "Modal__Bootstrap modal-dialog", 
+                    isOpen: this.state.modalIsOpen, 
+                    onRequestClose: this.closeModal, 
+                    style: ModalStyle
+                }, 
+                    React.createElement("div", {className: "modal-dialog"}, 
+                        React.createElement("div", {className: "modal-content"}, 
+                            React.createElement("div", {className: "modal-body row"}, 
+                                React.createElement("div", {className: "col-sm-6"}, 
+                                    "Tests", 
+                                    React.createElement("div", {className: "well"}, 
+                                        this.state.tests_modal
+                                    )
+                                ), 
+                                React.createElement("div", {className: "col-sm-6"}, 
+                                    "Expects", 
+                                    React.createElement("div", {className: "well"}, 
+                                        this.state.expects_modal
                                     )
                                 )
-                            })
-                        
+                            ), 
+                            React.createElement("div", {className: "modal-footer"}, 
+                                React.createElement("button", {className: "btn col-sm-12", onClick: this.closeModal}, "Close")
+                            )
                         )
                     )
                 )
-            )
-        )
-    },
-    render: function () {
-        return (
-            React.createElement(ReactCSSTransitionGroup, {transitionName: "slider_right_to_left", 
-                                     transitionEnterTimeout: 5000, 
-                                     transitionLeaveTimeout: 3000}, 
-                this.body()
             )
         )
     }
@@ -205,14 +247,9 @@ var Output = CreateReactClass({
 
 ReactDOM.render(
     React.createElement(App, null)
-    , document.getElementById('editor'));
+    , document.getElementById('reports'));
 
-
-$('#form').on('submit', function (e) {
-    e.preventDefault();
-});
-
-},{"../../bootstrap/js/bootstrap.min.js":1,"codemirror/mode/javascript/javascript":5,"create-react-class":7,"jquery":28,"react":48,"react-addons-css-transition-group":36,"react-codemirror2":37,"react-dom":40}],3:[function(require,module,exports){
+},{"codemirror/mode/javascript/javascript":5,"jquery":30,"react":61,"react-addons-css-transition-group":40,"react-codemirror":41,"react-dom":45,"react-modal":53}],2:[function(require,module,exports){
 
 module.exports = function chain(){
   var len = arguments.length
@@ -233,6 +270,56 @@ module.exports = function chain(){
     };
   })
 }
+
+},{}],3:[function(require,module,exports){
+/*!
+  Copyright (c) 2016 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames () {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg)) {
+				classes.push(classNames.apply(null, arg));
+			} else if (argType === 'object') {
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
+					}
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = classNames;
+	} else if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
+		// register as 'classnames', consistent with npm package name
+		define('classnames', [], function () {
+			return classNames;
+		});
+	} else {
+		window.classNames = classNames;
+	}
+}());
 
 },{}],4:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -11717,7 +11804,7 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
 module.exports = factory;
 
 }).call(this,require('_process'))
-},{"_process":30,"fbjs/lib/emptyObject":19,"fbjs/lib/invariant":23,"fbjs/lib/warning":27,"object-assign":29}],7:[function(require,module,exports){
+},{"_process":34,"fbjs/lib/emptyObject":21,"fbjs/lib/invariant":25,"fbjs/lib/warning":29,"object-assign":33}],7:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -11747,7 +11834,7 @@ module.exports = factory(
   ReactNoopUpdateQueue
 );
 
-},{"./factory":6,"react":48}],8:[function(require,module,exports){
+},{"./factory":6,"react":61}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -11960,6 +12047,108 @@ compatRaf.cancel = function (id) {
 exports.default = compatRaf;
 module.exports = exports['default'];
 },{"./inDOM":12}],14:[function(require,module,exports){
+module.exports = function(opts) {
+  return new ElementClass(opts)
+}
+
+function indexOf(arr, prop) {
+  if (arr.indexOf) return arr.indexOf(prop)
+  for (var i = 0, len = arr.length; i < len; i++)
+    if (arr[i] === prop) return i
+  return -1
+}
+
+function ElementClass(opts) {
+  if (!(this instanceof ElementClass)) return new ElementClass(opts)
+  var self = this
+  if (!opts) opts = {}
+
+  // similar doing instanceof HTMLElement but works in IE8
+  if (opts.nodeType) opts = {el: opts}
+
+  this.opts = opts
+  this.el = opts.el || document.body
+  if (typeof this.el !== 'object') this.el = document.querySelector(this.el)
+}
+
+ElementClass.prototype.add = function(className) {
+  var el = this.el
+  if (!el) return
+  if (el.className === "") return el.className = className
+  var classes = el.className.split(' ')
+  if (indexOf(classes, className) > -1) return classes
+  classes.push(className)
+  el.className = classes.join(' ')
+  return classes
+}
+
+ElementClass.prototype.remove = function(className) {
+  var el = this.el
+  if (!el) return
+  if (el.className === "") return
+  var classes = el.className.split(' ')
+  var idx = indexOf(classes, className)
+  if (idx > -1) classes.splice(idx, 1)
+  el.className = classes.join(' ')
+  return classes
+}
+
+ElementClass.prototype.has = function(className) {
+  var el = this.el
+  if (!el) return
+  var classes = el.className.split(' ')
+  return indexOf(classes, className) > -1
+}
+
+ElementClass.prototype.toggle = function(className) {
+  var el = this.el
+  if (!el) return
+  if (this.has(className)) this.remove(className)
+  else this.add(className)
+}
+
+},{}],15:[function(require,module,exports){
+/*!
+  Copyright (c) 2015 Jed Watson.
+  Based on code that is Copyright 2013-2015, Facebook, Inc.
+  All rights reserved.
+*/
+
+(function () {
+	'use strict';
+
+	var canUseDOM = !!(
+		typeof window !== 'undefined' &&
+		window.document &&
+		window.document.createElement
+	);
+
+	var ExecutionEnvironment = {
+
+		canUseDOM: canUseDOM,
+
+		canUseWorkers: typeof Worker !== 'undefined',
+
+		canUseEventListeners:
+			canUseDOM && !!(window.addEventListener || window.attachEvent),
+
+		canUseViewport: canUseDOM && !!window.screen
+
+	};
+
+	if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
+		define(function () {
+			return ExecutionEnvironment;
+		});
+	} else if (typeof module !== 'undefined' && module.exports) {
+		module.exports = ExecutionEnvironment;
+	} else {
+		window.ExecutionEnvironment = ExecutionEnvironment;
+	}
+
+}());
+
+},{}],16:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -11993,7 +12182,7 @@ var ExecutionEnvironment = {
 };
 
 module.exports = ExecutionEnvironment;
-},{}],15:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 "use strict";
 
 /**
@@ -12023,7 +12212,7 @@ function camelize(string) {
 }
 
 module.exports = camelize;
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -12061,7 +12250,7 @@ function camelizeStyleName(string) {
 }
 
 module.exports = camelizeStyleName;
-},{"./camelize":15}],17:[function(require,module,exports){
+},{"./camelize":17}],19:[function(require,module,exports){
 'use strict';
 
 /**
@@ -12099,7 +12288,7 @@ function containsNode(outerNode, innerNode) {
 }
 
 module.exports = containsNode;
-},{"./isTextNode":25}],18:[function(require,module,exports){
+},{"./isTextNode":27}],20:[function(require,module,exports){
 "use strict";
 
 /**
@@ -12136,7 +12325,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 };
 
 module.exports = emptyFunction;
-},{}],19:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -12156,7 +12345,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = emptyObject;
 }).call(this,require('_process'))
-},{"_process":30}],20:[function(require,module,exports){
+},{"_process":34}],22:[function(require,module,exports){
 'use strict';
 
 /**
@@ -12193,7 +12382,7 @@ function getActiveElement(doc) /*?DOMElement*/{
 }
 
 module.exports = getActiveElement;
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 /**
@@ -12224,7 +12413,7 @@ function hyphenate(string) {
 }
 
 module.exports = hyphenate;
-},{}],22:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -12261,7 +12450,7 @@ function hyphenateStyleName(string) {
 }
 
 module.exports = hyphenateStyleName;
-},{"./hyphenate":21}],23:[function(require,module,exports){
+},{"./hyphenate":23}],25:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -12317,7 +12506,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 }).call(this,require('_process'))
-},{"_process":30}],24:[function(require,module,exports){
+},{"_process":34}],26:[function(require,module,exports){
 'use strict';
 
 /**
@@ -12340,7 +12529,7 @@ function isNode(object) {
 }
 
 module.exports = isNode;
-},{}],25:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 /**
@@ -12363,7 +12552,7 @@ function isTextNode(object) {
 }
 
 module.exports = isTextNode;
-},{"./isNode":24}],26:[function(require,module,exports){
+},{"./isNode":26}],28:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -12429,7 +12618,7 @@ function shallowEqual(objA, objB) {
 }
 
 module.exports = shallowEqual;
-},{}],27:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -12494,7 +12683,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = warning;
 }).call(this,require('_process'))
-},{"./emptyFunction":18,"_process":30}],28:[function(require,module,exports){
+},{"./emptyFunction":20,"_process":34}],30:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.2.4
  * http://jquery.com/
@@ -22310,7 +22499,1027 @@ if ( !noGlobal ) {
 return jQuery;
 }));
 
-},{}],29:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
+/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]',
+    funcTag = '[object Function]',
+    genTag = '[object GeneratorFunction]';
+
+/** Used to detect unsigned integer values. */
+var reIsUint = /^(?:0|[1-9]\d*)$/;
+
+/**
+ * A faster alternative to `Function#apply`, this function invokes `func`
+ * with the `this` binding of `thisArg` and the arguments of `args`.
+ *
+ * @private
+ * @param {Function} func The function to invoke.
+ * @param {*} thisArg The `this` binding of `func`.
+ * @param {Array} args The arguments to invoke `func` with.
+ * @returns {*} Returns the result of `func`.
+ */
+function apply(func, thisArg, args) {
+  switch (args.length) {
+    case 0: return func.call(thisArg);
+    case 1: return func.call(thisArg, args[0]);
+    case 2: return func.call(thisArg, args[0], args[1]);
+    case 3: return func.call(thisArg, args[0], args[1], args[2]);
+  }
+  return func.apply(thisArg, args);
+}
+
+/**
+ * The base implementation of `_.times` without support for iteratee shorthands
+ * or max array length checks.
+ *
+ * @private
+ * @param {number} n The number of times to invoke `iteratee`.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array} Returns the array of results.
+ */
+function baseTimes(n, iteratee) {
+  var index = -1,
+      result = Array(n);
+
+  while (++index < n) {
+    result[index] = iteratee(index);
+  }
+  return result;
+}
+
+/**
+ * Creates a unary function that invokes `func` with its argument transformed.
+ *
+ * @private
+ * @param {Function} func The function to wrap.
+ * @param {Function} transform The argument transform.
+ * @returns {Function} Returns the new function.
+ */
+function overArg(func, transform) {
+  return function(arg) {
+    return func(transform(arg));
+  };
+}
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/** Built-in value references. */
+var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeKeys = overArg(Object.keys, Object),
+    nativeMax = Math.max;
+
+/** Detect if properties shadowing those on `Object.prototype` are non-enumerable. */
+var nonEnumShadows = !propertyIsEnumerable.call({ 'valueOf': 1 }, 'valueOf');
+
+/**
+ * Creates an array of the enumerable property names of the array-like `value`.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @param {boolean} inherited Specify returning inherited property names.
+ * @returns {Array} Returns the array of property names.
+ */
+function arrayLikeKeys(value, inherited) {
+  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+  // Safari 9 makes `arguments.length` enumerable in strict mode.
+  var result = (isArray(value) || isArguments(value))
+    ? baseTimes(value.length, String)
+    : [];
+
+  var length = result.length,
+      skipIndexes = !!length;
+
+  for (var key in value) {
+    if ((inherited || hasOwnProperty.call(value, key)) &&
+        !(skipIndexes && (key == 'length' || isIndex(key, length)))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+/**
+ * Assigns `value` to `key` of `object` if the existing value is not equivalent
+ * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+ * for equality comparisons.
+ *
+ * @private
+ * @param {Object} object The object to modify.
+ * @param {string} key The key of the property to assign.
+ * @param {*} value The value to assign.
+ */
+function assignValue(object, key, value) {
+  var objValue = object[key];
+  if (!(hasOwnProperty.call(object, key) && eq(objValue, value)) ||
+      (value === undefined && !(key in object))) {
+    object[key] = value;
+  }
+}
+
+/**
+ * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ */
+function baseKeys(object) {
+  if (!isPrototype(object)) {
+    return nativeKeys(object);
+  }
+  var result = [];
+  for (var key in Object(object)) {
+    if (hasOwnProperty.call(object, key) && key != 'constructor') {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+/**
+ * The base implementation of `_.rest` which doesn't validate or coerce arguments.
+ *
+ * @private
+ * @param {Function} func The function to apply a rest parameter to.
+ * @param {number} [start=func.length-1] The start position of the rest parameter.
+ * @returns {Function} Returns the new function.
+ */
+function baseRest(func, start) {
+  start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
+  return function() {
+    var args = arguments,
+        index = -1,
+        length = nativeMax(args.length - start, 0),
+        array = Array(length);
+
+    while (++index < length) {
+      array[index] = args[start + index];
+    }
+    index = -1;
+    var otherArgs = Array(start + 1);
+    while (++index < start) {
+      otherArgs[index] = args[index];
+    }
+    otherArgs[start] = array;
+    return apply(func, this, otherArgs);
+  };
+}
+
+/**
+ * Copies properties of `source` to `object`.
+ *
+ * @private
+ * @param {Object} source The object to copy properties from.
+ * @param {Array} props The property identifiers to copy.
+ * @param {Object} [object={}] The object to copy properties to.
+ * @param {Function} [customizer] The function to customize copied values.
+ * @returns {Object} Returns `object`.
+ */
+function copyObject(source, props, object, customizer) {
+  object || (object = {});
+
+  var index = -1,
+      length = props.length;
+
+  while (++index < length) {
+    var key = props[index];
+
+    var newValue = customizer
+      ? customizer(object[key], source[key], key, object, source)
+      : undefined;
+
+    assignValue(object, key, newValue === undefined ? source[key] : newValue);
+  }
+  return object;
+}
+
+/**
+ * Creates a function like `_.assign`.
+ *
+ * @private
+ * @param {Function} assigner The function to assign values.
+ * @returns {Function} Returns the new assigner function.
+ */
+function createAssigner(assigner) {
+  return baseRest(function(object, sources) {
+    var index = -1,
+        length = sources.length,
+        customizer = length > 1 ? sources[length - 1] : undefined,
+        guard = length > 2 ? sources[2] : undefined;
+
+    customizer = (assigner.length > 3 && typeof customizer == 'function')
+      ? (length--, customizer)
+      : undefined;
+
+    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
+      customizer = length < 3 ? undefined : customizer;
+      length = 1;
+    }
+    object = Object(object);
+    while (++index < length) {
+      var source = sources[index];
+      if (source) {
+        assigner(object, source, index, customizer);
+      }
+    }
+    return object;
+  });
+}
+
+/**
+ * Checks if `value` is a valid array-like index.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+ * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+ */
+function isIndex(value, length) {
+  length = length == null ? MAX_SAFE_INTEGER : length;
+  return !!length &&
+    (typeof value == 'number' || reIsUint.test(value)) &&
+    (value > -1 && value % 1 == 0 && value < length);
+}
+
+/**
+ * Checks if the given arguments are from an iteratee call.
+ *
+ * @private
+ * @param {*} value The potential iteratee value argument.
+ * @param {*} index The potential iteratee index or key argument.
+ * @param {*} object The potential iteratee object argument.
+ * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+ *  else `false`.
+ */
+function isIterateeCall(value, index, object) {
+  if (!isObject(object)) {
+    return false;
+  }
+  var type = typeof index;
+  if (type == 'number'
+        ? (isArrayLike(object) && isIndex(index, object.length))
+        : (type == 'string' && index in object)
+      ) {
+    return eq(object[index], value);
+  }
+  return false;
+}
+
+/**
+ * Checks if `value` is likely a prototype object.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
+ */
+function isPrototype(value) {
+  var Ctor = value && value.constructor,
+      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto;
+
+  return value === proto;
+}
+
+/**
+ * Performs a
+ * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+ * comparison between two values to determine if they are equivalent.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+ * @example
+ *
+ * var object = { 'a': 1 };
+ * var other = { 'a': 1 };
+ *
+ * _.eq(object, object);
+ * // => true
+ *
+ * _.eq(object, other);
+ * // => false
+ *
+ * _.eq('a', 'a');
+ * // => true
+ *
+ * _.eq('a', Object('a'));
+ * // => false
+ *
+ * _.eq(NaN, NaN);
+ * // => true
+ */
+function eq(value, other) {
+  return value === other || (value !== value && other !== other);
+}
+
+/**
+ * Checks if `value` is likely an `arguments` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArguments(function() { return arguments; }());
+ * // => true
+ *
+ * _.isArguments([1, 2, 3]);
+ * // => false
+ */
+function isArguments(value) {
+  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+}
+
+/**
+ * Checks if `value` is classified as an `Array` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+ * @example
+ *
+ * _.isArray([1, 2, 3]);
+ * // => true
+ *
+ * _.isArray(document.body.children);
+ * // => false
+ *
+ * _.isArray('abc');
+ * // => false
+ *
+ * _.isArray(_.noop);
+ * // => false
+ */
+var isArray = Array.isArray;
+
+/**
+ * Checks if `value` is array-like. A value is considered array-like if it's
+ * not a function and has a `value.length` that's an integer greater than or
+ * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+ * @example
+ *
+ * _.isArrayLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLike(document.body.children);
+ * // => true
+ *
+ * _.isArrayLike('abc');
+ * // => true
+ *
+ * _.isArrayLike(_.noop);
+ * // => false
+ */
+function isArrayLike(value) {
+  return value != null && isLength(value.length) && !isFunction(value);
+}
+
+/**
+ * This method is like `_.isArrayLike` except that it also checks if `value`
+ * is an object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array-like object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArrayLikeObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLikeObject(document.body.children);
+ * // => true
+ *
+ * _.isArrayLikeObject('abc');
+ * // => false
+ *
+ * _.isArrayLikeObject(_.noop);
+ * // => false
+ */
+function isArrayLikeObject(value) {
+  return isObjectLike(value) && isArrayLike(value);
+}
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 8-9 which returns 'object' for typed array and other constructors.
+  var tag = isObject(value) ? objectToString.call(value) : '';
+  return tag == funcTag || tag == genTag;
+}
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This method is loosely based on
+ * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ * @example
+ *
+ * _.isLength(3);
+ * // => true
+ *
+ * _.isLength(Number.MIN_VALUE);
+ * // => false
+ *
+ * _.isLength(Infinity);
+ * // => false
+ *
+ * _.isLength('3');
+ * // => false
+ */
+function isLength(value) {
+  return typeof value == 'number' &&
+    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
+ * Assigns own enumerable string keyed properties of source objects to the
+ * destination object. Source objects are applied from left to right.
+ * Subsequent sources overwrite property assignments of previous sources.
+ *
+ * **Note:** This method mutates `object` and is loosely based on
+ * [`Object.assign`](https://mdn.io/Object/assign).
+ *
+ * @static
+ * @memberOf _
+ * @since 0.10.0
+ * @category Object
+ * @param {Object} object The destination object.
+ * @param {...Object} [sources] The source objects.
+ * @returns {Object} Returns `object`.
+ * @see _.assignIn
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ * }
+ *
+ * function Bar() {
+ *   this.c = 3;
+ * }
+ *
+ * Foo.prototype.b = 2;
+ * Bar.prototype.d = 4;
+ *
+ * _.assign({ 'a': 0 }, new Foo, new Bar);
+ * // => { 'a': 1, 'c': 3 }
+ */
+var assign = createAssigner(function(object, source) {
+  if (nonEnumShadows || isPrototype(source) || isArrayLike(source)) {
+    copyObject(source, keys(source), object);
+    return;
+  }
+  for (var key in source) {
+    if (hasOwnProperty.call(source, key)) {
+      assignValue(object, key, source[key]);
+    }
+  }
+});
+
+/**
+ * Creates an array of the own enumerable property names of `object`.
+ *
+ * **Note:** Non-object values are coerced to objects. See the
+ * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+ * for more details.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.keys(new Foo);
+ * // => ['a', 'b'] (iteration order is not guaranteed)
+ *
+ * _.keys('hi');
+ * // => ['0', '1']
+ */
+function keys(object) {
+  return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
+}
+
+module.exports = assign;
+
+},{}],32:[function(require,module,exports){
+(function (global){
+/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+/** Used as the `TypeError` message for "Functions" methods. */
+var FUNC_ERROR_TEXT = 'Expected a function';
+
+/** Used as references for various `Number` constants. */
+var NAN = 0 / 0;
+
+/** `Object#toString` result references. */
+var symbolTag = '[object Symbol]';
+
+/** Used to match leading and trailing whitespace. */
+var reTrim = /^\s+|\s+$/g;
+
+/** Used to detect bad signed hexadecimal string values. */
+var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+/** Used to detect binary string values. */
+var reIsBinary = /^0b[01]+$/i;
+
+/** Used to detect octal string values. */
+var reIsOctal = /^0o[0-7]+$/i;
+
+/** Built-in method references without a dependency on `root`. */
+var freeParseInt = parseInt;
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeMax = Math.max,
+    nativeMin = Math.min;
+
+/**
+ * Gets the timestamp of the number of milliseconds that have elapsed since
+ * the Unix epoch (1 January 1970 00:00:00 UTC).
+ *
+ * @static
+ * @memberOf _
+ * @since 2.4.0
+ * @category Date
+ * @returns {number} Returns the timestamp.
+ * @example
+ *
+ * _.defer(function(stamp) {
+ *   console.log(_.now() - stamp);
+ * }, _.now());
+ * // => Logs the number of milliseconds it took for the deferred invocation.
+ */
+var now = function() {
+  return root.Date.now();
+};
+
+/**
+ * Creates a debounced function that delays invoking `func` until after `wait`
+ * milliseconds have elapsed since the last time the debounced function was
+ * invoked. The debounced function comes with a `cancel` method to cancel
+ * delayed `func` invocations and a `flush` method to immediately invoke them.
+ * Provide `options` to indicate whether `func` should be invoked on the
+ * leading and/or trailing edge of the `wait` timeout. The `func` is invoked
+ * with the last arguments provided to the debounced function. Subsequent
+ * calls to the debounced function return the result of the last `func`
+ * invocation.
+ *
+ * **Note:** If `leading` and `trailing` options are `true`, `func` is
+ * invoked on the trailing edge of the timeout only if the debounced function
+ * is invoked more than once during the `wait` timeout.
+ *
+ * If `wait` is `0` and `leading` is `false`, `func` invocation is deferred
+ * until to the next tick, similar to `setTimeout` with a timeout of `0`.
+ *
+ * See [David Corbacho's article](https://css-tricks.com/debouncing-throttling-explained-examples/)
+ * for details over the differences between `_.debounce` and `_.throttle`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Function
+ * @param {Function} func The function to debounce.
+ * @param {number} [wait=0] The number of milliseconds to delay.
+ * @param {Object} [options={}] The options object.
+ * @param {boolean} [options.leading=false]
+ *  Specify invoking on the leading edge of the timeout.
+ * @param {number} [options.maxWait]
+ *  The maximum time `func` is allowed to be delayed before it's invoked.
+ * @param {boolean} [options.trailing=true]
+ *  Specify invoking on the trailing edge of the timeout.
+ * @returns {Function} Returns the new debounced function.
+ * @example
+ *
+ * // Avoid costly calculations while the window size is in flux.
+ * jQuery(window).on('resize', _.debounce(calculateLayout, 150));
+ *
+ * // Invoke `sendMail` when clicked, debouncing subsequent calls.
+ * jQuery(element).on('click', _.debounce(sendMail, 300, {
+ *   'leading': true,
+ *   'trailing': false
+ * }));
+ *
+ * // Ensure `batchLog` is invoked once after 1 second of debounced calls.
+ * var debounced = _.debounce(batchLog, 250, { 'maxWait': 1000 });
+ * var source = new EventSource('/stream');
+ * jQuery(source).on('message', debounced);
+ *
+ * // Cancel the trailing debounced invocation.
+ * jQuery(window).on('popstate', debounced.cancel);
+ */
+function debounce(func, wait, options) {
+  var lastArgs,
+      lastThis,
+      maxWait,
+      result,
+      timerId,
+      lastCallTime,
+      lastInvokeTime = 0,
+      leading = false,
+      maxing = false,
+      trailing = true;
+
+  if (typeof func != 'function') {
+    throw new TypeError(FUNC_ERROR_TEXT);
+  }
+  wait = toNumber(wait) || 0;
+  if (isObject(options)) {
+    leading = !!options.leading;
+    maxing = 'maxWait' in options;
+    maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
+    trailing = 'trailing' in options ? !!options.trailing : trailing;
+  }
+
+  function invokeFunc(time) {
+    var args = lastArgs,
+        thisArg = lastThis;
+
+    lastArgs = lastThis = undefined;
+    lastInvokeTime = time;
+    result = func.apply(thisArg, args);
+    return result;
+  }
+
+  function leadingEdge(time) {
+    // Reset any `maxWait` timer.
+    lastInvokeTime = time;
+    // Start the timer for the trailing edge.
+    timerId = setTimeout(timerExpired, wait);
+    // Invoke the leading edge.
+    return leading ? invokeFunc(time) : result;
+  }
+
+  function remainingWait(time) {
+    var timeSinceLastCall = time - lastCallTime,
+        timeSinceLastInvoke = time - lastInvokeTime,
+        result = wait - timeSinceLastCall;
+
+    return maxing ? nativeMin(result, maxWait - timeSinceLastInvoke) : result;
+  }
+
+  function shouldInvoke(time) {
+    var timeSinceLastCall = time - lastCallTime,
+        timeSinceLastInvoke = time - lastInvokeTime;
+
+    // Either this is the first call, activity has stopped and we're at the
+    // trailing edge, the system time has gone backwards and we're treating
+    // it as the trailing edge, or we've hit the `maxWait` limit.
+    return (lastCallTime === undefined || (timeSinceLastCall >= wait) ||
+      (timeSinceLastCall < 0) || (maxing && timeSinceLastInvoke >= maxWait));
+  }
+
+  function timerExpired() {
+    var time = now();
+    if (shouldInvoke(time)) {
+      return trailingEdge(time);
+    }
+    // Restart the timer.
+    timerId = setTimeout(timerExpired, remainingWait(time));
+  }
+
+  function trailingEdge(time) {
+    timerId = undefined;
+
+    // Only invoke if we have `lastArgs` which means `func` has been
+    // debounced at least once.
+    if (trailing && lastArgs) {
+      return invokeFunc(time);
+    }
+    lastArgs = lastThis = undefined;
+    return result;
+  }
+
+  function cancel() {
+    if (timerId !== undefined) {
+      clearTimeout(timerId);
+    }
+    lastInvokeTime = 0;
+    lastArgs = lastCallTime = lastThis = timerId = undefined;
+  }
+
+  function flush() {
+    return timerId === undefined ? result : trailingEdge(now());
+  }
+
+  function debounced() {
+    var time = now(),
+        isInvoking = shouldInvoke(time);
+
+    lastArgs = arguments;
+    lastThis = this;
+    lastCallTime = time;
+
+    if (isInvoking) {
+      if (timerId === undefined) {
+        return leadingEdge(lastCallTime);
+      }
+      if (maxing) {
+        // Handle invocations in a tight loop.
+        timerId = setTimeout(timerExpired, wait);
+        return invokeFunc(lastCallTime);
+      }
+    }
+    if (timerId === undefined) {
+      timerId = setTimeout(timerExpired, wait);
+    }
+    return result;
+  }
+  debounced.cancel = cancel;
+  debounced.flush = flush;
+  return debounced;
+}
+
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
+ * Checks if `value` is classified as a `Symbol` primitive or object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+ * @example
+ *
+ * _.isSymbol(Symbol.iterator);
+ * // => true
+ *
+ * _.isSymbol('abc');
+ * // => false
+ */
+function isSymbol(value) {
+  return typeof value == 'symbol' ||
+    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+}
+
+/**
+ * Converts `value` to a number.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {number} Returns the number.
+ * @example
+ *
+ * _.toNumber(3.2);
+ * // => 3.2
+ *
+ * _.toNumber(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toNumber(Infinity);
+ * // => Infinity
+ *
+ * _.toNumber('3.2');
+ * // => 3.2
+ */
+function toNumber(value) {
+  if (typeof value == 'number') {
+    return value;
+  }
+  if (isSymbol(value)) {
+    return NAN;
+  }
+  if (isObject(value)) {
+    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
+    value = isObject(other) ? (other + '') : other;
+  }
+  if (typeof value != 'string') {
+    return value === 0 ? value : +value;
+  }
+  value = value.replace(reTrim, '');
+  var isBinary = reIsBinary.test(value);
+  return (isBinary || reIsOctal.test(value))
+    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+    : (reIsBadHex.test(value) ? NAN : +value);
+}
+
+module.exports = debounce;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],33:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -22402,7 +23611,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],30:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -22588,7 +23797,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],31:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -22651,7 +23860,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 module.exports = checkPropTypes;
 
 }).call(this,require('_process'))
-},{"./lib/ReactPropTypesSecret":35,"_process":30,"fbjs/lib/invariant":23,"fbjs/lib/warning":27}],32:[function(require,module,exports){
+},{"./lib/ReactPropTypesSecret":39,"_process":34,"fbjs/lib/invariant":25,"fbjs/lib/warning":29}],36:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -22711,7 +23920,7 @@ module.exports = function() {
   return ReactPropTypes;
 };
 
-},{"./lib/ReactPropTypesSecret":35,"fbjs/lib/emptyFunction":18,"fbjs/lib/invariant":23}],33:[function(require,module,exports){
+},{"./lib/ReactPropTypesSecret":39,"fbjs/lib/emptyFunction":20,"fbjs/lib/invariant":25}],37:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -23257,7 +24466,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 };
 
 }).call(this,require('_process'))
-},{"./checkPropTypes":31,"./lib/ReactPropTypesSecret":35,"_process":30,"fbjs/lib/emptyFunction":18,"fbjs/lib/invariant":23,"fbjs/lib/warning":27,"object-assign":29}],34:[function(require,module,exports){
+},{"./checkPropTypes":35,"./lib/ReactPropTypesSecret":39,"_process":34,"fbjs/lib/emptyFunction":20,"fbjs/lib/invariant":25,"fbjs/lib/warning":29,"object-assign":33}],38:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -23289,7 +24498,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./factoryWithThrowingShims":32,"./factoryWithTypeCheckers":33,"_process":30}],35:[function(require,module,exports){
+},{"./factoryWithThrowingShims":36,"./factoryWithTypeCheckers":37,"_process":34}],39:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -23303,7 +24512,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 module.exports = ReactPropTypesSecret;
 
-},{}],36:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -23315,645 +24524,290 @@ module.exports = ReactPropTypesSecret;
 
 module.exports = require('react-transition-group/CSSTransitionGroup');
 
-},{"react-transition-group/CSSTransitionGroup":41}],37:[function(require,module,exports){
+},{"react-transition-group/CSSTransitionGroup":54}],41:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var className = require('classnames');
+var debounce = require('lodash.debounce');
+
+var CodeMirror = React.createClass({
+	displayName: 'CodeMirror',
+
+	propTypes: {
+		onChange: React.PropTypes.func,
+		onFocusChange: React.PropTypes.func,
+		options: React.PropTypes.object,
+		path: React.PropTypes.string,
+		value: React.PropTypes.string,
+		className: React.PropTypes.any,
+		codeMirrorInstance: React.PropTypes.object
+	},
+	getCodeMirrorInstance: function getCodeMirrorInstance() {
+		return this.props.codeMirrorInstance || require('codemirror');
+	},
+	getInitialState: function getInitialState() {
+		return {
+			isFocused: false
+		};
+	},
+	componentDidMount: function componentDidMount() {
+		var textareaNode = this.refs.textarea;
+		var codeMirrorInstance = this.getCodeMirrorInstance();
+		this.codeMirror = codeMirrorInstance.fromTextArea(textareaNode, this.props.options);
+		this.codeMirror.on('change', this.codemirrorValueChanged);
+		this.codeMirror.on('focus', this.focusChanged.bind(this, true));
+		this.codeMirror.on('blur', this.focusChanged.bind(this, false));
+		this.codeMirror.setValue(this.props.defaultValue || this.props.value || '');
+	},
+	componentWillUnmount: function componentWillUnmount() {
+		// is there a lighter-weight way to remove the cm instance?
+		if (this.codeMirror) {
+			this.codeMirror.toTextArea();
+		}
+	},
+	componentWillReceiveProps: debounce(function (nextProps) {
+		if (this.codeMirror && nextProps.value !== undefined && this.codeMirror.getValue() != nextProps.value) {
+			this.codeMirror.setValue(nextProps.value);
+		}
+		if (typeof nextProps.options === 'object') {
+			for (var optionName in nextProps.options) {
+				if (nextProps.options.hasOwnProperty(optionName)) {
+					this.codeMirror.setOption(optionName, nextProps.options[optionName]);
+				}
+			}
+		}
+	}, 0),
+	getCodeMirror: function getCodeMirror() {
+		return this.codeMirror;
+	},
+	focus: function focus() {
+		if (this.codeMirror) {
+			this.codeMirror.focus();
+		}
+	},
+	focusChanged: function focusChanged(focused) {
+		this.setState({
+			isFocused: focused
+		});
+		this.props.onFocusChange && this.props.onFocusChange(focused);
+	},
+	codemirrorValueChanged: function codemirrorValueChanged(doc, change) {
+		if (this.props.onChange && change.origin != 'setValue') {
+			this.props.onChange(doc.getValue());
+		}
+	},
+	render: function render() {
+		var editorClassName = className('ReactCodeMirror', this.state.isFocused ? 'ReactCodeMirror--focused' : null, this.props.className);
+		return React.createElement(
+			'div',
+			{ className: editorClassName },
+			React.createElement('textarea', { ref: 'textarea', name: this.props.path, defaultValue: this.props.value, autoComplete: 'off' })
+		);
+	}
+});
+
+module.exports = CodeMirror;
+},{"classnames":3,"codemirror":4,"lodash.debounce":32,"react":61}],42:[function(require,module,exports){
 (function (global){
 'use strict';
 
-var _extends = Object.assign || function(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i];
-    for (var key in source) {
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
-      }
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+(function(f) {
+  if (typeof exports === 'object' && typeof module !== 'undefined') {
+    module.exports = f(require('react'));
+    /* global define */
+  } else if (typeof define === 'function' && define.amd) {
+    define(['react'], f);
+  } else {
+    var g;
+    if (typeof window !== 'undefined') {
+      g = window;
+    } else if (typeof global !== 'undefined') {
+      g = global;
+    } else if (typeof self !== 'undefined') {
+      g = self;
+    } else {
+      g = this;
     }
+
+    if (typeof g.React === 'undefined') {
+      throw Error('React module should be required before ReactDOMFactories');
+    }
+
+    g.ReactDOMFactories = f(g.React);
   }
-  return target;
-};
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
-  return typeof obj;
-} : function(obj) {
-  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-};
-
-var __extends = undefined && undefined.__extends || function() {
-  var extendStatics = Object.setPrototypeOf || {
-    __proto__: []
-  }
-  instanceof Array && function(d, b) {
-    d.__proto__ = b;
-  } || function(d, b) {
-    for (var p in b) {
-      if (b.hasOwnProperty(p)) d[p] = b[p];
-    }
+})(function(React) {
+  /**
+   * Create a factory that creates HTML tag elements.
+   */
+  function createDOMFactory(type) {
+    var factory = React.createElement.bind(null, type);
+    // Expose the type on the factory and the prototype so that it can be
+    // easily accessed on elements. E.g. `<Foo />.type === Foo`.
+    // This should not be named `constructor` since this may not be the function
+    // that created the element, and it may not even be a constructor.
+    factory.type = type;
+    return factory;
   };
-  return function(d, b) {
-    extendStatics(d, b);
 
-    function __() {
-      this.constructor = d;
-    }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  /**
+   * Creates a mapping from supported HTML tags to `ReactDOMComponent` classes.
+   */
+  var ReactDOMFactories = {
+    a: createDOMFactory('a'),
+    abbr: createDOMFactory('abbr'),
+    address: createDOMFactory('address'),
+    area: createDOMFactory('area'),
+    article: createDOMFactory('article'),
+    aside: createDOMFactory('aside'),
+    audio: createDOMFactory('audio'),
+    b: createDOMFactory('b'),
+    base: createDOMFactory('base'),
+    bdi: createDOMFactory('bdi'),
+    bdo: createDOMFactory('bdo'),
+    big: createDOMFactory('big'),
+    blockquote: createDOMFactory('blockquote'),
+    body: createDOMFactory('body'),
+    br: createDOMFactory('br'),
+    button: createDOMFactory('button'),
+    canvas: createDOMFactory('canvas'),
+    caption: createDOMFactory('caption'),
+    cite: createDOMFactory('cite'),
+    code: createDOMFactory('code'),
+    col: createDOMFactory('col'),
+    colgroup: createDOMFactory('colgroup'),
+    data: createDOMFactory('data'),
+    datalist: createDOMFactory('datalist'),
+    dd: createDOMFactory('dd'),
+    del: createDOMFactory('del'),
+    details: createDOMFactory('details'),
+    dfn: createDOMFactory('dfn'),
+    dialog: createDOMFactory('dialog'),
+    div: createDOMFactory('div'),
+    dl: createDOMFactory('dl'),
+    dt: createDOMFactory('dt'),
+    em: createDOMFactory('em'),
+    embed: createDOMFactory('embed'),
+    fieldset: createDOMFactory('fieldset'),
+    figcaption: createDOMFactory('figcaption'),
+    figure: createDOMFactory('figure'),
+    footer: createDOMFactory('footer'),
+    form: createDOMFactory('form'),
+    h1: createDOMFactory('h1'),
+    h2: createDOMFactory('h2'),
+    h3: createDOMFactory('h3'),
+    h4: createDOMFactory('h4'),
+    h5: createDOMFactory('h5'),
+    h6: createDOMFactory('h6'),
+    head: createDOMFactory('head'),
+    header: createDOMFactory('header'),
+    hgroup: createDOMFactory('hgroup'),
+    hr: createDOMFactory('hr'),
+    html: createDOMFactory('html'),
+    i: createDOMFactory('i'),
+    iframe: createDOMFactory('iframe'),
+    img: createDOMFactory('img'),
+    input: createDOMFactory('input'),
+    ins: createDOMFactory('ins'),
+    kbd: createDOMFactory('kbd'),
+    keygen: createDOMFactory('keygen'),
+    label: createDOMFactory('label'),
+    legend: createDOMFactory('legend'),
+    li: createDOMFactory('li'),
+    link: createDOMFactory('link'),
+    main: createDOMFactory('main'),
+    map: createDOMFactory('map'),
+    mark: createDOMFactory('mark'),
+    menu: createDOMFactory('menu'),
+    menuitem: createDOMFactory('menuitem'),
+    meta: createDOMFactory('meta'),
+    meter: createDOMFactory('meter'),
+    nav: createDOMFactory('nav'),
+    noscript: createDOMFactory('noscript'),
+    object: createDOMFactory('object'),
+    ol: createDOMFactory('ol'),
+    optgroup: createDOMFactory('optgroup'),
+    option: createDOMFactory('option'),
+    output: createDOMFactory('output'),
+    p: createDOMFactory('p'),
+    param: createDOMFactory('param'),
+    picture: createDOMFactory('picture'),
+    pre: createDOMFactory('pre'),
+    progress: createDOMFactory('progress'),
+    q: createDOMFactory('q'),
+    rp: createDOMFactory('rp'),
+    rt: createDOMFactory('rt'),
+    ruby: createDOMFactory('ruby'),
+    s: createDOMFactory('s'),
+    samp: createDOMFactory('samp'),
+    script: createDOMFactory('script'),
+    section: createDOMFactory('section'),
+    select: createDOMFactory('select'),
+    small: createDOMFactory('small'),
+    source: createDOMFactory('source'),
+    span: createDOMFactory('span'),
+    strong: createDOMFactory('strong'),
+    style: createDOMFactory('style'),
+    sub: createDOMFactory('sub'),
+    summary: createDOMFactory('summary'),
+    sup: createDOMFactory('sup'),
+    table: createDOMFactory('table'),
+    tbody: createDOMFactory('tbody'),
+    td: createDOMFactory('td'),
+    textarea: createDOMFactory('textarea'),
+    tfoot: createDOMFactory('tfoot'),
+    th: createDOMFactory('th'),
+    thead: createDOMFactory('thead'),
+    time: createDOMFactory('time'),
+    title: createDOMFactory('title'),
+    tr: createDOMFactory('tr'),
+    track: createDOMFactory('track'),
+    u: createDOMFactory('u'),
+    ul: createDOMFactory('ul'),
+    var: createDOMFactory('var'),
+    video: createDOMFactory('video'),
+    wbr: createDOMFactory('wbr'),
+
+    // SVG
+    circle: createDOMFactory('circle'),
+    clipPath: createDOMFactory('clipPath'),
+    defs: createDOMFactory('defs'),
+    ellipse: createDOMFactory('ellipse'),
+    g: createDOMFactory('g'),
+    image: createDOMFactory('image'),
+    line: createDOMFactory('line'),
+    linearGradient: createDOMFactory('linearGradient'),
+    mask: createDOMFactory('mask'),
+    path: createDOMFactory('path'),
+    pattern: createDOMFactory('pattern'),
+    polygon: createDOMFactory('polygon'),
+    polyline: createDOMFactory('polyline'),
+    radialGradient: createDOMFactory('radialGradient'),
+    rect: createDOMFactory('rect'),
+    stop: createDOMFactory('stop'),
+    svg: createDOMFactory('svg'),
+    text: createDOMFactory('text'),
+    tspan: createDOMFactory('tspan'),
   };
-}();
-Object.defineProperty(exports, '__esModule', {
-  value: true
+
+  // due to wrapper and conditionals at the top, this will either become
+  // `module.exports ReactDOMFactories` if that is available,
+  // otherwise it will be defined via `define(['react'], ReactDOMFactories)`
+  // if that is available,
+  // otherwise it will be defined as global variable.
+  return ReactDOMFactories;
 });
-var React = require('react');
-var SERVER_RENDERED = typeof navigator === 'undefined' || global['PREVENT_CODEMIRROR_RENDER'] === true;
-var cm;
-if (!SERVER_RENDERED) {
-  cm = require('codemirror');
-}
-var Helper = function() {
-  function Helper() {}
-  Helper.equals = function(x, y) {
-    var _this = this;
-    var ok = Object.keys,
-      tx = typeof x === 'undefined' ? 'undefined' : _typeof(x),
-      ty = typeof y === 'undefined' ? 'undefined' : _typeof(y);
-    return x && y && tx === 'object' && tx === ty ? ok(x).length === ok(y).length && ok(x).every(function(key) {
-      return _this.equals(x[key], y[key]);
-    }) : x === y;
-  };
-  return Helper;
-}();
-var Shared = function() {
-  function Shared(editor, props) {
-    this.editor = editor;
-    this.props = props;
-  }
-  Shared.prototype.delegateCursor = function(position, scroll, focus) {
-    var doc = this.editor.getDoc();
-    if (focus) {
-      this.editor.focus();
-    }
-    scroll ? doc.setCursor(position) : doc.setCursor(position, null, {
-      scroll: false
-    });
-  };
-  Shared.prototype.delegateScroll = function(coordinates) {
-    this.editor.scrollTo(coordinates.x, coordinates.y);
-  };
-  Shared.prototype.delegateSelection = function(ranges, focus) {
-    this.editor.setSelections(ranges);
-    if (focus) {
-      this.editor.focus();
-    }
-  };
-  Shared.prototype.apply = function(props) {
-    if (props && props.selection && props.selection.ranges) {
-      this.delegateSelection(props.selection.ranges, props.selection.focus || false);
-    }
-    if (props && props.cursor) {
-      this.delegateCursor(props.cursor, props.autoScroll || false, this.editor.getOption('autofocus') || false);
-    }
-    if (props && props.scroll) {
-      this.delegateScroll(props.scroll);
-    }
-  };
-  Shared.prototype.applyNext = function(props, next, preserved) {
-    if (props && props.selection && props.selection.ranges) {
-      if (next && next.selection && next.selection.ranges && !Helper.equals(props.selection.ranges, next.selection.ranges)) {
-        this.delegateSelection(next.selection.ranges, next.selection.focus || false);
-      }
-    }
-    if (props && props.cursor) {
-      if (next && next.cursor && !Helper.equals(props.cursor, next.cursor)) {
-        this.delegateCursor(preserved.cursor || next.cursor, next.autoScroll || false, next.autoCursor || false);
-      }
-    }
-    if (props && props.scroll) {
-      if (next && next.scroll && !Helper.equals(props.scroll, next.scroll)) {
-        this.delegateScroll(next.scroll);
-      }
-    }
-  };
-  Shared.prototype.applyUserDefined = function(props, preserved) {
-    if (preserved && preserved.cursor) {
-      this.delegateCursor(preserved.cursor, props.autoScroll || false, this.editor.getOption('autofocus') || false);
-    }
-  };
-  Shared.prototype.wire = function(props) {
-    var _this = this;
-    Object.keys(props || {}).filter(function(p) {
-      return (/^on/.test(p));
-    }).forEach(function(prop) {
-      switch (prop) {
-        case 'onBlur':
-          {
-            _this.editor.on('blur', function(cm, event) {
-              _this.props.onBlur(_this.editor, event);
-            });
-          }
-          break;
-        case 'onContextMenu':
-          {
-            _this.editor.on('contextmenu', function(cm, event) {
-              _this.props.onContextMenu(_this.editor, event);
-            });
-            break;
-          }
-        case 'onCopy':
-          {
-            _this.editor.on('copy', function(cm, event) {
-              _this.props.onCopy(_this.editor, event);
-            });
-            break;
-          }
-        case 'onCursor':
-          {
-            _this.editor.on('cursorActivity', function(cm) {
-              _this.props.onCursor(_this.editor, _this.editor.getCursor());
-            });
-          }
-          break;
-        case 'onCursorActivity':
-          {
-            _this.editor.on('cursorActivity', function(cm) {
-              _this.props.onCursorActivity(_this.editor);
-            });
-          }
-          break;
-        case 'onCut':
-          {
-            _this.editor.on('cut', function(cm) {
-              _this.props.onCut(_this.editor, event);
-            });
-            break;
-          }
-        case 'onDblClick':
-          {
-            _this.editor.on('dblclick', function(cm) {
-              _this.props.onDblClick(_this.editor, event);
-            });
-            break;
-          }
-        case 'onDragEnter':
-          {
-            _this.editor.on('dragenter', function(cm, event) {
-              _this.props.onDragEnter(_this.editor, event);
-            });
-          }
-          break;
-        case 'onDragLeave':
-          {
-            _this.editor.on('dragleave', function(cm) {
-              _this.props.onDragLeave(_this.editor, event);
-            });
-            break;
-          }
-        case 'onDragOver':
-          {
-            _this.editor.on('dragover', function(cm, event) {
-              _this.props.onDragOver(_this.editor, event);
-            });
-          }
-          break;
-        case 'onDragStart':
-          {
-            _this.editor.on('dragstart', function(cm) {
-              _this.props.onDragStart(_this.editor, event);
-            });
-            break;
-          }
-        case 'onDrop':
-          {
-            _this.editor.on('drop', function(cm, event) {
-              _this.props.onDrop(_this.editor, event);
-            });
-          }
-          break;
-        case 'onFocus':
-          {
-            _this.editor.on('focus', function(cm, event) {
-              _this.props.onFocus(_this.editor, event);
-            });
-          }
-          break;
-        case 'onGutterClick':
-          {
-            _this.editor.on('gutterClick', function(cm, lineNumber, gutter, event) {
-              _this.props.onGutterClick(_this.editor, lineNumber, gutter, event);
-            });
-          }
-          break;
-        case 'onKeyDown':
-          {
-            _this.editor.on('keydown', function(cm, event) {
-              _this.props.onKeyDown(_this.editor, event);
-            });
-          }
-          break;
-        case 'onKeyPress':
-          {
-            _this.editor.on('keypress', function(cm, event) {
-              _this.props.onKeyPress(_this.editor, event);
-            });
-          }
-          break;
-        case 'onKeyUp':
-          {
-            _this.editor.on('keyup', function(cm, event) {
-              _this.props.onKeyUp(_this.editor, event);
-            });
-          }
-          break;
-        case 'onMouseDown':
-          {
-            _this.editor.on('mousedown', function(cm) {
-              _this.props.onMouseDown(_this.editor, event);
-            });
-            break;
-          }
-        case 'onPaste':
-          {
-            _this.editor.on('paste', function(cm) {
-              _this.props.onPaste(_this.editor, event);
-            });
-            break;
-          }
-        case 'onScroll':
-          {
-            _this.editor.on('scroll', function(cm) {
-              _this.props.onScroll(_this.editor, _this.editor.getScrollInfo());
-            });
-          }
-          break;
-        case 'onSelection':
-          {
-            _this.editor.on('beforeSelectionChange', function(cm, data) {
-              _this.props.onSelection(_this.editor, data);
-            });
-          }
-          break;
-        case 'onTouchStart':
-          {
-            _this.editor.on('touchstart', function(cm) {
-              _this.props.onTouchStart(_this.editor, event);
-            });
-            break;
-          }
-        case 'onUpdate':
-          {
-            _this.editor.on('update', function(cm) {
-              _this.props.onUpdate(_this.editor);
-            });
-          }
-          break;
-        case 'onViewportChange':
-          {
-            _this.editor.on('viewportChange', function(cm, from, to) {
-              _this.props.onViewportChange(_this.editor, from, to);
-            });
-          }
-          break;
-      }
-    });
-  };
-  return Shared;
-}();
-var Controlled = function(_super) {
-  __extends(Controlled, _super);
 
-  function Controlled(props) {
-    var _this = _super.call(this, props) || this;
-    if (SERVER_RENDERED) return _this;
-    _this.applied = false;
-    _this.appliedNext = false;
-    _this.appliedUserDefined = false;
-    _this.deferred = null;
-    _this.emulating = false;
-    _this.hydrated = false;
-    _this.initCb = function() {
-      if (_this.props.editorDidConfigure) {
-        _this.props.editorDidConfigure(_this.editor);
-      }
-    };
-    _this.mounted = false;
-    return _this;
-  }
-  Controlled.prototype.hydrate = function(props) {
-    var _this = this;
-    var userDefinedOptions = _extends({}, cm.defaults, this.editor.options, props.options || {});
-    var optionDelta = Object.keys(userDefinedOptions).some(function(key) {
-      return _this.editor.getOption(key) !== userDefinedOptions[key];
-    });
-    if (optionDelta) {
-      Object.keys(userDefinedOptions).forEach(function(key) {
-        if (props.options.hasOwnProperty(key)) {
-          if (_this.editor.getOption(key) !== userDefinedOptions[key]) {
-            _this.editor.setOption(key, userDefinedOptions[key]);
-            _this.mirror.setOption(key, userDefinedOptions[key]);
-          }
-        }
-      });
-    }
-    if (!this.hydrated) {
-      if (!this.mounted) {
-        this.initChange(props.value || '');
-      } else {
-        if (this.deferred) {
-          this.resolveChange();
-        } else {
-          this.initChange(props.value || '');
-        }
-      }
-    }
-    this.hydrated = true;
-  };
-  Controlled.prototype.initChange = function(value) {
-    this.emulating = true;
-    var lastLine = this.editor.lastLine();
-    var lastChar = this.editor.getLine(this.editor.lastLine()).length;
-    this.editor.replaceRange(value || '', {
-      line: 0,
-      ch: 0
-    }, {
-      line: lastLine,
-      ch: lastChar
-    });
-    this.mirror.setValue(value);
-    this.editor.clearHistory();
-    this.mirror.clearHistory();
-    this.emulating = false;
-  };
-  Controlled.prototype.resolveChange = function() {
-    this.emulating = true;
-    if (this.deferred.origin === 'undo') {
-      this.editor.undo();
-    } else if (this.deferred.origin === 'redo') {
-      this.editor.redo();
-    } else {
-      this.editor.replaceRange(this.deferred.text, this.deferred.from, this.deferred.to, this.deferred.origin);
-    }
-    this.emulating = false;
-    this.deferred = null;
-  };
-  Controlled.prototype.mirrorChange = function(deferred) {
-    if (deferred.origin === 'undo') {
-      this.editor.setHistory(this.mirror.getHistory());
-      this.mirror.undo();
-    } else if (deferred.origin === 'redo') {
-      this.editor.setHistory(this.mirror.getHistory());
-      this.mirror.redo();
-    } else {
-      this.mirror.replaceRange(deferred.text, deferred.from, deferred.to, deferred.origin);
-    }
-    return this.mirror.getValue();
-  };
-  Controlled.prototype.componentWillMount = function() {
-    if (SERVER_RENDERED) return;
-    if (this.props.editorWillMount) {
-      this.props.editorWillMount();
-    }
-  };
-  Controlled.prototype.componentDidMount = function() {
-    var _this = this;
-    if (SERVER_RENDERED) return;
-    if (this.props.defineMode) {
-      if (this.props.defineMode.name && this.props.defineMode.fn) {
-        cm.defineMode(this.props.defineMode.name, this.props.defineMode.fn);
-      }
-    }
-    this.editor = cm(this.ref);
-    this.shared = new Shared(this.editor, this.props);
-    this.mirror = cm(function() {});
-    this.editor.on('electricInput', function() {
-      _this.mirror.setHistory(_this.editor.getHistory());
-    });
-    this.editor.on('cursorActivity', function() {
-      _this.mirror.setCursor(_this.editor.getCursor());
-    });
-    this.editor.on('beforeChange', function(cm, data) {
-      if (_this.emulating) {
-        return;
-      }
-      data.cancel();
-      _this.deferred = data;
-      var phantomChange = _this.mirrorChange(_this.deferred);
-      if (_this.props.onBeforeChange) _this.props.onBeforeChange(_this.editor, _this.deferred, phantomChange);
-    });
-    this.editor.on('change', function(cm, data) {
-      if (!_this.mounted) {
-        return;
-      }
-      if (_this.props.onChange) {
-        _this.props.onChange(_this.editor, data, _this.editor.getValue());
-      }
-    });
-    this.hydrate(this.props);
-    this.shared.apply(this.props);
-    this.applied = true;
-    this.mounted = true;
-    this.shared.wire(this.props);
-    if (this.editor.getOption('autofocus')) {
-      this.editor.focus();
-    }
-    if (this.props.editorDidMount) {
-      this.props.editorDidMount(this.editor, this.editor.getValue(), this.initCb);
-    }
-  };
-  Controlled.prototype.componentWillReceiveProps = function(nextProps) {
-    if (SERVER_RENDERED) return;
-    var preserved = {
-      cursor: null
-    };
-    if (nextProps.value !== this.props.value) {
-      this.hydrated = false;
-    }
-    if (!this.props.autoCursor && this.props.autoCursor !== undefined) {
-      preserved.cursor = this.editor.getCursor();
-    }
-    this.hydrate(nextProps);
-    if (!this.appliedNext) {
-      this.shared.applyNext(this.props, nextProps, preserved);
-      this.appliedNext = true;
-    }
-    this.shared.applyUserDefined(this.props, preserved);
-    this.appliedUserDefined = true;
-  };
-  Controlled.prototype.componentWillUnmount = function() {
-    if (SERVER_RENDERED) return;
-    if (this.props.editorWillUnmount) {
-      this.props.editorWillUnmount(cm);
-    }
-  };
-  Controlled.prototype.shouldComponentUpdate = function(nextProps, nextState) {
-    return !SERVER_RENDERED;
-  };
-  Controlled.prototype.render = function() {
-    var _this = this;
-    if (SERVER_RENDERED) return null;
-    var className = this.props.className ? 'react-codemirror2 ' + this.props.className : 'react-codemirror2';
-    return React.createElement('div', {
-      className: className,
-      ref: function ref(self) {
-        return _this.ref = self;
-      }
-    });
-  };
-  return Controlled;
-}(React.Component);
-exports.Controlled = Controlled;
-var UnControlled = function(_super) {
-  __extends(UnControlled, _super);
 
-  function UnControlled(props) {
-    var _this = _super.call(this, props) || this;
-    if (SERVER_RENDERED) return _this;
-    _this.applied = false;
-    _this.appliedUserDefined = false;
-    _this.continueChange = false;
-    _this.detached = false;
-    _this.hydrated = false;
-    _this.initCb = function() {
-      if (_this.props.editorDidConfigure) {
-        _this.props.editorDidConfigure(_this.editor);
-      }
-    };
-    _this.mounted = false;
-    _this.onBeforeChangeCb = function() {
-      _this.continueChange = true;
-    };
-    return _this;
-  }
-  UnControlled.prototype.hydrate = function(props) {
-    var _this = this;
-    var userDefinedOptions = _extends({}, cm.defaults, this.editor.options, props.options || {});
-    var optionDelta = Object.keys(userDefinedOptions).some(function(key) {
-      return _this.editor.getOption(key) !== userDefinedOptions[key];
-    });
-    if (optionDelta) {
-      Object.keys(userDefinedOptions).forEach(function(key) {
-        if (props.options.hasOwnProperty(key)) {
-          if (_this.editor.getOption(key) !== userDefinedOptions[key]) {
-            _this.editor.setOption(key, userDefinedOptions[key]);
-          }
-        }
-      });
-    }
-    if (!this.hydrated) {
-      var lastLine = this.editor.lastLine();
-      var lastChar = this.editor.getLine(this.editor.lastLine()).length;
-      this.editor.replaceRange(props.value || '', {
-        line: 0,
-        ch: 0
-      }, {
-        line: lastLine,
-        ch: lastChar
-      });
-    }
-    this.hydrated = true;
-  };
-  UnControlled.prototype.componentWillMount = function() {
-    if (SERVER_RENDERED) return;
-    if (this.props.editorWillMount) {
-      this.props.editorWillMount();
-    }
-  };
-  UnControlled.prototype.componentDidMount = function() {
-    var _this = this;
-    if (SERVER_RENDERED) return;
-    this.detached = this.props.detach === true;
-    if (this.props.defineMode) {
-      if (this.props.defineMode.name && this.props.defineMode.fn) {
-        cm.defineMode(this.props.defineMode.name, this.props.defineMode.fn);
-      }
-    }
-    this.editor = cm(this.ref);
-    this.shared = new Shared(this.editor, this.props);
-    this.editor.on('beforeChange', function(cm, data) {
-      if (_this.props.onBeforeChange) {
-        _this.props.onBeforeChange(_this.editor, data, _this.editor.getValue(), _this.onBeforeChangeCb);
-      }
-    });
-    this.editor.on('change', function(cm, data) {
-      if (!_this.mounted || !_this.props.onChange) {
-        return;
-      }
-      if (_this.props.onBeforeChange) {
-        if (_this.continueChange) {
-          _this.props.onChange(_this.editor, data, _this.editor.getValue());
-        }
-      } else {
-        _this.props.onChange(_this.editor, data, _this.editor.getValue());
-      }
-    });
-    this.hydrate(this.props);
-    this.shared.apply(this.props);
-    this.applied = true;
-    this.mounted = true;
-    this.shared.wire(this.props);
-    this.editor.clearHistory();
-    if (this.props.editorDidMount) {
-      this.props.editorDidMount(this.editor, this.editor.getValue(), this.initCb);
-    }
-  };
-  UnControlled.prototype.componentWillReceiveProps = function(nextProps) {
-    if (this.detached && nextProps.detach === false) {
-      this.detached = false;
-      if (this.props.editorDidAttach) {
-        this.props.editorDidAttach(this.editor);
-      }
-    }
-    if (!this.detached && nextProps.detach === true) {
-      this.detached = true;
-      if (this.props.editorDidDetach) {
-        this.props.editorDidDetach(this.editor);
-      }
-    }
-    if (SERVER_RENDERED || this.detached) return;
-    var preserved = {
-      cursor: null
-    };
-    if (nextProps.value !== this.props.value) {
-      this.hydrated = false;
-      this.applied = false;
-      this.appliedUserDefined = false;
-    }
-    if (!this.props.autoCursor && this.props.autoCursor !== undefined) {
-      preserved.cursor = this.editor.getCursor();
-    }
-    this.hydrate(nextProps);
-    if (!this.applied) {
-      this.shared.apply(this.props);
-      this.applied = true;
-    }
-    if (!this.appliedUserDefined) {
-      this.shared.applyUserDefined(this.props, preserved);
-      this.appliedUserDefined = true;
-    }
-  };
-  UnControlled.prototype.componentWillUnmount = function() {
-    if (SERVER_RENDERED) return;
-    if (this.props.editorWillUnmount) {
-      this.props.editorWillUnmount(cm);
-    }
-  };
-  UnControlled.prototype.shouldComponentUpdate = function(nextProps, nextState) {
-    var update = true;
-    if (SERVER_RENDERED) update = false;
-    if (this.detached) update = false;
-    return update;
-  };
-  UnControlled.prototype.render = function() {
-    var _this = this;
-    if (SERVER_RENDERED) return null;
-    var className = this.props.className ? 'react-codemirror2 ' + this.props.className : 'react-codemirror2';
-    return React.createElement('div', {
-      className: className,
-      ref: function ref(self) {
-        return _this.ref = self;
-      }
-    });
-  };
-  return UnControlled;
-}(React.Component);
-exports.UnControlled = UnControlled;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"codemirror":4,"react":48}],38:[function(require,module,exports){
+},{"react":61}],43:[function(require,module,exports){
 (function (process){
 /** @license React v16.3.2
  * react-dom.development.js
@@ -40611,7 +41465,7 @@ module.exports = reactDom;
 }
 
 }).call(this,require('_process'))
-},{"_process":30,"fbjs/lib/ExecutionEnvironment":14,"fbjs/lib/camelizeStyleName":16,"fbjs/lib/containsNode":17,"fbjs/lib/emptyFunction":18,"fbjs/lib/emptyObject":19,"fbjs/lib/getActiveElement":20,"fbjs/lib/hyphenateStyleName":22,"fbjs/lib/invariant":23,"fbjs/lib/shallowEqual":26,"fbjs/lib/warning":27,"object-assign":29,"prop-types/checkPropTypes":31,"react":48}],39:[function(require,module,exports){
+},{"_process":34,"fbjs/lib/ExecutionEnvironment":16,"fbjs/lib/camelizeStyleName":18,"fbjs/lib/containsNode":19,"fbjs/lib/emptyFunction":20,"fbjs/lib/emptyObject":21,"fbjs/lib/getActiveElement":22,"fbjs/lib/hyphenateStyleName":24,"fbjs/lib/invariant":25,"fbjs/lib/shallowEqual":28,"fbjs/lib/warning":29,"object-assign":33,"prop-types/checkPropTypes":35,"react":61}],44:[function(require,module,exports){
 /** @license React v16.3.2
  * react-dom.production.min.js
  *
@@ -40859,7 +41713,7 @@ var Gg={createPortal:Fg,findDOMNode:function(a){return null==a?null:1===a.nodeTy
 null})}),!0):!1},unstable_createPortal:function(){return Fg.apply(void 0,arguments)},unstable_batchedUpdates:X.batchedUpdates,unstable_deferredUpdates:X.deferredUpdates,flushSync:X.flushSync,unstable_flushControlled:X.flushControlled,__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{EventPluginHub:Ra,EventPluginRegistry:Ca,EventPropagators:kb,ReactControlledComponent:$b,ReactDOMComponentTree:bb,ReactDOMEventListener:$d},unstable_createRoot:function(a,b){return new tg(a,!0,null!=b&&!0===b.hydrate)}};
 X.injectIntoDevTools({findFiberByHostInstance:Ua,bundleType:0,version:"16.3.2",rendererPackageName:"react-dom"});var Hg=Object.freeze({default:Gg}),Ig=Hg&&Gg||Hg;module.exports=Ig["default"]?Ig["default"]:Ig;
 
-},{"fbjs/lib/ExecutionEnvironment":14,"fbjs/lib/containsNode":17,"fbjs/lib/emptyFunction":18,"fbjs/lib/emptyObject":19,"fbjs/lib/getActiveElement":20,"fbjs/lib/invariant":23,"fbjs/lib/shallowEqual":26,"object-assign":29,"react":48}],40:[function(require,module,exports){
+},{"fbjs/lib/ExecutionEnvironment":16,"fbjs/lib/containsNode":19,"fbjs/lib/emptyFunction":20,"fbjs/lib/emptyObject":21,"fbjs/lib/getActiveElement":22,"fbjs/lib/invariant":25,"fbjs/lib/shallowEqual":28,"object-assign":33,"react":61}],45:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -40901,7 +41755,606 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react-dom.development.js":38,"./cjs/react-dom.production.min.js":39,"_process":30}],41:[function(require,module,exports){
+},{"./cjs/react-dom.development.js":43,"./cjs/react-dom.production.min.js":44,"_process":34}],46:[function(require,module,exports){
+(function (process){
+var React = require('react');
+var ReactDOM = require('react-dom');
+var DOMFactories = require('react-dom-factories');
+var PropTypes = require('prop-types');
+var ExecutionEnvironment = require('exenv');
+var ModalPortal = React.createFactory(require('./ModalPortal'));
+var ariaAppHider = require('../helpers/ariaAppHider');
+var refCount = require('../helpers/refCount');
+var elementClass = require('element-class');
+var renderSubtreeIntoContainer = require("react-dom").unstable_renderSubtreeIntoContainer;
+var Assign = require('lodash.assign');
+var createReactClass = require('create-react-class');
+
+var SafeHTMLElement = ExecutionEnvironment.canUseDOM ? window.HTMLElement : {};
+var AppElement = ExecutionEnvironment.canUseDOM ? document.body : {appendChild: function() {}};
+
+function getParentElement(parentSelector) {
+  return parentSelector();
+}
+
+var Modal = createReactClass({
+
+  displayName: 'Modal',
+  statics: {
+    setAppElement: function(element) {
+        AppElement = ariaAppHider.setElement(element);
+    },
+    injectCSS: function() {
+      "production" !== process.env.NODE_ENV
+        && console.warn('React-Modal: injectCSS has been deprecated ' +
+                        'and no longer has any effect. It will be removed in a later version');
+    }
+  },
+
+  propTypes: {
+    isOpen: PropTypes.bool.isRequired,
+    style: PropTypes.shape({
+      content: PropTypes.object,
+      overlay: PropTypes.object
+    }),
+    portalClassName: PropTypes.string,
+    bodyOpenClassName: PropTypes.string,
+    appElement: PropTypes.instanceOf(SafeHTMLElement),
+    onAfterOpen: PropTypes.func,
+    onRequestClose: PropTypes.func,
+    closeTimeoutMS: PropTypes.number,
+    ariaHideApp: PropTypes.bool,
+    shouldCloseOnOverlayClick: PropTypes.bool,
+    parentSelector: PropTypes.func,
+    role: PropTypes.string,
+    contentLabel: PropTypes.string.isRequired
+  },
+
+  getDefaultProps: function () {
+    return {
+      isOpen: false,
+      portalClassName: 'ReactModalPortal',
+      bodyOpenClassName: 'ReactModal__Body--open',
+      ariaHideApp: true,
+      closeTimeoutMS: 0,
+      shouldCloseOnOverlayClick: true,
+      parentSelector: function () { return document.body; }
+    };
+  },
+
+  componentDidMount: function() {
+    this.node = document.createElement('div');
+    this.node.className = this.props.portalClassName;
+
+    if (this.props.isOpen) refCount.add(this);
+
+    var parent = getParentElement(this.props.parentSelector);
+    parent.appendChild(this.node);
+    this.renderPortal(this.props);
+  },
+
+  componentWillUpdate: function(newProps) {
+    if(newProps.portalClassName !== this.props.portalClassName) {
+      this.node.className = newProps.portalClassName;
+    }
+  },
+
+  componentWillReceiveProps: function(newProps) {
+    if (newProps.isOpen) refCount.add(this);
+    if (!newProps.isOpen) refCount.remove(this);
+    var currentParent = getParentElement(this.props.parentSelector);
+    var newParent = getParentElement(newProps.parentSelector);
+
+    if(newParent !== currentParent) {
+      currentParent.removeChild(this.node);
+      newParent.appendChild(this.node);
+    }
+
+    this.renderPortal(newProps);
+  },
+
+  componentWillUnmount: function() {
+    if (!this.node) return;
+
+    refCount.remove(this);
+
+    if (this.props.ariaHideApp) {
+      ariaAppHider.show(this.props.appElement);
+    }
+
+    var state = this.portal.state;
+    var now = Date.now();
+    var closesAt = state.isOpen && this.props.closeTimeoutMS
+      && (state.closesAt
+        || now + this.props.closeTimeoutMS);
+
+    if (closesAt) {
+      if (!state.beforeClose) {
+        this.portal.closeWithTimeout();
+      }
+
+      var that = this;
+      setTimeout(function() { that.removePortal(); }, closesAt - now);
+    } else {
+      this.removePortal();
+    }
+  },
+
+  removePortal: function() {
+    ReactDOM.unmountComponentAtNode(this.node);
+    var parent = getParentElement(this.props.parentSelector);
+    parent.removeChild(this.node);
+
+    if (refCount.count() === 0) {
+      elementClass(document.body).remove(this.props.bodyOpenClassName);
+    }
+  },
+
+  renderPortal: function(props) {
+    if (props.isOpen || refCount.count() > 0) {
+      elementClass(document.body).add(this.props.bodyOpenClassName);
+    } else {
+      elementClass(document.body).remove(this.props.bodyOpenClassName);
+    }
+
+    if (props.ariaHideApp) {
+      ariaAppHider.toggle(props.isOpen, props.appElement);
+    }
+
+    this.portal = renderSubtreeIntoContainer(this, ModalPortal(Assign({}, props, {defaultStyles: Modal.defaultStyles})), this.node);
+  },
+
+  render: function () {
+    return DOMFactories.noscript();
+  }
+});
+
+Modal.defaultStyles = {
+  overlay: {
+    position        : 'fixed',
+    top             : 0,
+    left            : 0,
+    right           : 0,
+    bottom          : 0,
+    backgroundColor : 'rgba(255, 255, 255, 0.75)'
+  },
+  content: {
+    position                : 'absolute',
+    top                     : '40px',
+    left                    : '40px',
+    right                   : '40px',
+    bottom                  : '40px',
+    border                  : '1px solid #ccc',
+    background              : '#fff',
+    overflow                : 'auto',
+    WebkitOverflowScrolling : 'touch',
+    borderRadius            : '4px',
+    outline                 : 'none',
+    padding                 : '20px'
+  }
+}
+
+module.exports = Modal
+
+}).call(this,require('_process'))
+},{"../helpers/ariaAppHider":48,"../helpers/refCount":50,"./ModalPortal":47,"_process":34,"create-react-class":7,"element-class":14,"exenv":15,"lodash.assign":31,"prop-types":38,"react":61,"react-dom":45,"react-dom-factories":42}],47:[function(require,module,exports){
+var React = require('react');
+var DOMFactories = require('react-dom-factories');
+var focusManager = require('../helpers/focusManager');
+var scopeTab = require('../helpers/scopeTab');
+var Assign = require('lodash.assign');
+var createReactClass = require('create-react-class');
+
+var div = DOMFactories.div;
+
+// so that our CSS is statically analyzable
+var CLASS_NAMES = {
+  overlay: 'ReactModal__Overlay',
+  content: 'ReactModal__Content'
+};
+
+var ModalPortal = module.exports = createReactClass({
+
+  displayName: 'ModalPortal',
+  shouldClose: null,
+
+  getDefaultProps: function() {
+    return {
+      style: {
+        overlay: {},
+        content: {}
+      }
+    };
+  },
+
+  getInitialState: function() {
+    return {
+      afterOpen: false,
+      beforeClose: false
+    };
+  },
+
+  componentDidMount: function() {
+    // Focus needs to be set when mounting and already open
+    if (this.props.isOpen) {
+      this.setFocusAfterRender(true);
+      this.open();
+    }
+  },
+
+  componentWillUnmount: function() {
+    clearTimeout(this.closeTimer);
+  },
+
+  componentWillReceiveProps: function(newProps) {
+    // Focus only needs to be set once when the modal is being opened
+    if (!this.props.isOpen && newProps.isOpen) {
+      this.setFocusAfterRender(true);
+      this.open();
+    } else if (this.props.isOpen && !newProps.isOpen) {
+      this.close();
+    }
+  },
+
+  componentDidUpdate: function () {
+    if (this.focusAfterRender) {
+      this.focusContent();
+      this.setFocusAfterRender(false);
+    }
+  },
+
+  setFocusAfterRender: function (focus) {
+    this.focusAfterRender = focus;
+  },
+
+  afterClose: function () {
+    focusManager.returnFocus();
+    focusManager.teardownScopedFocus();
+  },
+
+  open: function () {
+    if (this.state.afterOpen && this.state.beforeClose) {
+      clearTimeout(this.closeTimer);
+      this.setState({ beforeClose: false });
+    } else {
+      focusManager.setupScopedFocus(this.node);
+      focusManager.markForFocusLater();
+      this.setState({isOpen: true}, function() {
+        this.setState({afterOpen: true});
+
+        if (this.props.isOpen && this.props.onAfterOpen) {
+          this.props.onAfterOpen();
+        }
+      }.bind(this));
+    }
+  },
+
+  close: function() {
+    if (this.props.closeTimeoutMS > 0)
+      this.closeWithTimeout();
+    else
+      this.closeWithoutTimeout();
+  },
+
+  focusContent: function() {
+    // Don't steal focus from inner elements
+    if (!this.contentHasFocus()) {
+      this.refs.content.focus();
+    }
+  },
+
+  closeWithTimeout: function() {
+    var closesAt = Date.now() + this.props.closeTimeoutMS;
+    this.setState({beforeClose: true, closesAt: closesAt}, function() {
+      this.closeTimer = setTimeout(this.closeWithoutTimeout, this.state.closesAt - Date.now());
+    }.bind(this));
+  },
+
+  closeWithoutTimeout: function() {
+    this.setState({
+      beforeClose: false,
+      isOpen: false,
+      afterOpen: false,
+      closesAt: null
+    }, this.afterClose);
+  },
+
+  handleKeyDown: function(event) {
+    if (event.keyCode == 9 /*tab*/) scopeTab(this.refs.content, event);
+    if (event.keyCode == 27 /*esc*/) {
+      event.preventDefault();
+      this.requestClose(event);
+    }
+  },
+
+  handleOverlayOnClick: function (event) {
+    if (this.shouldClose === null) {
+      this.shouldClose = true;
+    }
+
+    if (this.shouldClose && this.props.shouldCloseOnOverlayClick) {
+      if (this.ownerHandlesClose())
+        this.requestClose(event);
+      else
+        this.focusContent();
+    }
+    this.shouldClose = null;
+  },
+
+  handleContentOnClick: function () {
+    this.shouldClose = false;
+  },
+
+  requestClose: function(event) {
+    if (this.ownerHandlesClose())
+      this.props.onRequestClose(event);
+  },
+
+  ownerHandlesClose: function() {
+    return this.props.onRequestClose;
+  },
+
+  shouldBeClosed: function() {
+    return !this.state.isOpen && !this.state.beforeClose;
+  },
+
+  contentHasFocus: function() {
+    return document.activeElement === this.refs.content || this.refs.content.contains(document.activeElement);
+  },
+
+  buildClassName: function(which, additional) {
+    var classNames = (typeof additional === 'object') ? additional : {
+      base: CLASS_NAMES[which],
+      afterOpen: CLASS_NAMES[which] + "--after-open",
+      beforeClose: CLASS_NAMES[which] + "--before-close"
+    };
+    var className = classNames.base;
+    if (this.state.afterOpen) { className += " " + classNames.afterOpen; }
+    if (this.state.beforeClose) { className += " " + classNames.beforeClose; }
+    return (typeof additional === 'string' && additional) ? [className, additional].join(" ") : className;
+  },
+
+  render: function() {
+    var contentStyles = (this.props.className) ? {} : this.props.defaultStyles.content;
+    var overlayStyles = (this.props.overlayClassName) ? {} : this.props.defaultStyles.overlay;
+
+    return this.shouldBeClosed() ? div() : (
+      div({
+        ref: "overlay",
+        className: this.buildClassName('overlay', this.props.overlayClassName),
+        style: Assign({}, overlayStyles, this.props.style.overlay || {}),
+        onClick: this.handleOverlayOnClick
+      },
+        div({
+          ref: "content",
+          style: Assign({}, contentStyles, this.props.style.content || {}),
+          className: this.buildClassName('content', this.props.className),
+          tabIndex: "-1",
+          onKeyDown: this.handleKeyDown,
+          onClick: this.handleContentOnClick,
+          role: this.props.role,
+          "aria-label": this.props.contentLabel
+        },
+          this.props.children
+        )
+      )
+    );
+  }
+});
+
+},{"../helpers/focusManager":49,"../helpers/scopeTab":51,"create-react-class":7,"lodash.assign":31,"react":61,"react-dom-factories":42}],48:[function(require,module,exports){
+var _element = typeof document !== 'undefined' ? document.body : null;
+
+function setElement(element) {
+  if (typeof element === 'string') {
+    var el = document.querySelectorAll(element);
+    element = 'length' in el ? el[0] : el;
+  }
+  _element = element || _element;
+  return _element;
+}
+
+function hide(appElement) {
+  validateElement(appElement);
+  (appElement || _element).setAttribute('aria-hidden', 'true');
+}
+
+function show(appElement) {
+  validateElement(appElement);
+  (appElement || _element).removeAttribute('aria-hidden');
+}
+
+function toggle(shouldHide, appElement) {
+  if (shouldHide)
+    hide(appElement);
+  else
+    show(appElement);
+}
+
+function validateElement(appElement) {
+  if (!appElement && !_element)
+    throw new Error('react-modal: You must set an element with `Modal.setAppElement(el)` to make this accessible');
+}
+
+function resetForTesting() {
+  _element = document.body;
+}
+
+exports.toggle = toggle;
+exports.setElement = setElement;
+exports.show = show;
+exports.hide = hide;
+exports.resetForTesting = resetForTesting;
+
+},{}],49:[function(require,module,exports){
+var findTabbable = require('../helpers/tabbable');
+var focusLaterElements = [];
+var modalElement = null;
+var needToFocus = false;
+
+function handleBlur(event) {
+  needToFocus = true;
+}
+
+function handleFocus(event) {
+  if (needToFocus) {
+    needToFocus = false;
+    if (!modalElement) {
+      return;
+    }
+    // need to see how jQuery shims document.on('focusin') so we don't need the
+    // setTimeout, firefox doesn't support focusin, if it did, we could focus
+    // the element outside of a setTimeout. Side-effect of this implementation
+    // is that the document.body gets focus, and then we focus our element right
+    // after, seems fine.
+    setTimeout(function() {
+      if (modalElement.contains(document.activeElement))
+        return;
+      var el = (findTabbable(modalElement)[0] || modalElement);
+      el.focus();
+    }, 0);
+  }
+}
+
+exports.markForFocusLater = function() {
+  focusLaterElements.push(document.activeElement);
+};
+
+exports.returnFocus = function() {
+  var toFocus = null;
+  try {
+    toFocus = focusLaterElements.pop();
+    toFocus.focus();
+    return;
+  }
+  catch (e) {
+    console.warn('You tried to return focus to '+toFocus+' but it is not in the DOM anymore');
+  }
+};
+
+exports.setupScopedFocus = function(element) {
+  modalElement = element;
+
+  if (window.addEventListener) {
+    window.addEventListener('blur', handleBlur, false);
+    document.addEventListener('focus', handleFocus, true);
+  } else {
+    window.attachEvent('onBlur', handleBlur);
+    document.attachEvent('onFocus', handleFocus);
+  }
+};
+
+exports.teardownScopedFocus = function() {
+  modalElement = null;
+
+  if (window.addEventListener) {
+    window.removeEventListener('blur', handleBlur);
+    document.removeEventListener('focus', handleFocus);
+  } else {
+    window.detachEvent('onBlur', handleBlur);
+    document.detachEvent('onFocus', handleFocus);
+  }
+};
+
+},{"../helpers/tabbable":52}],50:[function(require,module,exports){
+var modals = [];
+
+module.exports = {
+  add: function (element) {
+    if (modals.indexOf(element) === -1) {
+      modals.push(element);
+    }
+  },
+  remove: function (element) {
+    var index = modals.indexOf(element);
+    if (index === -1) {
+      return;
+    }
+    modals.splice(index, 1);
+  },
+  count: function () {
+    return modals.length;
+  }
+};
+
+},{}],51:[function(require,module,exports){
+var findTabbable = require('../helpers/tabbable');
+
+module.exports = function(node, event) {
+  var tabbable = findTabbable(node);
+  if (!tabbable.length) {
+      event.preventDefault();
+      return;
+  }
+  var finalTabbable = tabbable[event.shiftKey ? 0 : tabbable.length - 1];
+  var leavingFinalTabbable = (
+    finalTabbable === document.activeElement ||
+    // handle immediate shift+tab after opening with mouse
+    node === document.activeElement
+  );
+  if (!leavingFinalTabbable) return;
+  event.preventDefault();
+  var target = tabbable[event.shiftKey ? tabbable.length - 1 : 0];
+  target.focus();
+};
+
+},{"../helpers/tabbable":52}],52:[function(require,module,exports){
+/*!
+ * Adapted from jQuery UI core
+ *
+ * http://jqueryui.com
+ *
+ * Copyright 2014 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/category/ui-core/
+ */
+
+function focusable(element, isTabIndexNotNaN) {
+  var nodeName = element.nodeName.toLowerCase();
+  return (/input|select|textarea|button|object/.test(nodeName) ?
+    !element.disabled :
+    "a" === nodeName ?
+      element.href || isTabIndexNotNaN :
+      isTabIndexNotNaN) && visible(element);
+}
+
+function hidden(el) {
+  return (el.offsetWidth <= 0 && el.offsetHeight <= 0) ||
+    el.style.display === 'none';
+}
+
+function visible(element) {
+  while (element) {
+    if (element === document.body) break;
+    if (hidden(element)) return false;
+    element = element.parentNode;
+  }
+  return true;
+}
+
+function tabbable(element) {
+  var tabIndex = element.getAttribute('tabindex');
+  if (tabIndex === null) tabIndex = undefined;
+  var isTabIndexNaN = isNaN(tabIndex);
+  return (isTabIndexNaN || tabIndex >= 0) && focusable(element, !isTabIndexNaN);
+}
+
+function findTabbableDescendants(element) {
+  return [].slice.call(element.querySelectorAll('*'), 0).filter(function(el) {
+    return tabbable(el);
+  });
+}
+
+module.exports = findTabbableDescendants;
+
+
+},{}],53:[function(require,module,exports){
+module.exports = require('./components/Modal');
+
+
+},{"./components/Modal":46}],54:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -40998,7 +42451,7 @@ CSSTransitionGroup.defaultProps = defaultProps;
 exports.default = CSSTransitionGroup;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./CSSTransitionGroupChild":42,"./TransitionGroup":43,"./utils/PropTypes":45,"_process":30,"prop-types":34,"react":48}],42:[function(require,module,exports){
+},{"./CSSTransitionGroupChild":55,"./TransitionGroup":56,"./utils/PropTypes":58,"_process":34,"prop-types":38,"react":61}],55:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -41230,7 +42683,7 @@ CSSTransitionGroupChild.propTypes = process.env.NODE_ENV !== "production" ? prop
 exports.default = CSSTransitionGroupChild;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./utils/PropTypes":45,"_process":30,"dom-helpers/class/addClass":8,"dom-helpers/class/removeClass":10,"dom-helpers/transition/properties":11,"dom-helpers/util/requestAnimationFrame":13,"prop-types":34,"react":48,"react-dom":40}],43:[function(require,module,exports){
+},{"./utils/PropTypes":58,"_process":34,"dom-helpers/class/addClass":8,"dom-helpers/class/removeClass":10,"dom-helpers/transition/properties":11,"dom-helpers/util/requestAnimationFrame":13,"prop-types":38,"react":61,"react-dom":45}],56:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -41502,7 +42955,7 @@ TransitionGroup.defaultProps = defaultProps;
 exports.default = TransitionGroup;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./utils/ChildMapping":44,"_process":30,"chain-function":3,"prop-types":34,"react":48,"warning":49}],44:[function(require,module,exports){
+},{"./utils/ChildMapping":57,"_process":34,"chain-function":2,"prop-types":38,"react":61,"warning":62}],57:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -41594,7 +43047,7 @@ function mergeChildMappings(prev, next) {
 
   return childMapping;
 }
-},{"react":48}],45:[function(require,module,exports){
+},{"react":61}],58:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -41644,7 +43097,7 @@ var nameShape = exports.nameShape = _propTypes2.default.oneOfType([_propTypes2.d
   appear: _propTypes2.default.string,
   appearActive: _propTypes2.default.string
 })]);
-},{"prop-types":34,"react":48}],46:[function(require,module,exports){
+},{"prop-types":38,"react":61}],59:[function(require,module,exports){
 (function (process){
 /** @license React v16.3.2
  * react.development.js
@@ -43062,7 +44515,7 @@ module.exports = react;
 }
 
 }).call(this,require('_process'))
-},{"_process":30,"fbjs/lib/emptyFunction":18,"fbjs/lib/emptyObject":19,"fbjs/lib/invariant":23,"fbjs/lib/warning":27,"object-assign":29,"prop-types/checkPropTypes":31}],47:[function(require,module,exports){
+},{"_process":34,"fbjs/lib/emptyFunction":20,"fbjs/lib/emptyObject":21,"fbjs/lib/invariant":25,"fbjs/lib/warning":29,"object-assign":33,"prop-types/checkPropTypes":35}],60:[function(require,module,exports){
 /** @license React v16.3.2
  * react.production.min.js
  *
@@ -43086,7 +44539,7 @@ _calculateChangedBits:b,_defaultValue:a,_currentValue:a,_changedBits:0,Provider:
 (k=a.type.defaultProps);for(c in b)J.call(b,c)&&!K.hasOwnProperty(c)&&(d[c]=void 0===b[c]&&void 0!==k?k[c]:b[c])}c=arguments.length-2;if(1===c)d.children=e;else if(1<c){k=Array(c);for(var l=0;l<c;l++)k[l]=arguments[l+2];d.children=k}return{$$typeof:t,type:a.type,key:g,ref:h,props:d,_owner:f}},createFactory:function(a){var b=L.bind(null,a);b.type=a;return b},isValidElement:M,version:"16.3.2",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{ReactCurrentOwner:I,assign:m}},X=Object.freeze({default:W}),
 Y=X&&W||X;module.exports=Y["default"]?Y["default"]:Y;
 
-},{"fbjs/lib/emptyFunction":18,"fbjs/lib/emptyObject":19,"fbjs/lib/invariant":23,"object-assign":29}],48:[function(require,module,exports){
+},{"fbjs/lib/emptyFunction":20,"fbjs/lib/emptyObject":21,"fbjs/lib/invariant":25,"object-assign":33}],61:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -43097,7 +44550,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react.development.js":46,"./cjs/react.production.min.js":47,"_process":30}],49:[function(require,module,exports){
+},{"./cjs/react.development.js":59,"./cjs/react.production.min.js":60,"_process":34}],62:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -43161,4 +44614,4 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"_process":30}]},{},[2]);
+},{"_process":34}]},{},[1]);

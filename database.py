@@ -32,6 +32,8 @@ class Room(DB.Model):
     password = DB.Column(DB.String, default="")
     test_cases = DB.relationship('TestData')
     reports = DB.relationship('Report')
+    is_network = DB.Column(DB.Boolean)
+    timeout = DB.Column(DB.Integer)
 
     def __init__(self, description, password):
         self.description = description
@@ -43,15 +45,38 @@ class TestData(DB.Model):
     id = DB.Column(DB.Integer, primary_key=True)
     room_id = DB.Column(DB.Integer, DB.ForeignKey('room.id'))
     test = DB.Column(DB.String)
-    expect = DB.Column(DB.String)
+    expect = DB.Column(DB.Integer)
+    got = DB.Column(DB.Integer)
     case_id = DB.Column(DB.Integer)
 
-    def __init__(self, id, room_id, test, expect):
+
+    def __init__(self, id, room_id, test, expect, got=''):
         self.case_id = id
         self.room_id = room_id
         self.test = test
         self.expect = expect
+        self.got = got
 
+    def set_got(self, got):
+        self.got = got
+
+class ReportTestData(DB.Model):
+    __tablename__ = 'reporttestdata'
+    report_id = DB.Column(DB.Integer, DB.ForeignKey('report.id'))
+    id = DB.Column(DB.Integer, primary_key=True)
+    test = DB.Column(DB.String)
+    expect = DB.Column(DB.Integer)
+    got = DB.Column(DB.Integer)
+    case_id = DB.Column(DB.Integer)
+    state = DB.Column(DB.Boolean)
+
+    def __init__(self, id, report_id, test, expect, got, state):
+        self.case_id = id
+        self.report_id = report_id
+        self.test = test
+        self.expect = expect
+        self.got = got
+        self.state = state
 
 class Report(DB.Model):
     id = DB.Column(DB.Integer, primary_key=True)
@@ -59,8 +84,9 @@ class Report(DB.Model):
     name = DB.Column(DB.String)
     comment = DB.Column(DB.String)
     code = DB.Column(DB.String)
-    passed = DB.relationship('TestData', secondary=successful_tests, backref='passed')
-    failed = DB.relationship('TestData', secondary=failed_tests, backref='failed')
+    # passed = DB.relationship('TestData', secondary=successful_tests, backref='passed')
+    # failed = DB.relationship('TestData', secondary=failed_tests, backref='failed')
+    cases = DB.relationship('ReportTestData')
 
     def __init__(self, room_id, name, code, comment=''):
         self.room_id = room_id

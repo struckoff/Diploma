@@ -1,16 +1,20 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
-
 var $ = jQuery = require('jquery');
+var CreateReactClass = require('create-react-class');
 
 require("../../bootstrap/js/bootstrap.min.js");
 
-var Codemirror = require('react-codemirror');
+var Codemirror = require('react-codemirror2').UnControlled;
 require('codemirror/mode/javascript/javascript');
+//
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+// import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+// import CreateReactClass from 'create-react-class';
 
-
-var App = React.createClass({
+var App = CreateReactClass({
     getInitialState: function () {
         return {
             code: 'function (a, b) {return a + b}',
@@ -19,17 +23,17 @@ var App = React.createClass({
             report: {}
         };
     },
-    updateCode: function (newCode) {
+    updateCode: function (editor, data, code) {
         this.setState({
-            code: newCode
+            code: code
         });
     },
     submit: function () {
-        var data_send = {
-            text: this.state.code,
+        var data_send_as = {
+            text: JSON.stringify(this.state.code),
             report: JSON.stringify(this.state.report)
         };
-        $.getJSON(window.location.href + '/get', data_send)
+        $.getJSON(window.location.href + '/get', data_send_as)
             .success(function (data) {
                 ReactDOM.render(<Output data={data}/>, document.getElementById('output'));
             }).error(function (e, err) {
@@ -129,7 +133,7 @@ var App = React.createClass({
     }
 });
 
-var Output = React.createClass({
+var Output = CreateReactClass({
     body: function () {
         var style = parseFloat(this.props.data.ratio);
         var style = (style >= 100.0) ? "success" : ((style > 10.0) ? "warning" : "danger");

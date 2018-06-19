@@ -1,4 +1,4 @@
+pychrome
 flask
 sqlalchemy
 flask-sqlalchemy
-pyexecjs

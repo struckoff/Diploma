@@ -2,8 +2,10 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 var $ = jQuery = require('jquery');
+var CreateReactClass = require('create-react-class');
 
-var Codemirror = require('react-codemirror');
+
+var Codemirror = require('react-codemirror2').UnControlled;
 require('codemirror/mode/javascript/javascript');
 
 var Modal = require('react-modal');
@@ -36,7 +38,7 @@ const ModalStyle = {
     }
 };
 
-var App = React.createClass({
+var App = CreateReactClass({
     getInitialState: function () {
         return {
             reports: [],
@@ -127,7 +129,7 @@ var App = React.createClass({
 });
 
 
-var ReportBody = React.createClass({
+var ReportBody = CreateReactClass({
     getInitialState: function () {
         return {
             modalIsOpen: false,
@@ -142,23 +144,26 @@ var ReportBody = React.createClass({
         var cases = [];
         var self = this;
         var onClick = function (item, e) {
-            self.setState({
-                modalIsOpen: true,
-                tests_modal: item.tests,
-                expects_modal: item.expects
-            })
+//            self.setState({
+//                modalIsOpen: true,
+//                tests_modal: item.tests,
+//                expects_modal: item.expects
+//            })
         };
         (this.props.data.passed || []).map(function (item) {
             cases[item.id] = (<div
                 className="row alert alert-success"
-                style={{"padding-bottom":0}}
+                style={{"paddingBottom":0}}
                 onClick={onClick.bind(null, item)}
             >
-                <div className="col-xs-6">
+                <div className="col-xs-4">
                     <div className="well well-sm form-control">{item.tests}</div>
                 </div>
-                <div className="col-xs-6">
+                <div className="col-xs-4">
                     <div className="well well-sm form-control">{item.expects}</div>
+                </div>
+                <div className="col-xs-4">
+                    <div className="well well-sm form-control">{item.got}</div>
                 </div>
             </div>)
         });
@@ -168,21 +173,25 @@ var ReportBody = React.createClass({
                 style={{"padding-bottom":0}}
                 onClick={onClick.bind(null, item)}
             >
-                <div className="col-xs-6">
+                <div className="col-xs-4">
                     <div className="well well-sm form-control">{item.tests}</div>
                 </div>
-                <div className="col-xs-6">
+                <div className="col-xs-4">
                     <div className="well well-sm form-control">{item.expects}</div>
+                </div>
+                <div className="col-xs-4">
+                    <div className="well well-sm form-control">{item.got}</div>
                 </div>
             </div>)
         });
         return cases;
     },
     render: function () {
+
         var data = this.props.data;
         var options = {
             lineNumbers: true,
-            theme: this.state.theme || 'dracula',
+            theme: this.state.theme || 'default',
             readOnly: true,
             mode: 'javascript'
         };
@@ -205,8 +214,9 @@ var ReportBody = React.createClass({
                     </div>
                 </div>
                 <div className="cases_legend row alert bg-primary">
-                    <label className="col-xs-6">Test params</label>
-                    <label className="col-xs-6">Expects</label>
+                    <label className="col-xs-4">Test params</label>
+                    <label className="col-xs-4">Expect</label>
+                    <label className="col-xs-4">Got</label>
                 </div>
                 <div id="cases">
                     {this.get_cases()}
@@ -239,6 +249,7 @@ var ReportBody = React.createClass({
                         </div>
                     </div>
                 </Modal>
+
             </div>
         )
     }
